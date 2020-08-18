@@ -1,0 +1,60 @@
+route_id,agency_id,route_short_name,route_long_name,route_desc,route_type,route_url,route_color,route_text_color
+R1,Trenord,R1,Bergamo-Brescia, ,2, ,94C120,FFFFFF
+R11,Trenord,R11,Colico-Chiavenna, ,2, ,94C120,FFFFFF
+R12,Trenord,R12,Sondrio-Tirano, ,2, ,94C120,FFFFFF
+R13,Trenord,R13,Lecco-Colico-Sondrio, ,2, ,94C120,FFFFFF
+R14,Trenord,R14,Bergamo-Carnate-Milano, ,2, ,94C120,FFFFFF
+R16,Trenord,R16,Asso-Milano, ,2, ,94C120,FFFFFF
+R17,Trenord,R17,Como-Saronno-Milano, ,2, ,94C120,FFFFFF
+R18,Trenord,R18,Como-Molteno-Lecco, ,2, ,94C120,FFFFFF
+R2,Trenord,R2,Bergamo-Treviglio, ,2, ,94C120,FFFFFF
+R21,Trenord,R21,Luino-Gallarate-Milano, ,2, ,94C120,FFFFFF
+R22,Trenord,R22,Varese-Saronno-Milano, ,2, ,94C120,FFFFFF
+R23,Trenord,R23,Domodossola-Gallarate-Milano, ,2, ,94C120,FFFFFF
+R25,Trenord,R25,Mortara-Novara, ,2, ,94C120,FFFFFF
+R27,Trenord,R27,Novara-Saronno-Milano, ,2, ,94C120,FFFFFF
+R28,Trenord,R28,Malpensa-Saronno-Milano Cerale, ,2, ,94C120,FFFFFF
+R3,Trenord,R3,Brescia-Iseo-Breno, ,2, ,94C120,FFFFFF
+R31,Trenord,R31,Mortara-Milano, ,2, ,94C120,FFFFFF
+R32,Trenord,R32,Mortara-Alessandria, ,2, ,94C120,FFFFFF
+R34,Trenord,R34,Stradella-Pavia-Milano, ,2, ,94C120,FFFFFF
+R35,Trenord,R35,Pavia-Torreberetti-Alessandria, ,2, ,94C120,FFFFFF
+R36,Trenord,R36,Pavia-Mortara-Vercelli, ,2, ,94C120,FFFFFF
+R37,Trenord,R37,Pavia-Codogno, ,2, ,94C120,FFFFFF
+R38,Trenord,R38,Piacenza-Lodi-Milano, ,2, ,94C120,FFFFFF
+R39,Trenord,R39,Codogno-Cremona, ,2, ,94C120,FFFFFF
+R4,Trenord,R4,Brescia-Treviglio-Milano, ,2, ,94C120,FFFFFF
+R40,Trenord,R40,Cremona-Maova, ,2, ,94C120,FFFFFF
+R41,Trenord,R41,Voghera-Piacenza, ,2, ,94C120,FFFFFF
+R5,Trenord,R5,Brescia-Cremona, ,2, ,94C120,FFFFFF
+R6,Trenord,R6,Cremona-Treviglio, ,2, ,94C120,FFFFFF
+R7,Trenord,R7,Lecco-Bergamo, ,2, ,94C120,FFFFFF
+R8,Trenord,R8,Brescia-Parma, ,2, ,94C120,FFFFFF
+RE_1,Trenord,RE_1,Laveno-Varese-Saronno-Milano, ,2, ,E40314,FFFFFF
+RE_10,Trenord,RE_10,Bellinzona-Chiasso-Como-Milano C.le, ,2, ,E40314,FFFFFF
+RE_11,Trenord,RE_11,Maova-Cremona-Codogno-Milano, ,2, ,E40314,FFFFFF
+RE_13,Trenord,RE_13,Alessandria-Pavia-Milano, ,2, ,E40314,FFFFFF
+RE_2,Trenord,RE_2,Bergamo-Milano (via Treviglio), ,2, ,E40314,FFFFFF
+RE_3,Trenord,RE_3,Brescia-Iseo-Edolo, ,2, ,E40314,FFFFFF
+RE_4,Trenord,RE_4,Domodossola-Milano, ,2, ,E40314,FFFFFF
+RE_5,Trenord,RE_5,Varese-Gallarate-Milano, ,2, ,E40314,FFFFFF
+RE_6,Trenord,RE_6,Verona-Brescia-Milano, ,2, ,E40314,FFFFFF
+RE_7,Trenord,RE_7,Como-Saronno-Milano, ,2, ,E40314,FFFFFF
+RE_8,Trenord,RE_8,Tirano-Sondrio-Lecco-Milano C.le, ,2, ,E40314,FFFFFF
+S1,Trenord,S1,Saronno-Milano Passante-Lodi, ,2, ,0058A2,FFFFFF
+S10,Trenord,S10,Albate C.-Como-Mendrisio-Bellinzona, ,2, ,0058A2,FFFFFF
+S11,Trenord,S11,Chiasso-Seregno-Milano Porta Garibaldi-Rho, ,2, ,0058A2,FFFFFF
+S12,Trenord,S12,Milano Bovisa-Milano Passante-Melegnano, ,2, ,0058A2,FFFFFF
+S13,Trenord,S13,Pavia-Milano Passante-Milano Bovisa, ,2, ,0058A2,FFFFFF
+S2,Trenord,S2,Mariano Comense-Milano Passante-Milano Rogoredo, ,2, ,0058A2,FFFFFF
+S3,Trenord,S3,Saronno-Milano Cadorna, ,2, ,0058A2,FFFFFF
+S4,Trenord,S4,Camnago Leate-Milano Cadorna, ,2, ,0058A2,FFFFFF
+S40,Trenord,S40,Albate C.-Como-Mendrisio-Varese-Malpensa, ,2, ,0058A2,FFFFFF
+S5,Trenord,S5,Varese-Milano Passae-Treviglio, ,2, ,0058A2,FFFFFF
+S50,Trenord,S50,Varese-Mendrisio-Bellinzona, ,2, ,0058A2,FFFFFF
+S6,Trenord,S6,Novara-Milano Passae-Treviglio, ,2, ,0058A2,FFFFFF
+S7,Trenord,S7,Lecco-Molteno-Monza-Milano, ,2, ,0058A2,FFFFFF
+S8,Trenord,S8,Lecco-Carnate-Milano Porta Garibaldi, ,2, ,0058A2,FFFFFF
+S9,Trenord,S9,Saronno-Seregno-Milano S.Cristoforo-Albairate, ,2, ,0058A2,FFFFFF
+XP1,Trenord,XP1,Malpensa-Milano Cadorna, ,2, ,9B194E,FFFFFF
+XP2,Trenord,XP2,Malpensa-Milano Cerale, ,2, ,9B194E,FFFFFF

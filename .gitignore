@@ -1,0 +1,10 @@
+HELP.md
+target/
+.m2/
+bin/
+
+*.class
+*.exe
+
+.classpath
+.project
