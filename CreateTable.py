@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 import csv
+import json
+import matplotlib.pylab as plt
 
 stop_times = pd.read_csv('trenord-gtfs-csv//stop_times.csv')
 stop_times = stop_times.drop(['stop_headsign', 'pickup_type',
@@ -62,26 +64,56 @@ loads = loads.merge(stop_times_load, on='trip_id')
 
 np.savetxt(r'loads.txt', loads.values, fmt='%s')
 
-frequencies_dict = {}
-day = 'monday'
-hour1 = '17:00:00'
-hour2 = '18:00:00'
+'''frequencies_dict = {}
+days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
+hours = []
+for i in range(4, 26, 1):
+    if i < 10:
+        hours.append('0' + str(i) + ':00:00')
+    else:
+        hours.append(str(i) + ':00:00')
 
-'''for index, row in loads.iterrows():
-    key = row['stop_id']
-    if row[day] == 1:
-        if key not in frequencies_dict:
-            frequencies_dict[key] = 1
-        else:
-            frequencies_dict[key] += 1'''
+for day in days:
+    frequencies_dict[day] = []
+    temporary_dict = {}
+    for index_hour, hour in enumerate(hours):
+        if index_hour + 1 < len(hours):
+            temporary_dict['Inizio'] = hour
+            temporary_dict['Fine'] = hours[index_hour + 1]
+            routes_dict = {}
+            for index_row, row in loads.iterrows():
+                key = row['stop_id']
+                if row[day] == 1 and hour <= row['arrival_time'] < hours[index_hour + 1]:
+                    if key not in routes_dict:
+                        routes_dict[key] = 1
+                    else:
+                        routes_dict[key] += 1
+            #sorted_routes = sorted(routes_dict.items(), key=lambda x: x[1], reverse=True)
+            temporary_dict['Stazioni'] = routes_dict.copy()
+        frequencies_dict[day].append(temporary_dict.copy())
+        print(hour)
+    print(day)
 
-for index, row in loads.iterrows():
-    key = row['stop_id']
-    if row[day] == 1 and hour1 < row['arrival_time'] < hour2:
-        if key not in frequencies_dict:
-            frequencies_dict[key] = 1
-        else:
-            frequencies_dict[key] += 1
+with open('loads_complete.json', 'w') as fp:
+    json.dump(frequencies_dict, fp)'''
 
-sorted_frequencies = sorted(frequencies_dict.items(), key=lambda x: x[1], reverse=True)
-print(sorted_frequencies)
+with open('loads_complete.json', 'r') as fp:
+    data = json.load(fp)
+
+histogram_dict = {}
+monday_list = data['monday']
+
+i = 0
+for dict in monday_list:
+    for element in dict['Stazioni']:
+        if element == '1707':
+            histogram_dict[i] = dict['Stazioni']['1707']
+            break
+    i += 1
+
+lists = sorted(histogram_dict.items()) # sorted by key, return a list of tuples
+
+x, y = zip(*lists) # unpack a list of pairs into two tuples
+
+plt.plot(x, y)
+plt.show()
