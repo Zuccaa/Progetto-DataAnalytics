@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
-import csv
 import json
+import csv
 import matplotlib.pylab as plt
 
 stop_times = pd.read_csv('trenord-gtfs-csv//stop_times.csv')
@@ -18,6 +18,9 @@ routes = routes.drop(['agency_id', 'route_short_name', 'route_desc', 'route_type
 
 trips = pd.read_csv('trenord-gtfs-csv//trips.csv')
 trips = trips.drop(['trip_headsign', 'trip_short_name', 'direction_id', 'block_id', 'shape_id'], axis=1)
+
+exceptions_service = pd.read_csv('trenord-gtfs-csv//calendar_dates.csv')
+exceptions_service = exceptions_service.drop(['exception_type'], axis=1)
 
 '''trips_per_route = {}
 
@@ -103,17 +106,35 @@ with open('loads_complete.json', 'r') as fp:
 histogram_dict = {}
 monday_list = data['monday']
 
-i = 0
+i = 4
+route_to_consider = '1841'
 for dict in monday_list:
-    for element in dict['Stazioni']:
-        if element == '1707':
-            histogram_dict[i] = dict['Stazioni']['1707']
-            break
+    if route_to_consider in dict['Stazioni']:
+        histogram_dict[i] = dict['Stazioni'][route_to_consider]
+    else:
+        histogram_dict[i] = 0
     i += 1
 
-lists = sorted(histogram_dict.items()) # sorted by key, return a list of tuples
+bar = plt.bar(np.arange(len(histogram_dict.keys())) + 0.25, histogram_dict.values(), color="green")
+plt.xticks(np.arange(24) - 0.25, labels=['04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00',
+                                         '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00',
+                                         '18:00', '19:00', '20:00', '21:00', '22:00', '23:00', '00:00',
+                                         '01:00', '02:00'], rotation='vertical')
+plt.title("Carico giornaliero (Lunedì) di Monza")
+plt.xlabel("Orario")
+plt.ylabel("Numero di treni")
+counter = 0
+list_of_values = list(histogram_dict.values())
+for rect in bar:
+    plt.text(rect.get_x() + 0.4, rect.get_height() + 0.3, list_of_values[counter], ha='center', va='bottom')
+    counter += 1
 
-x, y = zip(*lists) # unpack a list of pairs into two tuples
+#plt.show()
 
-plt.plot(x, y)
-plt.show()
+days_with_exceptions = set()
+for index, row in exceptions_service.iterrows():
+    days_with_exceptions.add(row['date'])
+
+with open('days_with_exceptions.txt', 'w') as f:
+    for item in days_with_exceptions:
+        f.write("%s\n" % item)
