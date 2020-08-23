@@ -18,7 +18,7 @@ def create_graph_table(stop_times, trips):
             if row['trip_id'] in trips_per_route[key]:
                 if index != stop_times.index[-1]:
                     next_row = stop_times.loc[index + 1]
-                    if next_row['stop_sequence'] == row['stop_sequence'] + 1:
+                    if next_row['stop_sequence'] > row['stop_sequence']:
                         edge = {row['stop_id'], next_row['stop_id']}
                         if edge not in routes_dict[key]:
                             routes_dict[key].append(edge)
@@ -41,7 +41,7 @@ def save_graph_table(routes_dict, routes):
                 writer.writerow({'Linea': key, 'Stazione 1': set_list.pop(),
                                  'Stazione 2': set_list.pop(), 'Colore': color})
 
-def plot_bars_of_loads(file, day, route):
+def plot_bars_of_loads(file, day, route, title):
     with open(file, 'r') as fp:
         data = json.load(fp)
 
@@ -61,7 +61,7 @@ def plot_bars_of_loads(file, day, route):
                                              '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00',
                                              '18:00', '19:00', '20:00', '21:00', '22:00', '23:00', '00:00',
                                              '01:00', '02:00'], rotation='vertical')
-    plt.title("Carico giornaliero (Lunedì) di Monza")
+    plt.title(title)
     plt.xlabel("Orario")
     plt.ylabel("Numero di treni")
     counter = 0

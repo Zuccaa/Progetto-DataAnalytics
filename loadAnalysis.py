@@ -56,8 +56,9 @@ def compute_loads_with_exceptions(loads_dataframe, exceptions_service_dict, year
         else:
             hours.append(str(i) + ':00:00')
 
-    for i in range(1, 2):
+    for i in range(1, 8):
         date_to_consider = date.fromisocalendar(year, week, i)
+        date_string = str(date_to_consider).replace('-', '')
         day = calendar.day_name[date_to_consider.weekday()].lower()
         frequencies_dict[day] = []
         temporary_dict = {}
@@ -68,26 +69,42 @@ def compute_loads_with_exceptions(loads_dataframe, exceptions_service_dict, year
                 routes_dict = {}
                 for index_row, row in loads_dataframe.iterrows():
                     key = row['stop_id']
-                    date_string = str(date_to_consider).replace('-', '')
-                    if row[day] == 1 and check_service_exception(exceptions_service_dict, row['service_id'],
-                        date_string) and hour <= row['arrival_time'] < hours[index_hour + 1]:
+                    if key == 1707:
+                        to_print = True
+                    else:
+                        to_print = False
+                    if row[day] == 1 and hour <= row['arrival_time'] < hours[index_hour + 1] and \
+                            check_no_service_exception(exceptions_service_dict, row['service_id'],
+                                                       date_string, to_print):
                         if key not in routes_dict:
                             routes_dict[key] = 1
                         else:
                             routes_dict[key] += 1
-                # sorted_routes = sorted(routes_dict.items(), key=lambda x: x[1], reverse=True)
                 temporary_dict['Stazioni'] = routes_dict.copy()
             frequencies_dict[day].append(temporary_dict.copy())
-            print(hour)
-        print(i)
+            #print(hour)
+        #print(i)
 
-    with open('loads_complete_with_exceptions_' + str(year) + str(week) + '.json', 'w') as fp:
+    if week < 10:
+        week_string = "0" + str(week)
+    else:
+        week_string = str(week)
+
+    with open('loads_complete_with_exceptions_' + str(year) + week_string + '.json', 'w') as fp:
         json.dump(frequencies_dict, fp)
 
-def check_service_exception(exceptions_service_dict, service_id, date):
+def check_no_service_exception(exceptions_service_dict, service_id, date, to_print):
 
     if service_id in exceptions_service_dict:
-        if date not in exceptions_service_dict[service_id]:
+        if date in exceptions_service_dict[service_id]:
+            if to_print:
+                print(service_id, "|||", date, "||| CASO 1")
+            return False
+        else:
+            if to_print:
+                print(service_id, "|||", date, "||| CASO 2")
             return True
-
-    return False
+    else:
+        if to_print:
+            print(service_id, "|||", date, "||| CASO 3")
+        return True
