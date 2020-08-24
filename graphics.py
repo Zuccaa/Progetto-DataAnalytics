@@ -3,8 +3,9 @@ import csv
 import json
 import matplotlib.pylab as plt
 import numpy as np
+import igraph as ig
 
-def create_graph_table(stop_times, trips):
+def create_graph_table():
     stop_times, trips, routes, *_ = import_data()
 
     trips_per_route = dict_as_group_by(trips, 'route_id', 'trip_id')
@@ -40,6 +41,63 @@ def save_graph_table(routes_dict, routes):
             for set_list in routes_dict[key]:
                 writer.writerow({'Linea': key, 'Stazione 1': set_list.pop(),
                                  'Stazione 2': set_list.pop(), 'Colore': color})
+
+def create_graph(stops):
+
+    graph_definitive = ig.Graph(directed=False)
+    graph_tmp = ig.Graph(directed=False)
+    for index, row in stops.iterrows():
+        graph_definitive.add_vertex(name=str(row['stop_id']), long_name=row['stop_name'],
+                     lat=row['stop_lat'], lon=row['stop_lon'])
+        graph_tmp.add_vertex(name=str(row['stop_id']), long_name=row['stop_name'],
+                     lat=row['stop_lat'], lon=row['stop_lon'])
+
+    '''for edge in G.es:
+        print(edge.tuple)
+        G1.add_edge(edge.tuple[0], edge.tuple[1], route=edge['route'])
+
+    G1.delete_edges([('1707', '1581')])'''
+    stop_times, trips, routes, *_ = import_data()
+
+    trips_per_route = dict_as_group_by(trips, 'route_id', 'trip_id')
+
+    print("Lunghezza iniziale", len(stop_times.index))
+    for route in trips_per_route:
+        if route == 'R3':
+            linked_stops_not_consecutive = []
+            for index, row in stop_times.iterrows():
+                if row['trip_id'] in trips_per_route[route]:
+                    if index != stop_times.index[-1]:
+                        next_row = stop_times.loc[index + 1]
+                        if next_row['stop_sequence'] == row['stop_sequence'] + 1 and \
+                            graph_tmp.get_eid(str(row['stop_id']), str(next_row['stop_id']),
+                                              directed=False, error=False) == -1:
+                            graph_tmp.add_edge(str(row['stop_id']), str(next_row['stop_id']))
+                            print('Arco aggiunto tra ' + str(row['stop_id']) + ' e ' +
+                                  str(next_row['stop_id']))
+                        elif next_row['stop_sequence'] > row['stop_sequence'] + 1 and \
+                                {str(row['stop_id']), str(next_row['stop_id'])} not in linked_stops_not_consecutive:
+                            linked_stops_not_consecutive.append({str(row['stop_id']), str(next_row['stop_id'])})
+                    stop_times = stop_times.drop(index)
+            stop_times = stop_times.reset_index(drop=True)
+
+            for linked_stop in linked_stops_not_consecutive:
+                print(linked_stop)
+                node1 = linked_stop.pop()
+                node2 = linked_stop.pop()
+                if graph_tmp.shortest_paths_dijkstra(node1, node2)[0][0] == float('inf'):
+                    graph_tmp.add_edge(node1, node2)
+                    print(node1, node2)
+
+            for edge in graph_tmp.es:
+                graph_definitive.add_edge(edge.tuple[0], edge.tuple[1], route=route)
+
+            for edge in graph_tmp.es:
+                graph_tmp.delete_edges([(edge.tuple[0], edge.tuple[1])])
+
+        print(route, " fatta, lunghezza di stop_times ora è ", len(stop_times.index))
+
+    graph_definitive.write_graphml("TrenordNetwork.graphml")
 
 def plot_bars_of_loads(file, day, route, title):
     with open(file, 'r') as fp:

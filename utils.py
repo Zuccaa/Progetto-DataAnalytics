@@ -1,4 +1,5 @@
 import pandas as pd
+import subprocess
 
 def dict_as_group_by(dataframe, key_field, value_field):
     dict_grouped_by = {}
@@ -29,4 +30,7 @@ def import_data():
     calendar = pd.read_csv('trenord-gtfs-csv//calendar.csv')
     calendar = calendar.drop(['start_date', 'end_date'], axis=1)
 
-    return stop_times, trips, routes, exceptions_service, calendar
+    stops = pd.read_csv('trenord-gtfs-csv//stops.csv')
+    stops = stops.drop(['stop_code', 'stop_desc', 'stop_url', 'location_type', 'parent_station'], axis=1)
+
+    return stop_times, trips, routes, exceptions_service, calendar, stops
