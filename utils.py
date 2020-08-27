@@ -1,12 +1,14 @@
 import pandas as pd
 import subprocess
+import datetime
 
-def dict_as_group_by(dataframe, key_field, value_field):
+def dict_as_group_by(dataframe, key_field, value_field, repetition=True):
     dict_grouped_by = {}
     for index, row in dataframe.iterrows():
         key = row[key_field]
         if key in dict_grouped_by:
-            dict_grouped_by[key].append(row[value_field])
+            if repetition or row[value_field] not in dict_grouped_by[key]:
+                dict_grouped_by[key].append(row[value_field])
         else:
             dict_grouped_by[key] = [row[value_field]]
     return dict_grouped_by
@@ -34,3 +36,15 @@ def import_data():
     stops = stops.drop(['stop_code', 'stop_desc', 'stop_url', 'location_type', 'parent_station'], axis=1)
 
     return stop_times, trips, routes, exceptions_service, calendar, stops
+
+def compute_travel_time(departure_time, arrival_time):
+
+    departure_time_in_seconds = datetime.timedelta(hours=int(departure_time[0:2]),
+                                                   minutes=int(departure_time[3:5]),
+                                                   seconds=int(departure_time[6:8])).total_seconds()
+    arrival_time_in_seconds = datetime.timedelta(hours=int(arrival_time[0:2]),
+                                                 minutes=int(arrival_time[3:5]),
+                                                 seconds=int(arrival_time[6:8])).total_seconds()
+    travel_time_in_seconds = arrival_time_in_seconds - departure_time_in_seconds
+
+    return travel_time_in_seconds / 60

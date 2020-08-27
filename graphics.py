@@ -5,43 +5,6 @@ import matplotlib.pylab as plt
 import numpy as np
 import igraph as ig
 
-def create_graph_table():
-    stop_times, trips, routes, *_ = import_data()
-
-    trips_per_route = dict_as_group_by(trips, 'route_id', 'trip_id')
-
-    routes_dict = {}
-
-    print("Lunghezza iniziale", len(stop_times.index))
-    for key in trips_per_route.keys():
-        routes_dict[key] = []
-        for index, row in stop_times.iterrows():
-            if row['trip_id'] in trips_per_route[key]:
-                if index != stop_times.index[-1]:
-                    next_row = stop_times.loc[index + 1]
-                    if next_row['stop_sequence'] > row['stop_sequence']:
-                        edge = {row['stop_id'], next_row['stop_id']}
-                        if edge not in routes_dict[key]:
-                            routes_dict[key].append(edge)
-                stop_times = stop_times.drop(index)
-        stop_times = stop_times.reset_index(drop=True)
-        print(key, " fatta, lunghezza di stop_times ora è ", len(stop_times.index))
-
-    save_graph_table(routes_dict, routes)
-
-def save_graph_table(routes_dict, routes):
-    with open('routes_dict.csv', 'w', newline='') as file:
-        fieldnames = ['Linea', 'Stazione 1', 'Stazione 2', 'Colore']
-        writer = csv.DictWriter(file, fieldnames=fieldnames)
-
-        writer.writeheader()
-        for key in routes_dict.keys():
-            selected_row = routes.loc[routes['route_id'] == key]
-            color = '#' + selected_row['route_color'].values[0]
-            for set_list in routes_dict[key]:
-                writer.writerow({'Linea': key, 'Stazione 1': set_list.pop(),
-                                 'Stazione 2': set_list.pop(), 'Colore': color})
-
 def create_graph(stops):
 
     graph_definitive = ig.Graph(directed=False)
@@ -94,8 +57,6 @@ def create_graph(stops):
             graph_definitive.add_edge(edge.tuple[0], edge.tuple[1], route=route, color=color)
 
         graph_tmp.delete_edges(graph_tmp.es)
-        #for edge in graph_tmp.es:
-        #    graph_tmp.delete_edges([(edge.tuple[0], edge.tuple[1])])
 
         print(route, " fatta, lunghezza di stop_times ora è ", len(stop_times.index))
 
