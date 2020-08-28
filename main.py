@@ -61,4 +61,5 @@ g.write_graphml('prova.graphml')'''
 
 loads = create_loads_dataframe(trips, calendar, stop_times_load)
 stations_routes_dict = dict_as_group_by(loads, 'stop_id', 'route_id', repetition=False)
-compute_min_path(loads.copy(), stations_routes_dict, '1581', '1711', '19:00:00', 'monday', 1)
+edge_list = compute_min_path(loads.copy(), stations_routes_dict, '1711', '1581', '15:00:00', 'monday', 1)
+print(edge_list)
