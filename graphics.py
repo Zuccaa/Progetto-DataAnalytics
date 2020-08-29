@@ -62,6 +62,27 @@ def create_graph(stops):
 
     graph_definitive.write_graphml("TrenordNetwork1.graphml")
 
+
+def create_graph_min_path(edge_list, station_source, station_target, start_time, day, number_of_switches):
+
+    g = ig.Graph(directed=True)
+
+    for edge in edge_list:
+        node1 = str(edge[0])
+        node2 = str(edge[1])
+        if not g.vs:
+            g.add_vertex(name=node1)
+            g.add_vertex(name=node2)
+        if node1 not in g.vs['name']:
+            g.add_vertex(name=node1)
+        if node2 not in g.vs['name']:
+            g.add_vertex(name=node2)
+        g.add_edge(node2, node1, route=edge[2], weight=edge[3], trip=str(edge[4]))
+
+    g.write_graphml('minPath_from' + station_source + 'to' + station_target + '_at' +
+                    start_time.replace(':', '-') + '_on' + day + '_with' + str(number_of_switches) +
+                    'switches.graphml')
+
 def plot_bars_of_loads(file, day, route, title):
     with open(file, 'r') as fp:
         data = json.load(fp)
