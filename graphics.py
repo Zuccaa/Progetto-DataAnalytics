@@ -68,8 +68,9 @@ def create_graph_min_path(edge_list, station_source, station_target, start_time,
     g = ig.Graph(directed=True)
 
     for edge in edge_list:
-        node1 = str(edge[0])
-        node2 = str(edge[1])
+        route = edge[2]
+        node1 = str(edge[0]) + route
+        node2 = str(edge[1]) + route
         if not g.vs:
             g.add_vertex(name=node1)
             g.add_vertex(name=node2)
@@ -77,7 +78,7 @@ def create_graph_min_path(edge_list, station_source, station_target, start_time,
             g.add_vertex(name=node1)
         if node2 not in g.vs['name']:
             g.add_vertex(name=node2)
-        g.add_edge(node2, node1, route=edge[2], weight=edge[3], trip=str(edge[4]))
+        g.add_edge(node2, node1, route=edge[2], departure_time=edge[3], arrival_time=edge[4], trip=str(edge[5]))
 
     g.write_graphml('minPath_from' + station_source + 'to' + station_target + '_at' +
                     start_time.replace(':', '-') + '_on' + day + '_with' + str(number_of_switches) +

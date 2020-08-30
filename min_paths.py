@@ -54,28 +54,24 @@ def min_path_from_station(trips_init, stations_routes_dict, station_source, stat
 
         if trip_selected:
             trips_section = trips.loc[trip_selected[0]:trip_selected[1]]
-            offset = True
             for index, row in trips_section.iterrows():
                 if index != trips_section.index[-1]:
                     next_row = trips_section.loc[index + 1]
-                    weight_edge = compute_travel_time(row['departure_time'], next_row['arrival_time'])
-                    if offset:
-                        weight_edge += compute_travel_time(start_time, row['departure_time'])
-                    else:
-                        weight_edge += compute_travel_time(row['arrival_time'], row['departure_time'])
-                    offset = False
-                    edge_list.append([row['stop_id'], next_row['stop_id'], route, weight_edge, row['trip_id']])
+                    edge_list.append([row['stop_id'], next_row['stop_id'], route, row['departure_time'],
+                                      next_row['arrival_time'], row['trip_id']])
         elif number_of_switches > 0 and not trips_in_stations_source.empty:
             trips_in_stations_source = trips_in_stations_source.sort_values(by=['departure_time'])
             first_trip_available = trips_in_stations_source.iloc[0]
-            opposite_trip_available = trips_in_stations_source[trips_in_stations_source['direction'] !=
-                                                               first_trip_available['direction']].iloc[0]
             edge_list = compute_switched_trip_path(first_trip_available, trips, prec_edges, route,
                                                    start_time, stations_routes_dict, station_target,
                                                    number_of_switches, edge_list)
-            edge_list = compute_switched_trip_path(opposite_trip_available, trips, prec_edges, route,
-                                                   start_time, stations_routes_dict, station_target,
-                                                   number_of_switches, edge_list)
+            opposite_trip_dataframe = trips_in_stations_source[trips_in_stations_source['direction'] !=
+                                        first_trip_available['direction']]
+            if opposite_trip_dataframe.shape[0] > 0:
+                opposite_trip_available = opposite_trip_dataframe.iloc[0]
+                edge_list = compute_switched_trip_path(opposite_trip_available, trips, prec_edges, route,
+                                                       start_time, stations_routes_dict, station_target,
+                                                       number_of_switches, edge_list)
 
     return edge_list
 
@@ -86,20 +82,15 @@ def compute_switched_trip_path(trip_available, trips, prec_edges, route, start_t
     edge_list_tmp = []
     switch_trip_selected = trips.loc[trips['trip_id'] == int(trip_available['trip_id'])]
     switch_trip_selected = switch_trip_selected.loc[trip_available.name:]
-    offset = True
     for index, row in switch_trip_selected.iterrows():
         if index != switch_trip_selected.index[-1]:
             next_row = switch_trip_selected.loc[index + 1]
-            weight_edge = compute_travel_time(row['departure_time'], next_row['arrival_time'])
-            if offset:
-                weight_edge += compute_travel_time(start_time, row['departure_time'])
-            else:
-                weight_edge += compute_travel_time(row['arrival_time'], row['departure_time'])
-            offset = False
             if prec_edges:
-                prec_edges.append([row['stop_id'], next_row['stop_id'], route, weight_edge, row['trip_id']])
+                prec_edges.append([row['stop_id'], next_row['stop_id'], route, row['departure_time'],
+                                   next_row['arrival_time'], row['trip_id']])
             else:
-                prec_edges = [[row['stop_id'], next_row['stop_id'], route, weight_edge, row['trip_id']]]
+                prec_edges = [[row['stop_id'], next_row['stop_id'], route, row['departure_time'],
+                                   next_row['arrival_time'], row['trip_id']]]
             edge_list_tmp = min_path_from_station(trips, stations_routes_dict, next_row['stop_id'],
                                                   station_target, row['arrival_time'],
                                                   number_of_switches - 1, prec_edges)

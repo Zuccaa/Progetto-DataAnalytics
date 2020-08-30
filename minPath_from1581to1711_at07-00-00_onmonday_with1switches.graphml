@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns
+         http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+<!-- Created by igraph -->
+  <key id="v_name" for="node" attr.name="name" attr.type="string"/>
+  <key id="e_route" for="edge" attr.name="route" attr.type="string"/>
+  <key id="e_weight" for="edge" attr.name="weight" attr.type="double"/>
+  <key id="e_trip" for="edge" attr.name="trip" attr.type="string"/>
+  <graph id="G" edgedefault="directed">
+    <node id="n0">
+      <data key="v_name">1581</data>
+    </node>
+    <node id="n1">
+      <data key="v_name">1841</data>
+    </node>
+    <node id="n2">
+      <data key="v_name">2716</data>
+    </node>
+    <node id="n3">
+      <data key="v_name">1711</data>
+    </node>
+    <node id="n4">
+      <data key="v_name">1230</data>
+    </node>
+    <node id="n5">
+      <data key="v_name">2696</data>
+    </node>
+    <node id="n6">
+      <data key="v_name">873</data>
+    </node>
+    <node id="n7">
+      <data key="v_name">899</data>
+    </node>
+    <node id="n8">
+      <data key="v_name">819</data>
+    </node>
+    <node id="n9">
+      <data key="v_name">1158</data>
+    </node>
+    <node id="n10">
+      <data key="v_name">400</data>
+    </node>
+    <node id="n11">
+      <data key="v_name">1208</data>
+    </node>
+    <edge source="n1" target="n0">
+      <data key="e_route">S11</data>
+      <data key="e_weight">34</data>
+      <data key="e_trip">10060232</data>
+    </edge>
+    <edge source="n2" target="n1">
+      <data key="e_route">S11</data>
+      <data key="e_weight">8</data>
+      <data key="e_trip">10060232</data>
+    </edge>
+    <edge source="n3" target="n2">
+      <data key="e_route">S11</data>
+      <data key="e_weight">5</data>
+      <data key="e_trip">10060232</data>
+    </edge>
+    <edge source="n1" target="n0">
+      <data key="e_route">S9</data>
+      <data key="e_weight">16</data>
+      <data key="e_trip">10063976</data>
+    </edge>
+    <edge source="n2" target="n1">
+      <data key="e_route">S9</data>
+      <data key="e_weight">6</data>
+      <data key="e_trip">10063976</data>
+    </edge>
+    <edge source="n3" target="n2">
+      <data key="e_route">S9</data>
+      <data key="e_weight">5</data>
+      <data key="e_trip">10063976</data>
+    </edge>
+    <edge source="n4" target="n0">
+      <data key="e_route">RE_10</data>
+      <data key="e_weight">55</data>
+      <data key="e_trip">10060813</data>
+    </edge>
+    <edge source="n0" target="n4">
+      <data key="e_route">S9</data>
+      <data key="e_weight">20</data>
+      <data key="e_trip">10063856</data>
+    </edge>
+    <edge source="n1" target="n0">
+      <data key="e_route">S9</data>
+      <data key="e_weight">5</data>
+      <data key="e_trip">10063856</data>
+    </edge>
+    <edge source="n2" target="n1">
+      <data key="e_route">S9</data>
+      <data key="e_weight">6</data>
+      <data key="e_trip">10063856</data>
+    </edge>
+    <edge source="n3" target="n2">
+      <data key="e_route">S9</data>
+      <data key="e_weight">5</data>
+      <data key="e_trip">10063856</data>
+    </edge>
+    <edge source="n0" target="n4">
+      <data key="e_route">S11</data>
+      <data key="e_weight">5</data>
+      <data key="e_trip">10062539</data>
+    </edge>
+    <edge source="n1" target="n0">
+      <data key="e_route">S11</data>
+      <data key="e_weight">5</data>
+      <data key="e_trip">10062539</data>
+    </edge>
+    <edge source="n2" target="n1">
+      <data key="e_route">S11</data>
+      <data key="e_weight">6</data>
+      <data key="e_trip">10062539</data>
+    </edge>
+    <edge source="n3" target="n2">
+      <data key="e_route">S11</data>
+      <data key="e_weight">6</data>
+      <data key="e_trip">10062539</data>
+    </edge>
+    <edge source="n5" target="n4">
+      <data key="e_route">RE_10</data>
+      <data key="e_weight">5</data>
+      <data key="e_trip">10060813</data>
+    </edge>
+    <edge source="n4" target="n5">
+      <data key="e_route">S9</data>
+      <data key="e_weight">13</data>
+      <data key="e_trip">10063856</data>
+    </edge>
+    <edge source="n0" target="n4">
+      <data key="e_route">S9</data>
+      <data key="e_weight">3</data>
+      <data key="e_trip">10063856</data>
+    </edge>
+    <edge source="n4" target="n5">
+      <data key="e_route">S11</data>
+      <data key="e_weight">28</data>
+      <data key="e_trip">10059729</data>
+    </edge>
+    <edge source="n0" target="n4">
+      <data key="e_route">S11</data>
+      <data key="e_weight">3</data>
+      <data key="e_trip">10059729</data>
+    </edge>
+    <edge source="n1" target="n0">
+      <data key="e_route">S11</data>
+      <data key="e_weight">5</data>
+      <data key="e_trip">10059729</data>
+    </edge>
+    <edge source="n2" target="n1">
+      <data key="e_route">S11</data>
+      <data key="e_weight">6</data>
+      <data key="e_trip">10059729</data>
+    </edge>
+    <edge source="n3" target="n2">
+      <data key="e_route">S11</data>
+      <data key="e_weight">6</data>
+      <data key="e_trip">10059729</data>
+    </edge>
+    <edge source="n6" target="n5">
+      <data key="e_route">RE_10</data>
+      <data key="e_weight">9</data>
+      <data key="e_trip">10060813</data>
+    </edge>
+    <edge source="n7" target="n6">
+      <data key="e_route">S11</data>
+      <data key="e_weight">9</data>
+      <data key="e_trip">10059729</data>
+    </edge>
+    <edge source="n8" target="n7">
+      <data key="e_route">S11</data>
+      <data key="e_weight">4</data>
+      <data key="e_trip">10059729</data>
+    </edge>
+    <edge source="n5" target="n8">
+      <data key="e_route">S11</data>
+      <data key="e_weight">6</data>
+      <data key="e_trip">10059729</data>
+    </edge>
+    <edge source="n4" target="n5">
+      <data key="e_route">S11</data>
+      <data key="e_weight">4</data>
+      <data key="e_trip">10059729</data>
+    </edge>
+    <edge source="n9" target="n6">
+      <data key="e_route">RE_10</data>
+      <data key="e_weight">12</data>
+      <data key="e_trip">10060813</data>
+    </edge>
+    <edge source="n10" target="n9">
+      <data key="e_route">S11</data>
+      <data key="e_weight">16</data>
+      <data key="e_trip">10063327</data>
+    </edge>
+    <edge source="n11" target="n10">
+      <data key="e_route">S11</data>
+      <data key="e_weight">6</data>
+      <data key="e_trip">10063327</data>
+    </edge>
+    <edge source="n6" target="n11">
+      <data key="e_route">S11</data>
+      <data key="e_weight">4</data>
+      <data key="e_trip">10063327</data>
+    </edge>
+    <edge source="n7" target="n6">
+      <data key="e_route">S11</data>
+      <data key="e_weight">4</data>
+      <data key="e_trip">10063327</data>
+    </edge>
+    <edge source="n8" target="n7">
+      <data key="e_route">S11</data>
+      <data key="e_weight">4</data>
+      <data key="e_trip">10063327</data>
+    </edge>
+    <edge source="n5" target="n8">
+      <data key="e_route">S11</data>
+      <data key="e_weight">6</data>
+      <data key="e_trip">10063327</data>
+    </edge>
+    <edge source="n4" target="n5">
+      <data key="e_route">S11</data>
+      <data key="e_weight">4</data>
+      <data key="e_trip">10063327</data>
+    </edge>
+    <edge source="n0" target="n4">
+      <data key="e_route">S11</data>
+      <data key="e_weight">3</data>
+      <data key="e_trip">10063327</data>
+    </edge>
+    <edge source="n1" target="n0">
+      <data key="e_route">S11</data>
+      <data key="e_weight">5</data>
+      <data key="e_trip">10063327</data>
+    </edge>
+    <edge source="n2" target="n1">
+      <data key="e_route">S11</data>
+      <data key="e_weight">6</data>
+      <data key="e_trip">10063327</data>
+    </edge>
+    <edge source="n3" target="n2">
+      <data key="e_route">S11</data>
+      <data key="e_weight">6</data>
+      <data key="e_trip">10063327</data>
+    </edge>
+  </graph>
+</graphml>
