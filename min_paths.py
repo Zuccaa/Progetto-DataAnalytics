@@ -2,25 +2,25 @@ import pandas as pd
 import igraph as ig
 
 from utils import compute_travel_time
-from graphics import create_graph_min_path
+from graphics import create_graph_min_path, create_graph_min_path_connected
 
 
 def compute_min_path(trips, stations_routes_dict, station_source,
-                     station_target, start_time, day, number_of_switches):
+                     station_target, start_time, day, recursion_times):
 
     trips = trips.loc[trips[day] == 1].reset_index(drop=True).\
         drop(['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'], axis=1)
 
     edge_list = min_path_from_station(trips, stations_routes_dict, station_source, station_target, start_time,
-                                      number_of_switches)
+                                      recursion_times)
 
     print(edge_list)
 
-    create_graph_min_path(edge_list, station_source, station_target, start_time, day, number_of_switches)
+    create_graph_min_path(edge_list, station_source, station_target, start_time, day, recursion_times)
 
 
 def min_path_from_station(trips_init, stations_routes_dict, station_source, station_target,
-                          start_time, number_of_switches, prec_edges=None):
+                          start_time, recursion_times, prec_edges=None):
 
     trips = trips_init.loc[start_time < trips_init['departure_time']].reset_index(drop=True)
     edge_list = []
@@ -59,25 +59,25 @@ def min_path_from_station(trips_init, stations_routes_dict, station_source, stat
                     next_row = trips_section.loc[index + 1]
                     edge_list.append([row['stop_id'], next_row['stop_id'], route, row['departure_time'],
                                       next_row['arrival_time'], row['trip_id']])
-        elif number_of_switches > 0 and not trips_in_stations_source.empty:
+        elif recursion_times > 0 and not trips_in_stations_source.empty:
             trips_in_stations_source = trips_in_stations_source.sort_values(by=['departure_time'])
             first_trip_available = trips_in_stations_source.iloc[0]
             edge_list = compute_switched_trip_path(first_trip_available, trips, prec_edges, route,
                                                    start_time, stations_routes_dict, station_target,
-                                                   number_of_switches, edge_list)
+                                                   recursion_times, edge_list)
             opposite_trip_dataframe = trips_in_stations_source[trips_in_stations_source['direction'] !=
                                         first_trip_available['direction']]
             if opposite_trip_dataframe.shape[0] > 0:
                 opposite_trip_available = opposite_trip_dataframe.iloc[0]
                 edge_list = compute_switched_trip_path(opposite_trip_available, trips, prec_edges, route,
                                                        start_time, stations_routes_dict, station_target,
-                                                       number_of_switches, edge_list)
+                                                       recursion_times, edge_list)
 
     return edge_list
 
 
 def compute_switched_trip_path(trip_available, trips, prec_edges, route, start_time,
-                               stations_routes_dict, station_target, number_of_switches, edge_list):
+                               stations_routes_dict, station_target, recursion_times, edge_list):
 
     edge_list_tmp = []
     switch_trip_selected = trips.loc[trips['trip_id'] == int(trip_available['trip_id'])]
@@ -93,7 +93,7 @@ def compute_switched_trip_path(trip_available, trips, prec_edges, route, start_t
                                    next_row['arrival_time'], row['trip_id']]]
             edge_list_tmp = min_path_from_station(trips, stations_routes_dict, next_row['stop_id'],
                                                   station_target, row['arrival_time'],
-                                                  number_of_switches - 1, prec_edges)
+                                                  recursion_times - 1, prec_edges)
 
         if edge_list_tmp:
             for edge in prec_edges:

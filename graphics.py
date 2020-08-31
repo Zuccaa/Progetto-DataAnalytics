@@ -5,6 +5,7 @@ import matplotlib.pylab as plt
 import numpy as np
 import igraph as ig
 
+
 def create_graph(stops):
 
     graph_definitive = ig.Graph(directed=False)
@@ -63,14 +64,14 @@ def create_graph(stops):
     graph_definitive.write_graphml("TrenordNetwork1.graphml")
 
 
-def create_graph_min_path(edge_list, station_source, station_target, start_time, day, number_of_switches):
+def create_graph_min_path(edge_list, station_source, station_target, start_time, day, recursion_times):
 
     g = ig.Graph(directed=True)
 
     for edge in edge_list:
-        route = edge[2]
-        node1 = str(edge[0]) + route
-        node2 = str(edge[1]) + route
+        trip = str(edge[5])
+        node1 = str(edge[0]) + '-' + trip
+        node2 = str(edge[1]) + '-' + trip
         if not g.vs:
             g.add_vertex(name=node1)
             g.add_vertex(name=node2)
@@ -78,11 +79,138 @@ def create_graph_min_path(edge_list, station_source, station_target, start_time,
             g.add_vertex(name=node1)
         if node2 not in g.vs['name']:
             g.add_vertex(name=node2)
-        g.add_edge(node2, node1, route=edge[2], departure_time=edge[3], arrival_time=edge[4], trip=str(edge[5]))
+        g.add_edge(node2, node1, route=edge[2], departure_time=edge[3], arrival_time=edge[4], trip=trip)
+        g.vs.find(name=node2)['arrival_time'] = edge[4]
+        g.vs.find(name=node1)['departure_time'] = edge[3]
+
+    g = connect_trips(g, station_source, station_target, start_time, recursion_times)
+
+    g.write_graphml('minPath_from' + station_source + 'to' + station_target + '_at' +
+                    start_time.replace(':', '-') + '_on' + day + '_with' + str(recursion_times) +
+                    'switches.graphml')
+
+
+def connect_trips(graph, station_source, station_target, start_time, number_of_switches):
+
+    clusters = graph.components(mode='WEAK')
+    graph.add_vertex(name='START')
+    graph.add_vertex(name='FINISH')
+
+    clusters_dict = {'START': [], 'FINISH': [], 'NOTHING': []}
+    for cluster in clusters:
+        cluster = sort_cluster(cluster, graph)
+        nothing = True
+        vertex_attributes = graph.vs[cluster[0]].attributes()
+        vertex_name = vertex_attributes['name']
+        if vertex_name[:vertex_name.find('-')] == station_source:
+            edge_attributes = graph.es[graph.get_eid(graph.vs[cluster[1]], graph.vs[cluster[0]])].attributes()
+            graph.add_edge(vertex_name, 'START', route='-', departure_time=start_time,
+                           arrival_time=edge_attributes['departure_time'], trip=edge_attributes['trip'])
+            graph.vs.find(name=vertex_name)['arrival_time'] = edge_attributes['departure_time']
+            graph.vs.find(name='START')['departure_time'] = start_time
+            clusters_dict['START'].append(cluster)
+            nothing = False
+
+        vertex_attributes = graph.vs[cluster[len(cluster) - 1]].attributes()
+        vertex_name = vertex_attributes['name']
+        if vertex_name[:vertex_name.find('-')] == station_target:
+            edge_attributes = graph.es[graph.get_eid(graph.vs[cluster[len(cluster) - 1]],
+                                                        graph.vs[cluster[len(cluster) - 2]])].attributes()
+            graph.add_edge('FINISH', vertex_name, route='-', departure_time=edge_attributes['arrival_time'],
+                            arrival_time=edge_attributes['arrival_time'], trip=edge_attributes['trip'])
+            graph.vs.find(name='FINISH')['arrival_time'] = edge_attributes['arrival_time']
+            graph.vs.find(name=vertex_name)['departure_time'] = edge_attributes['arrival_time']
+            if nothing:
+                clusters_dict['FINISH'].append(cluster)
+                nothing = False
+
+        if nothing:
+            clusters_dict['NOTHING'].append(cluster)
+
+    create_additional_edges(graph, clusters_dict, number_of_switches)
+
+    return graph
+
+
+def sort_cluster(cluster, graph):
+
+    sorted_cluster = []
+    for node in cluster:
+        arrival_time = graph.vs[node].attributes()['arrival_time']
+        if arrival_time:
+            sorted_cluster.append([node, arrival_time])
+        else:
+            sorted_cluster.append([node, '00:00:00'])
+
+    def take_second(elem):
+        return elem[1]
+
+    sorted_cluster.sort(key=take_second)
+    print(sorted_cluster)
+    return list(list(zip(*sorted_cluster))[0])
+
+
+def create_additional_edges(graph, clusters_dict, number_of_switches):
+
+    if number_of_switches == 0:
+        return
+    if number_of_switches == 1:
+        _ = connect_clusters(graph, clusters_dict['START'], clusters_dict['FINISH'])
+        return
+    if number_of_switches > 1:
+        clusters_linked = connect_clusters(graph, clusters_dict['START'], clusters_dict['NOTHING'])
+        for cluster in clusters_linked:
+            cluster_list = list(cluster)
+            clusters_dict['START'].add(cluster_list)
+            clusters_dict['NOTHING'].remove(cluster_list)
+        create_additional_edges(graph, clusters_dict, number_of_switches - 1)
+
+
+def connect_clusters(graph, clusters1, clusters2):
+
+    clusters_linked = set()
+    if clusters2:
+        for cluster in clusters1:
+            for node in cluster:
+                for f_cluster in clusters2:
+                    for f_node in f_cluster:
+                        source = graph.vs[node].attributes()
+                        target = graph.vs[f_node].attributes()
+                        if source['name'][:source['name'].find('-')] == \
+                                target['name'][:target['name'].find('-')]:
+                            if source['arrival_time'] < target['departure_time']:
+                                graph.add_edge(target['name'], source['name'], route='switch',
+                                               departure_time=source['arrival_time'],
+                                               arrival_time=target['departure_time'], trip=None)
+                                graph.vs.find(name=target['name'])['arrival_time'] = source['arrival_time']
+                                graph.vs.find(name=source['name'])['departure_time'] = target['departure_time']
+
+                                clusters_linked.add(tuple(f_cluster))
+
+    return clusters_linked
+
+
+def create_graph_min_path_connected(edge_list, station_source, station_target, start_time, day,
+                                    number_of_switches):
+
+    g = ig.Graph(directed=True)
+
+    for edge in edge_list:
+        trip = str(edge[5])
+        node1 = str(edge[0])
+        node2 = str(edge[1])
+        if not g.vs:
+            g.add_vertex(name=node1)
+            g.add_vertex(name=node2)
+        if node1 not in g.vs['name']:
+            g.add_vertex(name=node1)
+        if node2 not in g.vs['name']:
+            g.add_vertex(name=node2)
+        g.add_edge(node2, node1, route=edge[2], departure_time=edge[3], arrival_time=edge[4], trip=trip)
 
     g.write_graphml('minPath_from' + station_source + 'to' + station_target + '_at' +
                     start_time.replace(':', '-') + '_on' + day + '_with' + str(number_of_switches) +
-                    'switches.graphml')
+                    'switches_CONNECTED.graphml')
 
 def plot_bars_of_loads(file, day, route, title):
     with open(file, 'r') as fp:

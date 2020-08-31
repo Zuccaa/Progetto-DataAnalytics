@@ -51,4 +51,4 @@ with open('days_with_exceptions.txt', 'w') as f:
 #create_graph(stops)
 
 stations_routes_dict = dict_as_group_by(trips_with_stop_times, 'stop_id', 'route_id', repetition=False)
-compute_min_path(trips_with_stop_times.copy(), stations_routes_dict, '1581', '734', '09:00:00', 'monday', 1)
+compute_min_path(trips_with_stop_times.copy(), stations_routes_dict, '1581', '1711', '07:00:00', 'monday', 1)
