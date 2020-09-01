@@ -6,7 +6,7 @@ from graphics import create_graph_min_path, create_graph_min_path_connected
 
 
 def compute_min_path(trips, stations_routes_dict, station_source,
-                     station_target, start_time, day, recursion_times):
+                     station_target, start_time, day, recursion_times, stops):
 
     trips = trips.loc[trips[day] == 1].reset_index(drop=True).\
         drop(['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'], axis=1)
@@ -14,9 +14,34 @@ def compute_min_path(trips, stations_routes_dict, station_source,
     edge_list = min_path_from_station(trips, stations_routes_dict, station_source, station_target, start_time,
                                       recursion_times)
 
-    print(edge_list)
+    graph = create_graph_min_path(edge_list, station_source, station_target, start_time, recursion_times,
+                                  stops)
+    try:
+        min_path = graph.get_shortest_paths('START', to='FINISH', weights='weight', output='vpath')[0]
+    except Exception:
+        print("ERROR! Path not found: increase the number of switches permitted")
+        exit(1)
 
-    create_graph_min_path(edge_list, station_source, station_target, start_time, day, recursion_times)
+    graph.es['min_path'] = '0'
+    graph.vs['min_path'] = '0'
+    graph.vs[min_path]['min_path'] = '1'
+    for index in range(1, len(min_path)):
+        edge = graph.get_eid(graph.vs[min_path[index - 1]], graph.vs[min_path[index]])
+        graph.es[edge]['min_path'] = '1'
+        if graph.es[edge]['min_path'] == '1':
+            graph.es[edge]['show_weight'] = graph.es[edge]['weight']
+        else:
+            graph.es[edge]['show_weight'] = ''
+
+    for vertex in graph.vs:
+        if vertex['min_path'] == '1':
+            vertex['show_name'] = vertex['station_name']
+        else:
+            vertex['show_name'] = ''
+
+    graph.write_graphml('minPath_from' + station_source + 'to' + station_target + '_at' +
+                        start_time.replace(':', '-') + '_on' + day + '_with' + str(recursion_times) +
+                        'switches.graphml')
 
 
 def min_path_from_station(trips_init, stations_routes_dict, station_source, station_target,
@@ -58,7 +83,7 @@ def min_path_from_station(trips_init, stations_routes_dict, station_source, stat
                 if index != trips_section.index[-1]:
                     next_row = trips_section.loc[index + 1]
                     edge_list.append([row['stop_id'], next_row['stop_id'], route, row['departure_time'],
-                                      next_row['arrival_time'], row['trip_id']])
+                                      next_row['departure_time'], row['trip_id']])
         elif recursion_times > 0 and not trips_in_stations_source.empty:
             trips_in_stations_source = trips_in_stations_source.sort_values(by=['departure_time'])
             first_trip_available = trips_in_stations_source.iloc[0]
@@ -87,10 +112,10 @@ def compute_switched_trip_path(trip_available, trips, prec_edges, route, start_t
             next_row = switch_trip_selected.loc[index + 1]
             if prec_edges:
                 prec_edges.append([row['stop_id'], next_row['stop_id'], route, row['departure_time'],
-                                   next_row['arrival_time'], row['trip_id']])
+                                   next_row['departure_time'], row['trip_id']])
             else:
                 prec_edges = [[row['stop_id'], next_row['stop_id'], route, row['departure_time'],
-                                   next_row['arrival_time'], row['trip_id']]]
+                                   next_row['departure_time'], row['trip_id']]]
             edge_list_tmp = min_path_from_station(trips, stations_routes_dict, next_row['stop_id'],
                                                   station_target, row['arrival_time'],
                                                   recursion_times - 1, prec_edges)
