@@ -7,8 +7,7 @@ from graphics import create_graph_min_path, create_graph_min_path_connected
 
 def compute_min_path(trips, stations_routes_dict, station_source,
                      station_target, start_time, day, recursion_times, stops):
-
-    trips = trips.loc[trips[day] == 1].reset_index(drop=True).\
+    trips = trips.loc[trips[day] == 1].reset_index(drop=True). \
         drop(['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'], axis=1)
 
     edge_list = min_path_from_station(trips, stations_routes_dict, station_source, station_target, start_time,
@@ -25,6 +24,7 @@ def compute_min_path(trips, stations_routes_dict, station_source,
     graph.es['min_path'] = '0'
     graph.vs['min_path'] = '0'
     graph.vs[min_path]['min_path'] = '1'
+    travel_time = 0
     for index in range(1, len(min_path)):
         edge = graph.get_eid(graph.vs[min_path[index - 1]], graph.vs[min_path[index]])
         graph.es[edge]['min_path'] = '1'
@@ -32,6 +32,7 @@ def compute_min_path(trips, stations_routes_dict, station_source,
             graph.es[edge]['show_weight'] = graph.es[edge]['weight']
         else:
             graph.es[edge]['show_weight'] = ''
+        travel_time += graph.es[edge]['weight']
 
     for vertex in graph.vs:
         if vertex['min_path'] == '1':
@@ -39,14 +40,14 @@ def compute_min_path(trips, stations_routes_dict, station_source,
         else:
             vertex['show_name'] = ''
 
-    graph.write_graphml('minPath_from' + station_source + 'to' + station_target + '_at' +
+    graph.write_graphml('MinPaths//minPath_from' + station_source + 'to' + station_target + '_at' +
                         start_time.replace(':', '-') + '_on' + day + '_with' + str(recursion_times) +
                         'switches.graphml')
 
+    print(travel_time)
 
 def min_path_from_station(trips_init, stations_routes_dict, station_source, station_target,
                           start_time, recursion_times, prec_edges=None):
-
     trips = trips_init.loc[start_time < trips_init['departure_time']].reset_index(drop=True)
     edge_list = []
 
@@ -91,7 +92,7 @@ def min_path_from_station(trips_init, stations_routes_dict, station_source, stat
                                                    start_time, stations_routes_dict, station_target,
                                                    recursion_times, edge_list)
             opposite_trip_dataframe = trips_in_stations_source[trips_in_stations_source['direction'] !=
-                                        first_trip_available['direction']]
+                                                               first_trip_available['direction']]
             if opposite_trip_dataframe.shape[0] > 0:
                 opposite_trip_available = opposite_trip_dataframe.iloc[0]
                 edge_list = compute_switched_trip_path(opposite_trip_available, trips, prec_edges, route,
@@ -103,7 +104,6 @@ def min_path_from_station(trips_init, stations_routes_dict, station_source, stat
 
 def compute_switched_trip_path(trip_available, trips, prec_edges, route, start_time,
                                stations_routes_dict, station_target, recursion_times, edge_list):
-
     edge_list_tmp = []
     switch_trip_selected = trips.loc[trips['trip_id'] == int(trip_available['trip_id'])]
     switch_trip_selected = switch_trip_selected.loc[trip_available.name:]
@@ -115,7 +115,7 @@ def compute_switched_trip_path(trip_available, trips, prec_edges, route, start_t
                                    next_row['departure_time'], row['trip_id']])
             else:
                 prec_edges = [[row['stop_id'], next_row['stop_id'], route, row['departure_time'],
-                                   next_row['departure_time'], row['trip_id']]]
+                               next_row['departure_time'], row['trip_id']]]
             edge_list_tmp = min_path_from_station(trips, stations_routes_dict, next_row['stop_id'],
                                                   station_target, row['arrival_time'],
                                                   recursion_times - 1, prec_edges)
@@ -130,3 +130,28 @@ def compute_switched_trip_path(trip_available, trips, prec_edges, route, start_t
                 edge_list.append(edge)
 
     return edge_list
+
+
+def compute_switches_from_station(station_source, routes_adjacency_dict,
+                                  stations_routes_dict, routes_stations_dict):
+    i = 0
+    switches_from_station_dict = {int(station_source): -1}
+    routes_from_stations = set(stations_routes_dict[int(station_source)])
+    routes_to_exclude = set()
+
+    while len(stations_routes_dict) != len(switches_from_station_dict):
+        print(i)
+        routes_from_stations_tmp = set()
+        for route in list(routes_from_stations - routes_to_exclude):
+            for station in routes_stations_dict[route]:
+                if station not in switches_from_station_dict:
+                    switches_from_station_dict[station] = i
+            for element in routes_adjacency_dict[route]:
+                routes_from_stations_tmp.add(element)
+            routes_to_exclude.add(route)
+
+        routes_from_stations = routes_from_stations_tmp.copy()
+
+        i += 1
+
+    return switches_from_station_dict

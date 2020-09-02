@@ -46,6 +46,7 @@ def compute_normal_loads(loads_dataframe):
     with open('loads_complete.json', 'w') as fp:
         json.dump(frequencies_dict, fp)
 
+
 def compute_loads_with_exceptions(loads_dataframe, exceptions_service_dict, year, week):
 
     frequencies_dict = {}
@@ -88,6 +89,7 @@ def compute_loads_with_exceptions(loads_dataframe, exceptions_service_dict, year
 
     with open('loads_complete_with_exceptions_' + str(year) + week_string + '.json', 'w') as fp:
         json.dump(frequencies_dict, fp)
+
 
 def check_no_service_exception(exceptions_service_dict, service_id, date):
 

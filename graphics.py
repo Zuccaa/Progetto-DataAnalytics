@@ -182,7 +182,8 @@ def connect_clusters(graph, clusters1, clusters2):
                         target = graph.vs[f_node].attributes()
                         if source['name'][:source['name'].find('-')] == \
                                 target['name'][:target['name'].find('-')]:
-                            if target['departure_time'] and source['arrival_time'] < target['departure_time']:
+                            if target['departure_time'] and source['arrival_time'] \
+                                    and source['arrival_time'] < target['departure_time']:
                                 graph.add_edge(source['name'], target['name'], route='switch',
                                                departure_time=source['arrival_time'],
                                                arrival_time=target['departure_time'], trip=None,

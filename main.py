@@ -1,7 +1,7 @@
 from graphics import plot_bars_of_loads, create_graph
 from loadAnalysis import create_loads_dataframe, compute_normal_loads, compute_loads_with_exceptions
-from min_paths import compute_min_path
-from utils import dict_as_group_by, import_data, add_direction_column
+from min_paths import compute_min_path, compute_switches_from_station
+from utils import dict_as_group_by, import_data, add_direction_column, create_routes_adjacency_dict
 import json
 import igraph as ig
 
@@ -51,5 +51,10 @@ with open('days_with_exceptions.txt', 'w') as f:
 #create_graph(stops)
 
 stations_routes_dict = dict_as_group_by(trips_with_stop_times, 'stop_id', 'route_id', repetition=False)
-compute_min_path(trips_with_stop_times.copy(), stations_routes_dict, '374', '632', '09:00:00', 'monday', 1,
+'''routes_stations_dict = dict_as_group_by(trips_with_stop_times, 'route_id', 'stop_id', repetition=False)
+routes_adjacency_dict = create_routes_adjacency_dict(stations_routes_dict, routes_stations_dict)
+switches_from_station_dict = compute_switches_from_station('2301', routes_adjacency_dict, stations_routes_dict,
+                                                           routes_stations_dict)
+print(switches_from_station_dict)'''
+compute_min_path(trips_with_stop_times.copy(), stations_routes_dict, '2301', '2808', '09:00:00', 'monday', 3,
                  stops)

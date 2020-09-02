@@ -96,3 +96,19 @@ def add_direction_column(dataframe):
                     dataframe.loc[index, 'direction'] = 1
 
     dataframe.to_csv('trenord-gtfs-csv//trips_with_stop_times.csv', index=False, header=True)
+
+
+def create_routes_adjacency_dict(stations_routes_dict, routes_stations_dict):
+
+    routes_adjacency_dict = {}
+
+    for route in routes_stations_dict:
+        routes_set = set()
+        for station in routes_stations_dict[route]:
+            routes_on_station = stations_routes_dict[station]
+            for element in routes_on_station:
+                if element is not route:
+                    routes_set.add(element)
+        routes_adjacency_dict[route] = routes_set.copy()
+
+    return routes_adjacency_dict
