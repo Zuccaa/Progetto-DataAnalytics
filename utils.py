@@ -1,6 +1,9 @@
 import pandas as pd
 import subprocess
 import datetime
+import igraph as ig
+from xml.dom import minidom
+
 
 def dict_as_group_by(dataframe, key_field, value_field, repetition=True):
     dict_grouped_by = {}
@@ -12,6 +15,7 @@ def dict_as_group_by(dataframe, key_field, value_field, repetition=True):
         else:
             dict_grouped_by[key] = [row[value_field]]
     return dict_grouped_by
+
 
 def import_data():
     stop_times = pd.read_csv('trenord-gtfs-csv//stop_times.csv')
@@ -112,3 +116,29 @@ def create_routes_adjacency_dict(stations_routes_dict, routes_stations_dict):
         routes_adjacency_dict[route] = routes_set.copy()
 
     return routes_adjacency_dict
+
+
+def create_graph_from_XML(filename):
+
+    graph = ig.Graph(directed=False)
+    xmldoc = minidom.parse(filename)
+    node_list = xmldoc.getElementsByTagName('node')
+    edge_list = xmldoc.getElementsByTagName('edge')
+
+    for node in node_list:
+        data_values = []
+        data_list = node.getElementsByTagName('data')
+        for data in data_list:
+            data_values.append(data.childNodes[0].nodeValue)
+        graph.add_vertex(name=data_values[3], long_name=data_values[0], lat=data_values[1], lon=data_values[2])
+
+    for edge in edge_list:
+        data_values = []
+        data_list = edge.getElementsByTagName('data')
+        vertex1 = edge.attributes['source'].value[1:]
+        vertex2 = edge.attributes['target'].value[1:]
+        for data in data_list:
+            data_values.append(data.childNodes[0].nodeValue)
+        graph.add_edge(int(vertex1), int(vertex2), route=data_values[0], color=data_values[1])
+
+    return graph

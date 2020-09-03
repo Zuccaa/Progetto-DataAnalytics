@@ -3,6 +3,7 @@ import numpy as np
 from datetime import date
 import calendar
 
+
 def create_loads_dataframe(trips, calendar, stop_times_load):
     loads = trips.merge(calendar, on='service_id').copy()
     loads = loads.merge(stop_times_load, on='trip_id')
@@ -10,6 +11,7 @@ def create_loads_dataframe(trips, calendar, stop_times_load):
     np.savetxt(r'loads.txt', loads.values, fmt='%s')
 
     return loads
+
 
 def compute_normal_loads(loads_dataframe):
 

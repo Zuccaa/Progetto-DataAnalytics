@@ -4,17 +4,19 @@ import json
 import matplotlib.pylab as plt
 import numpy as np
 import igraph as ig
+import random
 
 
 def create_graph(stops):
 
+    colors_used = set()
     graph_definitive = ig.Graph(directed=False)
     graph_tmp = ig.Graph(directed=False)
     for index, row in stops.iterrows():
         graph_definitive.add_vertex(name=str(row['stop_id']), long_name=row['stop_name'],
-                     lat=row['stop_lat'], lon=row['stop_lon'])
+                     lat=row['stop_lat'] * -4200, lon=row['stop_lon'] * 4200)
         graph_tmp.add_vertex(name=str(row['stop_id']), long_name=row['stop_name'],
-                     lat=row['stop_lat'], lon=row['stop_lon'])
+                     lat=row['stop_lat'] * -4200, lon=row['stop_lon'] * 4200)
 
     stop_times, trips, routes, *_ = import_data()
 
@@ -53,7 +55,12 @@ def create_graph(stops):
             if graph_tmp.shortest_paths_dijkstra(node1, node2)[0][0] == float('inf'):
                 graph_tmp.add_edge(node1, node2)
 
-        color = '#' + str(routes.loc[routes['route_id'] == route]['route_color'].values[0])
+        while True:
+            color = "#" + ''.join([random.choice('0123456789ABCDEF') for j in range(6)])
+            if color not in colors_used:
+                colors_used.add(color)
+                break
+
         for edge in graph_tmp.es:
             graph_definitive.add_edge(edge.tuple[0], edge.tuple[1], route=route, color=color)
 
@@ -61,7 +68,74 @@ def create_graph(stops):
 
         print(route, " fatta, lunghezza di stop_times ora è ", len(stop_times.index))
 
-    graph_definitive.write_graphml("TrenordNetwork1.graphml")
+    graph_definitive.write_graphml("Complete_TrenordNetwork.graphml")
+
+    return graph_definitive
+
+
+def create_graph_with_switches(switches_from_station_dict, stops):
+
+    station_source = str(list(switches_from_station_dict.keys())[0])
+
+    graph_definitive = ig.Graph(directed=False)
+    graph_tmp = ig.Graph(directed=False)
+    for index, row in stops.iterrows():
+        graph_definitive.add_vertex(name=str(row['stop_id']), long_name=row['stop_name'],
+                                    lat=row['stop_lat'] * -4200, lon=row['stop_lon'] * 4200,
+                                    switch=switches_from_station_dict[row['stop_id']], show_name='')
+        graph_tmp.add_vertex(name=str(row['stop_id']), long_name=row['stop_name'],
+                             lat=row['stop_lat'] * -4200, lon=row['stop_lon'] * 4200,
+                             switch=switches_from_station_dict[row['stop_id']], show_name='')
+
+    stop_times, trips, routes, *_ = import_data()
+
+    trips_per_route = dict_as_group_by(trips, 'route_id', 'trip_id')
+
+    def take_second(elem):
+        return elem[1]
+
+    for route in trips_per_route:
+        linked_stops_not_consecutive = []
+        for index, row in stop_times.iterrows():
+            if row['trip_id'] in trips_per_route[route]:
+                if index != stop_times.index[-1]:
+                    next_row = stop_times.loc[index + 1]
+                    if next_row['stop_sequence'] == row['stop_sequence'] + 1 and \
+                        graph_tmp.get_eid(str(row['stop_id']), str(next_row['stop_id']),
+                                            directed=False, error=False) == -1:
+                        graph_tmp.add_edge(str(row['stop_id']), str(next_row['stop_id']))
+                    elif next_row['stop_sequence'] > row['stop_sequence'] + 1 and (
+                            not linked_stops_not_consecutive or
+                            {str(row['stop_id']), str(next_row['stop_id'])}
+                            not in list(list(zip(*linked_stops_not_consecutive))[0])):
+                        linked_stops_not_consecutive.append([
+                            {str(row['stop_id']), str(next_row['stop_id'])},
+                            next_row['stop_sequence'] - row['stop_sequence']])
+                stop_times = stop_times.drop(index)
+        stop_times = stop_times.reset_index(drop=True)
+
+        linked_stops_not_consecutive.sort(key=take_second)
+
+        for linked_stop in linked_stops_not_consecutive:
+            node1 = linked_stop[0].pop()
+            node2 = linked_stop[0].pop()
+            if graph_tmp.shortest_paths_dijkstra(node1, node2)[0][0] == float('inf'):
+                graph_tmp.add_edge(node1, node2)
+
+        color = '#' + str(routes.loc[routes['route_id'] == route]['route_color'].values[0])
+        for edge in graph_tmp.es:
+            index = graph_definitive.get_eid(edge.tuple[0], edge.tuple[1],
+                                                            directed=False, error=False)
+            if index == -1:
+                graph_definitive.add_edge(edge.tuple[0], edge.tuple[1])
+
+        graph_tmp.delete_edges(graph_tmp.es)
+
+        print(route, " fatta, lunghezza di stop_times ora è ", len(stop_times.index))
+
+    graph_definitive.vs.find(name=station_source)['show_name'] = station_source
+
+    graph_definitive.write_graphml(str(list(switches_from_station_dict.keys())[0]) + "_graph.graphml")
 
 
 def create_graph_min_path(edge_list, station_source, station_target, start_time, recursion_times, stops):
@@ -220,6 +294,7 @@ def create_graph_min_path_connected(edge_list, station_source, station_target, s
 
 
 def plot_bars_of_loads(file, day, route, title):
+
     with open(file, 'r') as fp:
         data = json.load(fp)
 
@@ -248,4 +323,10 @@ def plot_bars_of_loads(file, day, route, title):
         plt.text(rect.get_x() + 0.4, rect.get_height() + 0.3, list_of_values[counter], ha='center', va='bottom')
         counter += 1
 
+    plt.show()
+
+
+def plot_metric_results(metric_results):
+
+    plt.plot(np.arange(0, 0.5, 0.5 / len(metric_results)), metric_results, 'ro', markersize=1.5)
     plt.show()
