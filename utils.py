@@ -1,5 +1,4 @@
 import pandas as pd
-import subprocess
 import datetime
 import igraph as ig
 from xml.dom import minidom
@@ -55,7 +54,6 @@ def compute_travel_time(departure_time, arrival_time):
     travel_time_in_seconds = arrival_time_in_seconds - departure_time_in_seconds
 
     return travel_time_in_seconds / 60
-
 
 def add_direction_column(dataframe):
     dataframe['direction'] = -1
@@ -118,7 +116,7 @@ def create_routes_adjacency_dict(stations_routes_dict, routes_stations_dict):
     return routes_adjacency_dict
 
 
-def create_graph_from_XML(filename):
+def create_graph_from_XML(filename, multiple_edges=True):
 
     graph = ig.Graph(directed=False)
     xmldoc = minidom.parse(filename)
@@ -129,8 +127,13 @@ def create_graph_from_XML(filename):
         data_values = []
         data_list = node.getElementsByTagName('data')
         for data in data_list:
-            data_values.append(data.childNodes[0].nodeValue)
-        graph.add_vertex(name=data_values[3], long_name=data_values[0], lat=data_values[1], lon=data_values[2])
+            if data.childNodes:
+                data_values.append(data.childNodes[0].nodeValue)
+        if multiple_edges:
+            graph.add_vertex(name=data_values[3], long_name=data_values[0], lat=data_values[1],
+                             lon=data_values[2])
+        else:
+            graph.add_vertex(name=data_values[4], long_name=data_values[0])
 
     for edge in edge_list:
         data_values = []
@@ -138,7 +141,11 @@ def create_graph_from_XML(filename):
         vertex1 = edge.attributes['source'].value[1:]
         vertex2 = edge.attributes['target'].value[1:]
         for data in data_list:
-            data_values.append(data.childNodes[0].nodeValue)
-        graph.add_edge(int(vertex1), int(vertex2), route=data_values[0], color=data_values[1])
+            if data.childNodes:
+                data_values.append(data.childNodes[0].nodeValue)
+        if multiple_edges:
+            graph.add_edge(int(vertex1), int(vertex2), route=data_values[0], color=data_values[1])
+        else:
+            graph.add_edge(int(vertex1), int(vertex2))
 
     return graph

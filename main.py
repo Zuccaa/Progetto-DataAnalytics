@@ -1,11 +1,13 @@
 from attack_handling import remove_nodes_analysis
-from graphics import plot_bars_of_loads, create_graph, create_graph_with_switches
-from loadAnalysis import create_loads_dataframe, compute_normal_loads, compute_loads_with_exceptions
+from graphics import plot_bars_of_loads, create_graph, create_graph_with_switches, create_graph_for_loads
+from load_analysis import create_loads_dataframe, compute_normal_loads, compute_loads_with_exceptions
 from min_paths import compute_min_path, compute_switches_from_station
 from utils import dict_as_group_by, import_data, add_direction_column, create_routes_adjacency_dict, \
     create_graph_from_XML
+from pre_analysis import compute_assortativity
 import json
 import igraph as ig
+import numpy as np
 
 stop_times, trips, routes, exceptions_service, calendar, stops, trips_with_stop_times = import_data()
 
@@ -60,8 +62,12 @@ with open('days_with_exceptions.txt', 'w') as f:
 #create_graph_with_switches(switches_from_station_dict, stops)
 #print(switches_from_station_dict)
 
-#compute_min_path(trips_with_stop_times.copy(), stations_routes_dict, '2301', '2808', '09:00:00', 'monday', 3,
+#compute_min_path(trips_with_stop_times.copy(), stations_routes_dict, '1581', '734', '09:00:00', 'monday', 2,
 #                 stops)
+graph_no_multiple_edges = create_graph_from_XML('CompleteGraph_NoMultipleEdges.xml', multiple_edges=False)
 graph = create_graph_from_XML('Complete_TrenordNetwork.xml')
-metric = 'degree'
-remove_nodes_analysis(graph, metric)
+#compute_assortativity(graph_no_multiple_edges, graph_no_multiple_edges.degree((np.arange(graph_no_multiple_edges.vcount()))))
+metrics = ['betweenness', 'degree', 'closeness']
+remove_nodes_analysis(graph, graph_no_multiple_edges, metrics)
+
+create_graph_for_loads(trips_with_stop_times, stops)

@@ -74,7 +74,10 @@ def min_path_from_station(trips_init, stations_routes_dict, station_source, stat
             if item.shape[0] == 2:
                 first_row = item.iloc[0]
                 second_row = item.iloc[1]
-                if first_row['stop_id'] == int(station_source) and second_row['stop_id'] == int(station_target):
+                if first_row['trip_id'] == 10063327 and first_row['stop_id'] == 1158:
+                    print('Ciao')
+                if first_row['stop_id'] == int(station_source) and \
+                        second_row['stop_id'] == int(station_target):
                     if not trip_selected or first_row['departure_time'] < \
                             trips_in_stations.loc[trip_selected[0]]['departure_time']:
                         trip_selected = [first_row.name, second_row.name]
@@ -119,7 +122,7 @@ def compute_switched_trip_path(trip_available, trips, prec_edges, route, start_t
                 prec_edges = [[row['stop_id'], next_row['stop_id'], route, row['departure_time'],
                                next_row['departure_time'], row['trip_id']]]
             edge_list_tmp = min_path_from_station(trips, stations_routes_dict, next_row['stop_id'],
-                                                  station_target, row['arrival_time'],
+                                                  station_target, next_row['arrival_time'],
                                                   recursion_times - 1, prec_edges)
 
         if edge_list_tmp:

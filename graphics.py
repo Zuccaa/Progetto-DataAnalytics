@@ -5,6 +5,7 @@ import matplotlib.pylab as plt
 import numpy as np
 import igraph as ig
 import random
+import datetime
 
 
 def create_graph(stops):
@@ -159,7 +160,6 @@ def create_graph_min_path(edge_list, station_source, station_target, start_time,
         g.vs.find(name=node2)['station_name'] = stops.loc[stops['stop_id'] == edge[1]]['stop_name'].values[0]
         g.vs.find(name=node1)['departure_time'] = edge[3]
         g.vs.find(name=node1)['station_name'] = stops.loc[stops['stop_id'] == edge[0]]['stop_name'].values[0]
-
     g = connect_trips(g, station_source, station_target, start_time, recursion_times)
 
     return g
@@ -250,14 +250,15 @@ def connect_clusters(graph, clusters1, clusters2):
     if clusters2:
         for cluster in clusters1:
             for node in cluster:
+                source = graph.vs[node].attributes()
+                name_source = source['name'][:source['name'].find('-')]
                 for f_cluster in clusters2:
                     for f_node in f_cluster:
-                        source = graph.vs[node].attributes()
                         target = graph.vs[f_node].attributes()
-                        if source['name'][:source['name'].find('-')] == \
+                        if name_source == \
                                 target['name'][:target['name'].find('-')]:
-                            if target['departure_time'] and source['arrival_time'] \
-                                    and source['arrival_time'] < target['departure_time']:
+                            if target['departure_time'] and source['arrival_time'] and \
+                                        source['arrival_time'] < target['departure_time']:
                                 graph.add_edge(source['name'], target['name'], route='switch',
                                                departure_time=source['arrival_time'],
                                                arrival_time=target['departure_time'], trip=None,
@@ -328,5 +329,74 @@ def plot_bars_of_loads(file, day, route, title):
 
 def plot_metric_results(metric_results):
 
-    plt.plot(np.arange(0, 0.5, 0.5 / len(metric_results)), metric_results, 'ro', markersize=1.5)
+    betweenness_results = metric_results[0]
+    degree_results = metric_results[1]
+    closeness_results = metric_results[2]
+
+    plt.plot(np.arange(0, 0.5, 0.5 / len(betweenness_results)), betweenness_results, 'ro', markersize=1.5,
+             linestyle='solid', linewidth=0.5)
+    plt.plot(np.arange(0, 0.5, 0.5 / len(degree_results)), degree_results, 'bo', markersize=1.5,
+             linestyle='solid', linewidth=0.5)
+    plt.plot(np.arange(0, 0.5, 0.5 / len(closeness_results)), closeness_results, 'go', markersize=1.5,
+             linestyle='solid', linewidth=0.5)
+
+    plt.xlabel("Percentuale di nodi rimossi")
+    plt.ylabel("Valore di S")
+    plt.legend(('Betweenness', 'Degree', 'Closeness'))
+
     plt.show()
+
+
+def plot_assortativity_matrix(degree_correlation_matrix):
+
+    plt.matshow(degree_correlation_matrix, cmap='hot')
+    plt.title('Degree correlation matrix')
+
+    plt.show()
+
+
+def create_graph_for_loads(loads_dataframe, stops):
+
+    graph = ig.Graph(directed=True)
+
+    for index, row in stops.iterrows():
+        graph.add_vertex(name=str(row['stop_id']), long_name=row['stop_name'],
+                         lat=row['stop_lat'] * -4200,
+                         lon=row['stop_lon'] * 4200)
+
+    loads_grouped_by_trip = loads_dataframe.groupby(['trip_id'])
+    for key, item in loads_grouped_by_trip:
+        for index, row in item.iterrows():
+            if index != item.index[-1]:
+                next_row = item.loc[index + 1]
+                departure_time = row['departure_time']
+                departure_time = datetime.timedelta(hours=int(departure_time[0:2]),
+                                                    minutes=int(departure_time[3:5]),
+                                                    seconds=int(departure_time[6:8])).total_seconds()
+                arrival_time = next_row['arrival_time']
+                arrival_time = datetime.timedelta(hours=int(arrival_time[0:2]),
+                                                  minutes=int(arrival_time[3:5]),
+                                                  seconds=int(arrival_time[6:8])).total_seconds()
+
+                graph.add_edge(str(row['stop_id']), str(next_row['stop_id']), trip_id=str(row['trip_id']),
+                               departure_time=departure_time, arrival_time=arrival_time,
+                               route=row['route_id'], monday=int(row['monday']), tuesday=int(row['tuesday']),
+                               wednesday=int(row['wednesday']), thursday=int(row['thursday']),
+                               friday=int(row['friday']), saturday=int(row['saturday']),
+                               sunday=int(row['sunday']))
+
+    graph.write_graphml('Loads_Trenord.graphml')
+
+
+def create_graph_for_attack_handling(graph_no_multiple_edges, nodes_to_remove, graphs):
+
+    metrics = ['betweenness', 'degree', 'closeness']
+    for index, metric in enumerate(metrics):
+        attribute = metric + '_results'
+        for vertex in nodes_to_remove[index]:
+            graph_no_multiple_edges.vs.find(name=vertex)[attribute] = 1
+        for vertex in graphs[index].components().giant().vs:
+            print(vertex.name)
+            graph_no_multiple_edges.vs.find(name=vertex)[attribute] = 2
+
+    graph_no_multiple_edges.write_graphml('AttackHandling_Trenord.graphml')
