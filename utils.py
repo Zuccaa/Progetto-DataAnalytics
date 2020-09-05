@@ -1,3 +1,12 @@
+'''
+utils(): script contenente le funzioni d'appoggio
+         utilizzate all'interno del progetto
+------------------------------------------------------
+Creato da:
+    Stefano Zuccarella n.816482
+    Matteo Paolella n.816933
+'''
+
 import pandas as pd
 import datetime
 import igraph as ig
@@ -5,6 +14,9 @@ from xml.dom import minidom
 
 
 def dict_as_group_by(dataframe, key_field, value_field, repetition=True):
+
+    # Creo un generico dizionario da un dataframe con chiave key_field
+    # e valore value_field
     dict_grouped_by = {}
     for index, row in dataframe.iterrows():
         key = row[key_field]
@@ -13,10 +25,13 @@ def dict_as_group_by(dataframe, key_field, value_field, repetition=True):
                 dict_grouped_by[key].append(row[value_field])
         else:
             dict_grouped_by[key] = [row[value_field]]
+
     return dict_grouped_by
 
 
 def import_data():
+
+    #Importo i csv del dataset ed elimino per ognuno gli attributi inutili
     stop_times = pd.read_csv('trenord-gtfs-csv//stop_times.csv')
     stop_times = stop_times.drop(['stop_headsign', 'pickup_type',
                                   'drop_off_type', 'shape_dist_traveled'], axis=1)
@@ -55,7 +70,9 @@ def compute_travel_time(departure_time, arrival_time):
 
     return travel_time_in_seconds / 60
 
+
 def add_direction_column(dataframe):
+
     dataframe['direction'] = -1
     dataframe_grouped = dataframe.groupby(['trip_id'])
     dataframe_list = []
@@ -118,6 +135,7 @@ def create_routes_adjacency_dict(stations_routes_dict, routes_stations_dict):
 
 def create_graph_from_XML(filename, multiple_edges=True):
 
+    # Importo l'XML del grafo e lo parso in oggetto Graph del modulo iGraph
     graph = ig.Graph(directed=False)
     xmldoc = minidom.parse(filename)
     node_list = xmldoc.getElementsByTagName('node')
@@ -133,7 +151,8 @@ def create_graph_from_XML(filename, multiple_edges=True):
             graph.add_vertex(name=data_values[3], long_name=data_values[0], lat=data_values[1],
                              lon=data_values[2])
         else:
-            graph.add_vertex(name=data_values[4], long_name=data_values[0])
+            graph.add_vertex(name=data_values[4], long_name=data_values[0], lat=data_values[1],
+                             lon=data_values[2])
 
     for edge in edge_list:
         data_values = []
@@ -149,3 +168,13 @@ def create_graph_from_XML(filename, multiple_edges=True):
             graph.add_edge(int(vertex1), int(vertex2))
 
     return graph
+
+
+def import_graphs(filename1, filename2):
+
+    # Importo i grafi creati precedentemente, uno in formato L'-Space (graph1)
+    # e l'altro in formato L-Space (graph2)
+    graph1 = create_graph_from_XML(filename1)
+    graph2 = create_graph_from_XML(filename2, multiple_edges=False)
+
+    return graph1, graph2

@@ -1,8 +1,16 @@
-import pandas as pd
-import igraph as ig
+'''
+attack_handling(): script che gestisce la parte relativa
+                   alla rimozione di nodi nella rete
+--------------------------------------------------------------
+Creato da:
+    Stefano Zuccarella n.816482
+    Matteo Paolella n.816933
+'''
+
 import numpy as np
 
-from graphics import plot_metric_results, create_graph_for_attack_handling
+from graphs import create_graph_for_attack_handling
+from plots import plot_metric_results
 
 
 def remove_nodes_analysis(graph, graph_no_multiple_edges, metrics):

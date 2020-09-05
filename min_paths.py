@@ -1,8 +1,15 @@
-import pandas as pd
-import igraph as ig
+'''
+min_paths(): script che gestisce l'analisi dei
+             percorsi minimi
+-------------------------------------------------
+Creato da:
+    Stefano Zuccarella n.816482
+    Matteo Paolella n.816933
+'''
 
-from utils import compute_travel_time
-from graphics import create_graph_min_path, create_graph_min_path_connected
+import pandas as pd
+
+from graphs import create_graph_min_path
 
 
 def compute_min_path(trips, stations_routes_dict, station_source,
@@ -49,6 +56,7 @@ def compute_min_path(trips, stations_routes_dict, station_source,
 
 def min_path_from_station(trips_init, stations_routes_dict, station_source, station_target,
                           start_time, recursion_times, prec_edges=None):
+
     trips = trips_init.loc[start_time < trips_init['departure_time']].reset_index(drop=True)
     edge_list = []
 
@@ -74,8 +82,6 @@ def min_path_from_station(trips_init, stations_routes_dict, station_source, stat
             if item.shape[0] == 2:
                 first_row = item.iloc[0]
                 second_row = item.iloc[1]
-                if first_row['trip_id'] == 10063327 and first_row['stop_id'] == 1158:
-                    print('Ciao')
                 if first_row['stop_id'] == int(station_source) and \
                         second_row['stop_id'] == int(station_target):
                     if not trip_selected or first_row['departure_time'] < \
@@ -93,21 +99,21 @@ def min_path_from_station(trips_init, stations_routes_dict, station_source, stat
             trips_in_stations_source = trips_in_stations_source.sort_values(by=['departure_time'])
             first_trip_available = trips_in_stations_source.iloc[0]
             edge_list = compute_switched_trip_path(first_trip_available, trips, prec_edges, route,
-                                                   start_time, stations_routes_dict, station_target,
+                                                   stations_routes_dict, station_target,
                                                    recursion_times, edge_list)
             opposite_trip_dataframe = trips_in_stations_source[trips_in_stations_source['direction'] !=
                                                                first_trip_available['direction']]
             if opposite_trip_dataframe.shape[0] > 0:
                 opposite_trip_available = opposite_trip_dataframe.iloc[0]
                 edge_list = compute_switched_trip_path(opposite_trip_available, trips, prec_edges, route,
-                                                       start_time, stations_routes_dict, station_target,
+                                                       stations_routes_dict, station_target,
                                                        recursion_times, edge_list)
 
     return edge_list
 
 
-def compute_switched_trip_path(trip_available, trips, prec_edges, route, start_time,
-                               stations_routes_dict, station_target, recursion_times, edge_list):
+def compute_switched_trip_path(trip_available, trips, prec_edges, route, stations_routes_dict,
+                               station_target, recursion_times, edge_list):
 
     edge_list_tmp = []
     switch_trip_selected = trips.loc[trips['trip_id'] == int(trip_available['trip_id'])]
