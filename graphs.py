@@ -7,7 +7,7 @@ Creato da:
     Matteo Paolella n.816933
 '''
 
-from utils import dict_as_group_by, import_data, compute_travel_time
+from utils import dict_as_group_by, compute_travel_time
 import igraph as ig
 import random
 import datetime
@@ -97,6 +97,8 @@ def create_standard_graph(stops, trips, stop_times, multiple=False, station_sour
 
 def create_graph_min_path(edge_list, station_source, station_target, start_time, recursion_times, stops):
 
+    # Creo un grafo con nodi la coppia stazione - trip che passa
+    # in quella stazione e archi
     g = ig.Graph(directed=True)
 
     for edge in edge_list:
@@ -129,7 +131,7 @@ def connect_trips(graph, station_source, station_target, start_time, number_of_s
     graph.add_vertex(name='FINISH')
     graph.vs.find(name='FINISH')['station_name'] = 'FINISH'
 
-    clusters_dict = {'START': [],'MIDDLE_START':[], 'FINISH': [], 'NOTHING': []}
+    clusters_dict = {'START': [], 'MIDDLE_START': [], 'FINISH': [], 'NOTHING': []}
     for cluster in clusters:
         cluster = sort_cluster(cluster, graph)
         nothing = True
@@ -157,7 +159,7 @@ def connect_trips(graph, station_source, station_target, start_time, number_of_s
         vertex_name = vertex_attributes['name']
         if vertex_name[:vertex_name.find('-')] == station_target:
             edge_attributes = graph.es[graph.get_eid(graph.vs[cluster[len(cluster) - 2]],
-                                                        graph.vs[cluster[len(cluster) - 1]])].attributes()
+                                                     graph.vs[cluster[len(cluster) - 1]])].attributes()
             graph.add_edge(vertex_name, 'FINISH', route='-', departure_time=edge_attributes['arrival_time'],
                            arrival_time=edge_attributes['arrival_time'], trip=edge_attributes['trip'],
                            weight=0)
@@ -266,11 +268,14 @@ def create_graph_for_loads(loads_dataframe, stops):
 
     graph = ig.Graph(directed=True)
 
+    # Aggiungo un vertice per ogni stazione
     for index, row in stops.iterrows():
         graph.add_vertex(name=str(row['stop_id']), long_name=row['stop_name'],
                          lat=row['stop_lat'] * -4200,
                          lon=row['stop_lon'] * 4200)
 
+    # Aggiungo un arco che collega due stazioni adiacenti
+    # all'interno dello stesso trip
     loads_grouped_by_trip = loads_dataframe.groupby(['trip_id'])
     for key, item in loads_grouped_by_trip:
         for index, row in item.iterrows():
@@ -297,6 +302,12 @@ def create_graph_for_loads(loads_dataframe, stops):
 
 def create_graph_for_attack_handling(graph_no_multiple_edges, nodes_to_remove, graphs):
 
+    # Per ogni metrica, aggiungo una colonna sui nodi con i seguenti valori:
+    #      1 -> il nodo è stato rimosso considerando quella metrica
+    #      2 -> il nodo fa parte della principale componente connessa rimasta
+    #           dopo la rimozione dei nodi
+    #      Niente -> il nodo non è stato nè rimosso nè fa parte della
+    #                principale componente connessa
     metrics = ['betweenness', 'degree', 'closeness']
     for index, metric in enumerate(metrics):
         attribute = metric + '_results'

@@ -121,6 +121,10 @@ def create_routes_adjacency_dict(stations_routes_dict, routes_stations_dict):
 
     routes_adjacency_dict = {}
 
+    # Per ogni stazione raggiungibile da una linea, aggiungo la linea
+    # come chiave del dizionario e considero tutte le linee raggiungibili
+    # a partire da quella stazione. Le linee trovate poi vengono
+    # aggiunte come valori nel dizionario
     for route in routes_stations_dict:
         routes_set = set()
         for station in routes_stations_dict[route]:

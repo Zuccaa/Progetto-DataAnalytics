@@ -48,6 +48,9 @@ def plot_bars_of_loads(file, day, station, title):
 
 def plot_metric_results(metric_results):
 
+    # Per ogni metrica, illustro i risultati di S in relazione alla
+    # percentuale di nodi rimossi nel grafo
+
     betweenness_results = metric_results[0]
     degree_results = metric_results[1]
     closeness_results = metric_results[2]

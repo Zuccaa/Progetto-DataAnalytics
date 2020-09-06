@@ -52,28 +52,41 @@ def do_load_analysis(station, day, exceptions_service, stops, trips, calendar, s
     # Illustro su un plot i risultati
     plot_bars_of_loads(file_with_exceptions, day, station, title)
 
+    # Creo un grafo contenente tutti i trip con i relativi percorsi
     create_graph_for_loads(trips_with_stop_times, stops)
 
 
 def do_min_path_analysis(station_source, station_target, hour, day, number_of_switches,
                          trips_with_stop_times, stops, stop_times, trips):
 
+    # Creo un dizionario con chiave la stazione e con valori le linee
+    # che passano in quella stazione
     stations_routes_dict = dict_as_group_by(trips_with_stop_times, 'stop_id', 'route_id', repetition=False)
 
+    # Calcolo il percorso minimo tra due stazioni e creo il grafo relativo
     compute_min_path(trips_with_stop_times.copy(), stations_routes_dict, station_source, station_target,
                      hour, day, number_of_switches, stops)
 
+    # Creo un dizionario con chiave la linea e con valori le fermate
+    # in cui passa quella linea
     routes_stations_dict = dict_as_group_by(trips_with_stop_times, 'route_id', 'stop_id', repetition=False)
+
+    # Creo un dizionario con chiave la linea e con valori le altre linee
+    # raggiungibili da quella linea
     routes_adjacency_dict = create_routes_adjacency_dict(stations_routes_dict, routes_stations_dict)
 
+    # Creo un dizionario in cui per ogni stazione viene associato il numero
+    # minimo di cambi da dover fare per raggiungerla a partire da una
+    # particolare stazione
     switches_from_station_dict = compute_switches_from_station('1581', routes_adjacency_dict,
                                                                stations_routes_dict,
                                                                routes_stations_dict)
-    create_graph_with_switches(switches_from_station_dict, stops, stop_times, trips)
+    # create_graph_with_switches(switches_from_station_dict, stops, stop_times, trips)
 
 
 def do_attack_handling_analysis(graph, graph_no_multiple_edges):
 
+    # Analizzo i casi in cui vengono rimossi nodi in base alla metrica scelta
     metrics = ['betweenness', 'degree', 'closeness']
     remove_nodes_analysis(graph, graph_no_multiple_edges, metrics)
 
@@ -88,12 +101,12 @@ def main():
                                                    'CompleteGraph_NoMultipleEdges.xml')
 
     # Svolgo le varie fasi dell'analisi
-    do_pre_analysis(graph_no_multiple_edges)
+    # do_pre_analysis(graph_no_multiple_edges)
     '''do_load_analysis('1581', 'monday', exceptions_service, stops, trips, calendar, stop_times_load,
                      trips_with_stop_times)'''
-    do_min_path_analysis('1581', '734', '09:00:00', 'monday', 2, trips_with_stop_times, stops, stop_times,
+    do_min_path_analysis('1581', '1711', '07:00:00', 'monday', 1, trips_with_stop_times, stops, stop_times,
                          trips)
-    do_attack_handling_analysis(graph, graph_no_multiple_edges)
+    # do_attack_handling_analysis(graph, graph_no_multiple_edges)
 
 
 if __name__ == "__main__":
