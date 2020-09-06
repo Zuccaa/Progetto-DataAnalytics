@@ -129,10 +129,11 @@ def connect_trips(graph, station_source, station_target, start_time, number_of_s
     graph.add_vertex(name='FINISH')
     graph.vs.find(name='FINISH')['station_name'] = 'FINISH'
 
-    clusters_dict = {'START': [], 'FINISH': [], 'NOTHING': []}
+    clusters_dict = {'START': [],'MIDDLE_START':[], 'FINISH': [], 'NOTHING': []}
     for cluster in clusters:
         cluster = sort_cluster(cluster, graph)
         nothing = True
+        first_start = True
         for node in cluster:
             vertex_attributes = graph.vs[node].attributes()
             vertex_name = vertex_attributes['name']
@@ -143,8 +144,14 @@ def connect_trips(graph, station_source, station_target, start_time, number_of_s
                                weight=compute_travel_time(start_time, vertex_attributes['departure_time']))
                 graph.vs.find(name=vertex_name)['arrival_time'] = start_time
                 graph.vs.find(name='START')['departure_time'] = start_time
-                clusters_dict['START'].append(cluster)
+                if first_start:
+                    clusters_dict['START'].append(cluster)
+                else:
+                    clusters_dict['MIDDLE_START'].append(cluster)
+                cluster.remove(node)
                 nothing = False
+                break
+            first_start = False
 
         vertex_attributes = graph.vs[cluster[len(cluster) - 1]].attributes()
         vertex_name = vertex_attributes['name']
@@ -190,9 +197,13 @@ def create_additional_edges(graph, clusters_dict, number_of_switches):
     if number_of_switches == 0:
         return
     if number_of_switches == 1:
+        _ = connect_clusters(graph, clusters_dict['START'], clusters_dict['MIDDLE_START'])
+        clusters_dict['START'].extend(clusters_dict['MIDDLE_START'])
         _ = connect_clusters(graph, clusters_dict['START'], clusters_dict['FINISH'])
         return
     if number_of_switches > 1:
+        _ = connect_clusters(graph, clusters_dict['START'], clusters_dict['MIDDLE_START'])
+        clusters_dict['START'].extend(clusters_dict['MIDDLE_START'])
         clusters_linked = connect_clusters(graph, clusters_dict['START'], clusters_dict['NOTHING'])
         for cluster in clusters_linked:
             cluster_list = list(cluster)
