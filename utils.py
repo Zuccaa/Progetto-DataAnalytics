@@ -60,6 +60,8 @@ def import_data():
 
 def compute_travel_time(departure_time, arrival_time):
 
+    # Converto i tempi da stringhe a secondi e restituisco il tempo di
+    # percorrenza in minuti
     departure_time_in_seconds = datetime.timedelta(hours=int(departure_time[0:2]),
                                                    minutes=int(departure_time[3:5]),
                                                    seconds=int(departure_time[6:8])).total_seconds()
@@ -69,52 +71,6 @@ def compute_travel_time(departure_time, arrival_time):
     travel_time_in_seconds = arrival_time_in_seconds - departure_time_in_seconds
 
     return travel_time_in_seconds / 60
-
-
-def add_direction_column(dataframe):
-
-    dataframe['direction'] = -1
-    dataframe_grouped = dataframe.groupby(['trip_id'])
-    dataframe_list = []
-
-    for key, item in dataframe_grouped:
-        dataframe_list.append([item, item.shape[0]])
-
-    def take_second(elem):
-        return elem[1]
-
-    dataframe_list.sort(key=take_second, reverse=True)
-    dataframe_dict = {}
-
-    for element in dataframe_list:
-        dataframe_tmp = element[0]
-        f_row = dataframe_tmp.iloc[0]
-        first_in_dict = False
-        pair_already_in = False
-        if f_row['route_id'] not in dataframe_dict.keys():
-            first_in_dict = True
-            dataframe_dict[f_row['route_id']] = []
-        for index, row in dataframe_tmp.iterrows():
-            if index != dataframe_tmp.index[-1]:
-                n_row = dataframe_tmp.loc[index + 1]
-                route_in_dict = dataframe_dict[row['route_id']]
-                pair = [row['stop_id'], n_row['stop_id']]
-                if first_in_dict:
-                    route_in_dict.append(pair)
-                    dataframe.loc[index, 'direction'] = 0
-                    dataframe.loc[index + 1, 'direction'] = 0
-                else:
-                    if pair in route_in_dict:
-                        pair_already_in = True
-
-        for index, row in dataframe_tmp.iterrows():
-            if not first_in_dict:
-                if pair_already_in:
-                    dataframe.loc[index, 'direction'] = 0
-                else:
-                    dataframe.loc[index, 'direction'] = 1
-
-    dataframe.to_csv('trenord-gtfs-csv//trips_with_stop_times.csv', index=False, header=True)
 
 
 def create_routes_adjacency_dict(stations_routes_dict, routes_stations_dict):
@@ -182,3 +138,55 @@ def import_graphs(filename1, filename2):
     graph2 = create_graph_from_XML(filename2, multiple_edges=False)
 
     return graph1, graph2
+
+
+# --------------------------------------------------------
+# METODI UTILIZZATI DURANTE IL PROGETTO MA CHE NON VENGONO
+# CHIAMATI DURANTE L'ESECUZIONE PRINCIPALE
+# --------------------------------------------------------
+
+
+def add_direction_column(dataframe):
+
+    dataframe['direction'] = -1
+    dataframe_grouped = dataframe.groupby(['trip_id'])
+    dataframe_list = []
+
+    for key, item in dataframe_grouped:
+        dataframe_list.append([item, item.shape[0]])
+
+    def take_second(elem):
+        return elem[1]
+
+    dataframe_list.sort(key=take_second, reverse=True)
+    dataframe_dict = {}
+
+    for element in dataframe_list:
+        dataframe_tmp = element[0]
+        f_row = dataframe_tmp.iloc[0]
+        first_in_dict = False
+        pair_already_in = False
+        if f_row['route_id'] not in dataframe_dict.keys():
+            first_in_dict = True
+            dataframe_dict[f_row['route_id']] = []
+        for index, row in dataframe_tmp.iterrows():
+            if index != dataframe_tmp.index[-1]:
+                n_row = dataframe_tmp.loc[index + 1]
+                route_in_dict = dataframe_dict[row['route_id']]
+                pair = [row['stop_id'], n_row['stop_id']]
+                if first_in_dict:
+                    route_in_dict.append(pair)
+                    dataframe.loc[index, 'direction'] = 0
+                    dataframe.loc[index + 1, 'direction'] = 0
+                else:
+                    if pair in route_in_dict:
+                        pair_already_in = True
+
+        for index, row in dataframe_tmp.iterrows():
+            if not first_in_dict:
+                if pair_already_in:
+                    dataframe.loc[index, 'direction'] = 0
+                else:
+                    dataframe.loc[index, 'direction'] = 1
+
+    dataframe.to_csv('trenord-gtfs-csv//trips_with_stop_times.csv', index=False, header=True)

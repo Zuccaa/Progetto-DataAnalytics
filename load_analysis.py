@@ -13,16 +13,6 @@ from datetime import date
 import calendar
 
 
-def create_loads_dataframe(trips, calendar, stop_times_load):
-
-    loads = trips.merge(calendar, on='service_id').copy()
-    loads = loads.merge(stop_times_load, on='trip_id')
-
-    np.savetxt(r'loads.txt', loads.values, fmt='%s')
-
-    return loads
-
-
 def compute_loads_with_exceptions(loads_dataframe, exceptions_service_dict, year, week):
 
     # Creo un dizionario che contiene le frequenze giornaliere per ogni stazione

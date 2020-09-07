@@ -35,6 +35,7 @@ def compute_min_path(trips, stations_routes_dict, station_source,
         print("ERROR! Path not found: increase the number of switches permitted")
         exit(1)
 
+    # Aggiungo l'informazione del percorso minimo su archi e nodi
     graph.es['min_path'] = '0'
     graph.vs['min_path'] = '0'
     graph.vs[min_path]['min_path'] = '1'

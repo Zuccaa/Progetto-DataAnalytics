@@ -13,22 +13,18 @@ import random
 import datetime
 
 
-def create_graph_with_multiple_routes(stops, stop_times, trips):
-
-    graph = create_standard_graph(stops, trips, stop_times)
-    graph.write_graphml("Complete_TrenordNetwork.graphml")
-
-
 def create_graph_with_switches(switches_from_station_dict, stops, stop_times, trips):
 
-    graph = create_standard_graph(stops, trips, stop_times, multiple=True,
+    # Creo un grafo con un solo link tra nodi connessi da almeno una route
+    graph = create_standard_graph(stops, trips, stop_times, single_edge=True,
                                   station_source=str(list(switches_from_station_dict.keys())[0]))
     graph.write_graphml(str(list(switches_from_station_dict.keys())[0]) + "_graph.graphml")
 
 
-def create_standard_graph(stops, trips, stop_times, multiple=False, station_source=None):
+def create_standard_graph(stops, trips, stop_times, single_edge=False, station_source=None):
 
     colors_used = set()
+    # Creo due grafi in cui metto come nodi le stazioni
     graph_definitive = ig.Graph(directed=False)
     graph_tmp = ig.Graph(directed=False)
     for index, row in stops.iterrows():
@@ -37,11 +33,15 @@ def create_standard_graph(stops, trips, stop_times, multiple=False, station_sour
         graph_tmp.add_vertex(name=str(row['stop_id']), long_name=row['stop_name'],
                              lat=row['stop_lat'] * -4200, lon=row['stop_lon'] * 4200)
 
+    # Creo un dizionario con chiave la linea e come valori i trip di quella linea
     trips_per_route = dict_as_group_by(trips, 'route_id', 'trip_id')
 
     def take_second(elem):
         return elem[1]
 
+    # Per ogni linea, collego fra loro le fermate dello stesso trip con numeri di
+    # stop_sequence consecutivi. Se non hanno lo stop_sequence consecutivo,
+    # vengono inserite in una lista apposita
     for route in trips_per_route:
         linked_stops_not_consecutive = []
         for index, row in stop_times.iterrows():
@@ -64,19 +64,25 @@ def create_standard_graph(stops, trips, stop_times, multiple=False, station_sour
 
         linked_stops_not_consecutive.sort(key=take_second)
 
+        # Ordino i nodi con numero di stop_sequence non consecutivo e aggiungo
+        # un arco tra i due nodi se non esiste un percorso che li collega
         for linked_stop in linked_stops_not_consecutive:
             node1 = linked_stop[0].pop()
             node2 = linked_stop[0].pop()
             if graph_tmp.shortest_paths_dijkstra(node1, node2)[0][0] == float('inf'):
                 graph_tmp.add_edge(node1, node2)
 
+        # Creo un colore a caso per rappresentare la linea
         while True:
             color = "#" + ''.join([random.choice('0123456789ABCDEF') for j in range(6)])
             if color not in colors_used:
                 colors_used.add(color)
                 break
 
-        if not multiple:
+        # Se devo creare un grafo con archi multipli, "trasferisco" gli archi dal grafo
+        # temporaneo a quello definitivo e aggiungo l'informazione della linea e del colore.
+        # Altrimenti, "trasferisco" un solo arco dal grafo temporaneo a quello definitivo
+        if not single_edge:
             for edge in graph_tmp.es:
                 graph_definitive.add_edge(edge.tuple[0], edge.tuple[1], route=route, color=color)
         else:
@@ -86,10 +92,13 @@ def create_standard_graph(stops, trips, stop_times, multiple=False, station_sour
                 if index == -1:
                     graph_definitive.add_edge(edge.tuple[0], edge.tuple[1])
 
+        # Prima di cambiare linea, elimino tutti gli archi dal grafo temporaneo
         graph_tmp.delete_edges(graph_tmp.es)
         print(route, " fatta, lunghezza di stop_times ora è ", len(stop_times.index))
 
-    if multiple:
+    # Se devo creare un grafo senza archi multipli, aggiungo un attributo
+    # per migliore illustrazione
+    if single_edge:
         graph_definitive.vs.find(name=station_source)['show_name'] = station_source
 
     return graph_definitive
@@ -98,7 +107,7 @@ def create_standard_graph(stops, trips, stop_times, multiple=False, station_sour
 def create_graph_min_path(edge_list, station_source, station_target, start_time, recursion_times, stops):
 
     # Creo un grafo con nodi la coppia stazione - trip che passa
-    # in quella stazione e archi
+    # in quella stazione e archi il viaggio che collega due nodi
     g = ig.Graph(directed=True)
 
     for edge in edge_list:
@@ -112,12 +121,17 @@ def create_graph_min_path(edge_list, station_source, station_target, start_time,
             g.add_vertex(name=node1)
         if node2 not in g.vs['name']:
             g.add_vertex(name=node2)
+        # Il peso dell'arco è dato dal tempo di tragitto del collegamento
+        # tra i due nodi
         g.add_edge(node1, node2, route=edge[2], departure_time=edge[3], arrival_time=edge[4], trip=trip,
                    weight=compute_travel_time(edge[3], edge[4]))
         g.vs.find(name=node2)['arrival_time'] = edge[4]
         g.vs.find(name=node2)['station_name'] = stops.loc[stops['stop_id'] == edge[1]]['stop_name'].values[0]
         g.vs.find(name=node1)['departure_time'] = edge[3]
         g.vs.find(name=node1)['station_name'] = stops.loc[stops['stop_id'] == edge[0]]['stop_name'].values[0]
+
+    # Connetto le differenti componenti connesse ottenute da questa prima
+    # iterazione del grafo
     g = connect_trips(g, station_source, station_target, start_time, recursion_times)
 
     return g
@@ -125,20 +139,36 @@ def create_graph_min_path(edge_list, station_source, station_target, start_time,
 
 def connect_trips(graph, station_source, station_target, start_time, number_of_switches):
 
-    clusters = graph.components(mode='WEAK')
+    # Aggiungo nel grafo i nodi di START e FINISH
+    components = graph.components(mode='WEAK')
     graph.add_vertex(name='START')
     graph.vs.find(name='START')['station_name'] = 'START'
     graph.add_vertex(name='FINISH')
     graph.vs.find(name='FINISH')['station_name'] = 'FINISH'
 
-    clusters_dict = {'START': [], 'MIDDLE_START': [], 'FINISH': [], 'NOTHING': []}
-    for cluster in clusters:
-        cluster = sort_cluster(cluster, graph)
+    # Questo dizionario separa le varie componenti connesse in base ai nodi
+    # da cui sono rispettivamente composte:
+    #   'START' -> contiene le componenti connesse che hanno come nodo radice
+    #              la stazione originale di partenza
+    #   'MIDDLE START' -> contiene le componenti connesse che hanno un nodo
+    #                     interno relativo alla stazione originale di partenza
+    #   'FINISH' -> contiene le componenti connesse che hanno come nodo finale
+    #               la stazione d'arrivo
+    #   'NOTHING' -> contiene le componenti connesse che non hanno né il nodo
+    #                della stazione di partenza, né il nodo di quella d'arrivo
+
+    components_dict = {'START': [], 'MIDDLE_START': [], 'FINISH': [], 'NOTHING': []}
+
+    # Riempio il dizionario appena descritto
+    for component in components:
+        # Ordino gli indici dei nodi della componente connessa in base al tempo
+        component = sort_components(component, graph)
         nothing = True
         first_start = True
-        for node in cluster:
+        for node in component:
             vertex_attributes = graph.vs[node].attributes()
             vertex_name = vertex_attributes['name']
+            # Controllo che il nodo di riferimento sia la stazione di partenza
             if vertex_name[:vertex_name.find('-')] == station_source:
                 graph.add_edge('START', vertex_name, route='-', departure_time=start_time,
                                arrival_time=vertex_attributes['departure_time'],
@@ -147,121 +177,122 @@ def connect_trips(graph, station_source, station_target, start_time, number_of_s
                 graph.vs.find(name=vertex_name)['arrival_time'] = start_time
                 graph.vs.find(name='START')['departure_time'] = start_time
                 if first_start:
-                    clusters_dict['START'].append(cluster)
+                    components_dict['START'].append(component)
                 else:
-                    clusters_dict['MIDDLE_START'].append(cluster)
-                cluster.remove(node)
+                    components_dict['MIDDLE_START'].append(component)
+                component.remove(node)
                 nothing = False
                 break
             first_start = False
 
-        vertex_attributes = graph.vs[cluster[len(cluster) - 1]].attributes()
+        vertex_attributes = graph.vs[component[len(component) - 1]].attributes()
         vertex_name = vertex_attributes['name']
+        # Controllo che il nodo di riferimento sia la stazione d'arrivo
         if vertex_name[:vertex_name.find('-')] == station_target:
-            edge_attributes = graph.es[graph.get_eid(graph.vs[cluster[len(cluster) - 2]],
-                                                     graph.vs[cluster[len(cluster) - 1]])].attributes()
+            edge_attributes = graph.es[graph.get_eid(graph.vs[component[len(component) - 2]],
+                                                     graph.vs[component[len(component) - 1]])].attributes()
             graph.add_edge(vertex_name, 'FINISH', route='-', departure_time=edge_attributes['arrival_time'],
                            arrival_time=edge_attributes['arrival_time'], trip=edge_attributes['trip'],
                            weight=0)
             graph.vs.find(name='FINISH')['arrival_time'] = edge_attributes['arrival_time']
             graph.vs.find(name=vertex_name)['departure_time'] = edge_attributes['arrival_time']
             if nothing:
-                clusters_dict['FINISH'].append(cluster)
+                components_dict['FINISH'].append(component)
                 nothing = False
 
         if nothing:
-            clusters_dict['NOTHING'].append(cluster)
+            components_dict['NOTHING'].append(component)
 
-    create_additional_edges(graph, clusters_dict, number_of_switches)
+    # Creo gli archi che collegano le componenti connesse fra di loro
+    create_additional_edges(graph, components_dict, number_of_switches)
 
     return graph
 
 
-def sort_cluster(cluster, graph):
+def sort_components(component, graph):
 
-    sorted_cluster = []
-    for node in cluster:
+    # Ordino gli indici dei nodi all'interno della componente connessa
+    # in base al tempo d'arrivo
+    sorted_component = []
+    for node in component:
         arrival_time = graph.vs[node].attributes()['arrival_time']
         if arrival_time:
-            sorted_cluster.append([node, arrival_time])
+            sorted_component.append([node, arrival_time])
         else:
-            sorted_cluster.append([node, '00:00:00'])
+            sorted_component.append([node, '00:00:00'])
 
     def take_second(elem):
         return elem[1]
 
-    sorted_cluster.sort(key=take_second)
-    return list(list(zip(*sorted_cluster))[0])
+    sorted_component.sort(key=take_second)
+    return list(list(zip(*sorted_component))[0])
 
 
-def create_additional_edges(graph, clusters_dict, number_of_switches):
+def create_additional_edges(graph, components_dict, number_of_switches):
 
     if number_of_switches == 0:
+        # Caso base -> Se non sono ammessi cambi, non si deve aggiungere alcun arco
         return
+
+    # Altrimenti creo gli archi tra le componenti connesse di start e di middle start
+    # e poi sposto gli elementi di middle start in quelli di start
+    _ = connect_components(graph, components_dict['START'], components_dict['MIDDLE_START'])
+    components_dict['START'].extend(components_dict['MIDDLE_START'])
+    components_dict['MIDDLE_START'] = []
+
     if number_of_switches == 1:
-        _ = connect_clusters(graph, clusters_dict['START'], clusters_dict['MIDDLE_START'])
-        clusters_dict['START'].extend(clusters_dict['MIDDLE_START'])
-        _ = connect_clusters(graph, clusters_dict['START'], clusters_dict['FINISH'])
+        # Caso base -> Se è disponibile solo 1 cambio, creo gli archi tra le componenti
+        #              connesse di start e di finish
+
+        _ = connect_components(graph, components_dict['START'], components_dict['FINISH'])
         return
     if number_of_switches > 1:
-        _ = connect_clusters(graph, clusters_dict['START'], clusters_dict['MIDDLE_START'])
-        clusters_dict['START'].extend(clusters_dict['MIDDLE_START'])
-        clusters_linked = connect_clusters(graph, clusters_dict['START'], clusters_dict['NOTHING'])
-        for cluster in clusters_linked:
-            cluster_list = list(cluster)
-            clusters_dict['START'].append(cluster_list)
-            clusters_dict['NOTHING'].remove(cluster_list)
-        create_additional_edges(graph, clusters_dict, number_of_switches - 1)
+        # Caso ricorsivo -> Se è disponibile più di 1 cambio, creo gli archi tra le
+        #                   componenti connesse di start e di nothing e poi sposto gli
+        #                   elementi che sono stati connessi di nothing in quelli
+        #                   di start
+
+        components_linked = connect_components(graph, components_dict['START'], components_dict['NOTHING'])
+
+        for component in components_linked:
+            component_list = list(component)
+            components_dict['START'].append(component_list)
+            components_dict['NOTHING'].remove(component_list)
+
+        # Chiamo la funzione ricorsiva con un cambio disponibile in meno
+        # e con il dizionario e il grafo aggiornati
+        create_additional_edges(graph, components_dict, number_of_switches - 1)
 
 
-def connect_clusters(graph, clusters1, clusters2):
+def connect_components(graph, components1, components2):
 
-    clusters_linked = set()
-    if clusters2:
-        for cluster in clusters1:
-            for node in cluster:
+    # Per ogni nodo che rappresenta una stazione della prima componente connessa (START),
+    # controllo se ci sia un nodo nell'altra componente connessa (MIDDLE START, FINISH o
+    # NOTHING) che rappresenta la stessa stazione. Se esiste, creo l'arco che connette i
+    # due nodi solamente se gli orari risultano essere coerenti fra di loro.
+    # Restituisco l'insieme delle componenti che sono state connesse a START
+    components_linked = set()
+    if components2:
+        for component in components1:
+            for node in component:
                 source = graph.vs[node].attributes()
                 name_source = source['name'][:source['name'].find('-')]
-                for f_cluster in clusters2:
-                    for f_node in f_cluster:
+                for f_component in components2:
+                    for f_node in f_component:
                         target = graph.vs[f_node].attributes()
                         if name_source == \
                                 target['name'][:target['name'].find('-')]:
                             if target['departure_time'] and source['arrival_time'] and \
                                         source['arrival_time'] < target['departure_time']:
+                                departure_time = source['arrival_time']
+                                arrival_time = target['departure_time']
                                 graph.add_edge(source['name'], target['name'], route='switch',
-                                               departure_time=source['arrival_time'],
-                                               arrival_time=target['departure_time'], trip=None,
-                                               weight=compute_travel_time(source['arrival_time'],
-                                                                          target['departure_time']))
+                                               departure_time=departure_time, arrival_time=arrival_time,
+                                               trip=None, weight=compute_travel_time(departure_time, arrival_time))
 
-                                clusters_linked.add(tuple(f_cluster))
+                                components_linked.add(tuple(f_component))
 
-    return clusters_linked
-
-
-def create_graph_min_path_connected(edge_list, station_source, station_target, start_time, day,
-                                    number_of_switches):
-
-    g = ig.Graph(directed=True)
-
-    for edge in edge_list:
-        trip = str(edge[5])
-        node1 = str(edge[0])
-        node2 = str(edge[1])
-        if not g.vs:
-            g.add_vertex(name=node1)
-            g.add_vertex(name=node2)
-        if node1 not in g.vs['name']:
-            g.add_vertex(name=node1)
-        if node2 not in g.vs['name']:
-            g.add_vertex(name=node2)
-        g.add_edge(node1, node2, route=edge[2], departure_time=edge[3], arrival_time=edge[4], trip=trip,
-                   weight=compute_travel_time(edge[3], edge[4]))
-
-    g.write_graphml('minPath_from' + station_source + 'to' + station_target + '_at' +
-                    start_time.replace(':', '-') + '_on' + day + '_with' + str(number_of_switches) +
-                    'switches_CONNECTED.graphml')
+    return components_linked
 
 
 def create_graph_for_loads(loads_dataframe, stops):
@@ -317,3 +348,18 @@ def create_graph_for_attack_handling(graph_no_multiple_edges, nodes_to_remove, g
             graph_no_multiple_edges.vs.find(name=vertex.attributes()['name'])[attribute] = '2'
 
     graph_no_multiple_edges.write_graphml('AttackHandling_Trenord.graphml')
+
+
+# --------------------------------------------------------
+# METODI UTILIZZATI DURANTE IL PROGETTO MA CHE NON VENGONO
+# CHIAMATI DURANTE L'ESECUZIONE PRINCIPALE
+# --------------------------------------------------------
+
+
+def create_graph_with_multiple_routes(stops, stop_times, trips):
+
+    # Creo un grafo con molteplici archi, uno per ogni linea
+    # che collega due stazioni diverse
+
+    graph = create_standard_graph(stops, trips, stop_times)
+    graph.write_graphml("Complete_TrenordNetwork.graphml")

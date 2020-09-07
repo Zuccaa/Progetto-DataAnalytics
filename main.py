@@ -7,7 +7,7 @@ Creato da:
 '''
 
 from attack_handling import remove_nodes_analysis
-from graphs import create_graph_with_switches, create_graph_for_loads
+from graphs import create_graph_for_loads, create_graph_with_switches
 from load_analysis import compute_loads_with_exceptions
 from min_paths import compute_min_path, compute_switches_from_station
 from utils import dict_as_group_by, import_data, create_routes_adjacency_dict, import_graphs
@@ -26,15 +26,15 @@ def do_pre_analysis(graph_no_multiple_edges):
     compute_assortativity(graph_no_multiple_edges, degree_results)
 
 
-def do_load_analysis(station, day, exceptions_service, stops, trips, calendar, stop_times_load,
-                     trips_with_stop_times):
+def do_load_analysis(station, day, exceptions_service, stops, trips_with_stop_times):
 
     # Creo un dizionario per avere i servizi cancellati con i relativi giorni di annullamento
     exceptions_service_dict = dict_as_group_by(exceptions_service, 'service_id', 'date')
     for element in exceptions_service_dict:
         exceptions_service_dict[element] = str(exceptions_service_dict[element])
 
-    week = [52, 2, 6, 10, 14, 18, 22, 26, 30, 34, 38, 42, 46, 49]
+    # Codice eseguito per avere dei file già pronti
+    '''week = [52, 2, 6, 10, 14, 18, 22, 26, 30, 34, 38, 42, 46, 49]
     for w in week:
         if w == 52:
             print('Settimana ' + str(w) + " dell'anno 2018 in corso")
@@ -43,9 +43,11 @@ def do_load_analysis(station, day, exceptions_service, stops, trips, calendar, s
             print('Settimana ' + str(w) + " dell'anno 2019 in corso")
             compute_loads_with_exceptions(trips_with_stop_times, exceptions_service_dict, 2019, w)
         print('FATTO!')
-        print('-----------------------------------------------------------')
+        print('-----------------------------------------------------------')'''
 
+    week = 42
     year = 2019
+    compute_loads_with_exceptions(trips_with_stop_times, exceptions_service_dict, year, week)
     file_with_exceptions = 'loads_complete_with_exceptions_' + str(year) + str(week) + '.json'
     title = 'Carico giornaliero (' + day + ') di ' + stops.loc[stops['stop_id'] == station]['stop_name']
 
@@ -81,7 +83,7 @@ def do_min_path_analysis(station_source, station_target, hour, day, number_of_sw
     switches_from_station_dict = compute_switches_from_station('1581', routes_adjacency_dict,
                                                                stations_routes_dict,
                                                                routes_stations_dict)
-    # create_graph_with_switches(switches_from_station_dict, stops, stop_times, trips)
+    create_graph_with_switches(switches_from_station_dict, stops, stop_times, trips)
 
 
 def do_attack_handling_analysis(graph, graph_no_multiple_edges):
@@ -102,9 +104,8 @@ def main():
 
     # Svolgo le varie fasi dell'analisi
     # do_pre_analysis(graph_no_multiple_edges)
-    '''do_load_analysis('1581', 'monday', exceptions_service, stops, trips, calendar, stop_times_load,
-                     trips_with_stop_times)'''
-    do_min_path_analysis('1581', '1711', '07:00:00', 'monday', 1, trips_with_stop_times, stops, stop_times,
+    # do_load_analysis('1581', 'monday', exceptions_service, stops, trips_with_stop_times)#
+    do_min_path_analysis('1581', '734', '09:00:00', 'monday', 2, trips_with_stop_times, stops, stop_times,
                          trips)
     # do_attack_handling_analysis(graph, graph_no_multiple_edges)
 
