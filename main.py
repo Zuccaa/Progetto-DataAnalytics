@@ -17,21 +17,21 @@ from plots import plot_bars_of_loads
 import numpy as np
 
 
-def do_pre_analysis(graph_no_multiple_edges):
+def do_pre_analysis(graph):
 
     # Calcolo il numero di edge per il grafo con un solo link tra stazioni
-    degree_results = graph_no_multiple_edges.degree((np.arange(graph_no_multiple_edges.vcount())))
+    degree_results = graph.degree((np.arange(graph.vcount())))
 
     # Analizzo se la rete è assortativa o meno
-    compute_assortativity(graph_no_multiple_edges, degree_results)
+    compute_assortativity(graph, degree_results)
 
 
 def do_load_analysis(station, day, exceptions_service, stops, trips_with_stop_times):
 
     # Creo un dizionario per avere i servizi cancellati con i relativi giorni di annullamento
-    exceptions_service_dict = dict_as_group_by(exceptions_service, 'service_id', 'date')
+    '''exceptions_service_dict = dict_as_group_by(exceptions_service, 'service_id', 'date')
     for element in exceptions_service_dict:
-        exceptions_service_dict[element] = str(exceptions_service_dict[element])
+        exceptions_service_dict[element] = str(exceptions_service_dict[element])'''
 
     # Codice eseguito per avere dei file già pronti
     '''week = [52, 2, 6, 10, 14, 18, 22, 26, 30, 34, 38, 42, 46, 49]
@@ -45,17 +45,17 @@ def do_load_analysis(station, day, exceptions_service, stops, trips_with_stop_ti
         print('FATTO!')
         print('-----------------------------------------------------------')'''
 
-    week = 42
+    week = 34
     year = 2019
-    compute_loads_with_exceptions(trips_with_stop_times, exceptions_service_dict, year, week)
-    file_with_exceptions = 'loads_complete_with_exceptions_' + str(year) + str(week) + '.json'
-    title = 'Carico giornaliero (' + day + ') di ' + stops.loc[stops['stop_id'] == station]['stop_name']
+    # compute_loads_with_exceptions(trips_with_stop_times, exceptions_service_dict, year, week)
+    file_with_exceptions = 'Loads//loads_complete_with_exceptions_' + str(year) + str(week) + '.json'
+    #title = 'Carico giornaliero (' + day + ') di ' + stops.loc[stops['stop_id'] == station]['stop_name']
 
     # Illustro su un plot i risultati
-    plot_bars_of_loads(file_with_exceptions, day, station, title)
+    plot_bars_of_loads(file_with_exceptions, day, station, '')
 
     # Creo un grafo contenente tutti i trip con i relativi percorsi
-    create_graph_for_loads(trips_with_stop_times, stops)
+    # create_graph_for_loads(trips_with_stop_times, stops)
 
 
 def do_min_path_analysis(station_source, station_target, hour, day, number_of_switches,
@@ -66,8 +66,8 @@ def do_min_path_analysis(station_source, station_target, hour, day, number_of_sw
     stations_routes_dict = dict_as_group_by(trips_with_stop_times, 'stop_id', 'route_id', repetition=False)
 
     # Calcolo il percorso minimo tra due stazioni e creo il grafo relativo
-    compute_min_path(trips_with_stop_times.copy(), stations_routes_dict, station_source, station_target,
-                     hour, day, number_of_switches, stops)
+    #compute_min_path(trips_with_stop_times.copy(), stations_routes_dict, station_source, station_target,
+    #                 hour, day, number_of_switches, stops)
 
     # Creo un dizionario con chiave la linea e con valori le fermate
     # in cui passa quella linea
@@ -80,7 +80,7 @@ def do_min_path_analysis(station_source, station_target, hour, day, number_of_sw
     # Creo un dizionario in cui per ogni stazione viene associato il numero
     # minimo di cambi da dover fare per raggiungerla a partire da una
     # particolare stazione
-    switches_from_station_dict = compute_switches_from_station('1581', routes_adjacency_dict,
+    switches_from_station_dict = compute_switches_from_station('3071', routes_adjacency_dict,
                                                                stations_routes_dict,
                                                                routes_stations_dict)
     create_graph_with_switches(switches_from_station_dict, stops, stop_times, trips)
@@ -99,15 +99,15 @@ def main():
     stop_times, trips, routes, exceptions_service, calendar, stops, trips_with_stop_times = import_data()
     stop_times_load = stop_times.copy().drop(['stop_sequence'], axis=1)
 
-    graph, graph_no_multiple_edges = import_graphs('Complete_TrenordNetwork.xml',
+    graph_with_routes, graph_no_multiple_edges = import_graphs('Complete_TrenordNetwork.xml',
                                                    'CompleteGraph_NoMultipleEdges.xml')
 
     # Svolgo le varie fasi dell'analisi
-    # do_pre_analysis(graph_no_multiple_edges)
-    # do_load_analysis('1581', 'monday', exceptions_service, stops, trips_with_stop_times)#
+    # do_pre_analysis(graph_with_routes)
+    # do_load_analysis('1841', 'monday', exceptions_service, stops, trips_with_stop_times)#
     do_min_path_analysis('1581', '734', '09:00:00', 'monday', 2, trips_with_stop_times, stops, stop_times,
-                         trips)
-    # do_attack_handling_analysis(graph, graph_no_multiple_edges)
+                        trips)
+    # do_attack_handling_analysis(graph_with_routes, graph_no_multiple_edges)
 
 
 if __name__ == "__main__":

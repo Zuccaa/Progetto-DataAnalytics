@@ -27,7 +27,6 @@ def compute_assortativity(graph, degree_results):
     # Normalizzo la matrice
     sum_values = sum(sum(degree_correlation_matrix))
     degree_correlation_matrix = degree_correlation_matrix / sum_values
-    print(degree_correlation_matrix)
 
     # Plotto la matrice
     plot_assortativity_matrix(degree_correlation_matrix)

@@ -17,21 +17,32 @@ def create_graph_with_switches(switches_from_station_dict, stops, stop_times, tr
 
     # Creo un grafo con un solo link tra nodi connessi da almeno una route
     graph = create_standard_graph(stops, trips, stop_times, single_edge=True,
-                                  station_source=str(list(switches_from_station_dict.keys())[0]))
+                                  station_source=str(list(switches_from_station_dict.keys())[0]),
+                                  switches_from_station_dict=switches_from_station_dict)
     graph.write_graphml(str(list(switches_from_station_dict.keys())[0]) + "_graph.graphml")
 
 
-def create_standard_graph(stops, trips, stop_times, single_edge=False, station_source=None):
+def create_standard_graph(stops, trips, stop_times, single_edge=False, station_source=None,
+                          switches_from_station_dict=None):
 
     colors_used = set()
     # Creo due grafi in cui metto come nodi le stazioni
     graph_definitive = ig.Graph(directed=False)
     graph_tmp = ig.Graph(directed=False)
-    for index, row in stops.iterrows():
-        graph_definitive.add_vertex(name=str(row['stop_id']), long_name=row['stop_name'],
-                                    lat=row['stop_lat'] * -4200, lon=row['stop_lon'] * 4200)
-        graph_tmp.add_vertex(name=str(row['stop_id']), long_name=row['stop_name'],
-                             lat=row['stop_lat'] * -4200, lon=row['stop_lon'] * 4200)
+    if single_edge:
+        for index, row in stops.iterrows():
+            graph_definitive.add_vertex(name=str(row['stop_id']), long_name=row['stop_name'],
+                                        lat=row['stop_lat'] * -4200, lon=row['stop_lon'] * 4200,
+                                        switch=switches_from_station_dict[row['stop_id']], show_name='')
+            graph_tmp.add_vertex(name=str(row['stop_id']), long_name=row['stop_name'],
+                                 lat=row['stop_lat'] * -4200, lon=row['stop_lon'] * 4200,
+                                 switch=switches_from_station_dict[row['stop_id']], show_name='')
+    else:
+        for index, row in stops.iterrows():
+            graph_definitive.add_vertex(name=str(row['stop_id']), long_name=row['stop_name'],
+                                        lat=row['stop_lat'] * -4200, lon=row['stop_lon'] * 4200)
+            graph_tmp.add_vertex(name=str(row['stop_id']), long_name=row['stop_name'],
+                                 lat=row['stop_lat'] * -4200, lon=row['stop_lon'] * 4200)
 
     # Creo un dizionario con chiave la linea e come valori i trip di quella linea
     trips_per_route = dict_as_group_by(trips, 'route_id', 'trip_id')
@@ -302,8 +313,7 @@ def create_graph_for_loads(loads_dataframe, stops):
     # Aggiungo un vertice per ogni stazione
     for index, row in stops.iterrows():
         graph.add_vertex(name=str(row['stop_id']), long_name=row['stop_name'],
-                         lat=row['stop_lat'] * -4200,
-                         lon=row['stop_lon'] * 4200)
+                         lat=row['stop_lat'] * -4200, lon=row['stop_lon'] * 4200)
 
     # Aggiungo un arco che collega due stazioni adiacenti
     # all'interno dello stesso trip

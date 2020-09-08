@@ -1,0 +1,2029 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns
+         http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+<!-- Created by igraph -->
+  <key id="v_name" for="node" attr.name="name" attr.type="string"/>
+  <key id="v_arrival_time" for="node" attr.name="arrival_time" attr.type="string"/>
+  <key id="v_station_name" for="node" attr.name="station_name" attr.type="string"/>
+  <key id="v_departure_time" for="node" attr.name="departure_time" attr.type="string"/>
+  <key id="v_min_path" for="node" attr.name="min_path" attr.type="string"/>
+  <key id="v_show_name" for="node" attr.name="show_name" attr.type="string"/>
+  <key id="e_route" for="edge" attr.name="route" attr.type="string"/>
+  <key id="e_departure_time" for="edge" attr.name="departure_time" attr.type="string"/>
+  <key id="e_arrival_time" for="edge" attr.name="arrival_time" attr.type="string"/>
+  <key id="e_trip" for="edge" attr.name="trip" attr.type="string"/>
+  <key id="e_weight" for="edge" attr.name="weight" attr.type="double"/>
+  <key id="e_min_path" for="edge" attr.name="min_path" attr.type="string"/>
+  <key id="e_show_weight" for="edge" attr.name="show_weight" attr.type="double"/>
+  <graph id="G" edgedefault="directed">
+    <node id="n0">
+      <data key="v_name">1581-10061201</data>
+      <data key="v_arrival_time">09:00:00</data>
+      <data key="v_station_name">LISSONE-MUGGIO&apos;</data>
+      <data key="v_departure_time">09:27:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n1">
+      <data key="v_name">1841-10061201</data>
+      <data key="v_arrival_time">09:32:00</data>
+      <data key="v_station_name">MONZA</data>
+      <data key="v_departure_time">09:32:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n2">
+      <data key="v_name">1841-10062577</data>
+      <data key="v_arrival_time">09:39:00</data>
+      <data key="v_station_name">MONZA</data>
+      <data key="v_departure_time">09:39:00</data>
+      <data key="v_min_path">1</data>
+      <data key="v_show_name">MONZA</data>
+    </node>
+    <node id="n3">
+      <data key="v_name">453-10062577</data>
+      <data key="v_arrival_time">09:45:00</data>
+      <data key="v_station_name">ARCORE</data>
+      <data key="v_departure_time">09:45:00</data>
+      <data key="v_min_path">1</data>
+      <data key="v_show_name">ARCORE</data>
+    </node>
+    <node id="n4">
+      <data key="v_name">905-10062577</data>
+      <data key="v_arrival_time">09:50:00</data>
+      <data key="v_station_name">CARNATE USMATE</data>
+      <data key="v_departure_time">09:50:00</data>
+      <data key="v_min_path">1</data>
+      <data key="v_show_name">CARNATE USMATE</data>
+    </node>
+    <node id="n5">
+      <data key="v_name">1964-10062577</data>
+      <data key="v_arrival_time">09:54:00</data>
+      <data key="v_station_name">OSNAGO</data>
+      <data key="v_departure_time">09:54:00</data>
+      <data key="v_min_path">1</data>
+      <data key="v_show_name">OSNAGO</data>
+    </node>
+    <node id="n6">
+      <data key="v_name">1066-10062577</data>
+      <data key="v_arrival_time">09:58:00</data>
+      <data key="v_station_name">CERNUSCO-MERATE</data>
+      <data key="v_departure_time">09:58:00</data>
+      <data key="v_min_path">1</data>
+      <data key="v_show_name">CERNUSCO-MERATE</data>
+    </node>
+    <node id="n7">
+      <data key="v_name">1937-10062577</data>
+      <data key="v_arrival_time">10:02:00</data>
+      <data key="v_station_name">OLGIATE-CALCO-BRIVIO</data>
+      <data key="v_departure_time">10:02:00</data>
+      <data key="v_min_path">1</data>
+      <data key="v_show_name">OLGIATE-CALCO-BRIVIO</data>
+    </node>
+    <node id="n8">
+      <data key="v_name">388-10062577</data>
+      <data key="v_arrival_time">10:06:00</data>
+      <data key="v_station_name">AIRUNO</data>
+      <data key="v_departure_time">10:06:00</data>
+      <data key="v_min_path">1</data>
+      <data key="v_show_name">AIRUNO</data>
+    </node>
+    <node id="n9">
+      <data key="v_name">807-10062577</data>
+      <data key="v_arrival_time">10:12:00</data>
+      <data key="v_station_name">CALOLZIOCORTE OLGINATE</data>
+      <data key="v_departure_time">10:12:00</data>
+      <data key="v_min_path">1</data>
+      <data key="v_show_name">CALOLZIOCORTE OLGINATE</data>
+    </node>
+    <node id="n10">
+      <data key="v_name">807-10066038</data>
+      <data key="v_arrival_time">13:38:00</data>
+      <data key="v_station_name">CALOLZIOCORTE OLGINATE</data>
+      <data key="v_departure_time">13:38:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n11">
+      <data key="v_name">3015-10066038</data>
+      <data key="v_arrival_time">13:41:00</data>
+      <data key="v_station_name">VERCURAGO S.GIROLAMO</data>
+      <data key="v_departure_time">13:41:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n12">
+      <data key="v_name">1551-10062577</data>
+      <data key="v_arrival_time">10:18:00</data>
+      <data key="v_station_name">LECCO MAGGIANICO</data>
+      <data key="v_departure_time">10:18:00</data>
+      <data key="v_min_path">1</data>
+      <data key="v_show_name">LECCO MAGGIANICO</data>
+    </node>
+    <node id="n13">
+      <data key="v_name">1550-10062577</data>
+      <data key="v_arrival_time">10:23:00</data>
+      <data key="v_station_name">LECCO</data>
+      <data key="v_departure_time">None</data>
+      <data key="v_min_path">1</data>
+      <data key="v_show_name">LECCO</data>
+    </node>
+    <node id="n14">
+      <data key="v_name">1550-10065760</data>
+      <data key="v_arrival_time">None</data>
+      <data key="v_station_name">LECCO</data>
+      <data key="v_departure_time">12:12:00</data>
+      <data key="v_min_path">1</data>
+      <data key="v_show_name">LECCO</data>
+    </node>
+    <node id="n15">
+      <data key="v_name">3015-10065760</data>
+      <data key="v_arrival_time">12:19:00</data>
+      <data key="v_station_name">VERCURAGO S.GIROLAMO</data>
+      <data key="v_departure_time">12:19:00</data>
+      <data key="v_min_path">1</data>
+      <data key="v_show_name">VERCURAGO S.GIROLAMO</data>
+    </node>
+    <node id="n16">
+      <data key="v_name">1841-10065528</data>
+      <data key="v_arrival_time">09:33:00</data>
+      <data key="v_station_name">MONZA</data>
+      <data key="v_departure_time">09:33:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n17">
+      <data key="v_name">1842-10065528</data>
+      <data key="v_arrival_time">09:37:00</data>
+      <data key="v_station_name">MONZA SOBBORGHI</data>
+      <data key="v_departure_time">09:37:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n18">
+      <data key="v_name">3101-10065528</data>
+      <data key="v_arrival_time">09:43:00</data>
+      <data key="v_station_name">VILLASANTA</data>
+      <data key="v_departure_time">09:43:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n19">
+      <data key="v_name">768-10065528</data>
+      <data key="v_arrival_time">09:48:00</data>
+      <data key="v_station_name">BUTTAFAVA</data>
+      <data key="v_departure_time">09:48:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n20">
+      <data key="v_name">642-10065528</data>
+      <data key="v_arrival_time">09:51:00</data>
+      <data key="v_station_name">BIASSONO-LESMO PARCO</data>
+      <data key="v_departure_time">09:51:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n21">
+      <data key="v_name">1604-10065528</data>
+      <data key="v_arrival_time">09:54:00</data>
+      <data key="v_station_name">MACHERIO-CANONICA</data>
+      <data key="v_departure_time">09:54:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n22">
+      <data key="v_name">2930-10065528</data>
+      <data key="v_arrival_time">10:02:00</data>
+      <data key="v_station_name">TRIUGGIO-PONTE ALBIATE</data>
+      <data key="v_departure_time">10:02:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n23">
+      <data key="v_name">891-10065528</data>
+      <data key="v_arrival_time">10:06:00</data>
+      <data key="v_station_name">CARATE-CALO&apos;</data>
+      <data key="v_departure_time">10:06:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n24">
+      <data key="v_name">3074-10065528</data>
+      <data key="v_arrival_time">10:10:00</data>
+      <data key="v_station_name">VILLA RAVERIO</data>
+      <data key="v_departure_time">10:10:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n25">
+      <data key="v_name">634-10065528</data>
+      <data key="v_arrival_time">10:14:00</data>
+      <data key="v_station_name">BESANA</data>
+      <data key="v_departure_time">10:14:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n26">
+      <data key="v_name">2337-10065528</data>
+      <data key="v_arrival_time">10:18:00</data>
+      <data key="v_station_name">RENATE-VEDUGGIO</data>
+      <data key="v_departure_time">10:18:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n27">
+      <data key="v_name">950-10065528</data>
+      <data key="v_arrival_time">10:21:00</data>
+      <data key="v_station_name">CASSAGO-NIBIONNO-BULCIAGO</data>
+      <data key="v_departure_time">10:21:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n28">
+      <data key="v_name">1193-10065528</data>
+      <data key="v_arrival_time">10:25:00</data>
+      <data key="v_station_name">COSTA MASNAGA</data>
+      <data key="v_departure_time">10:25:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n29">
+      <data key="v_name">1761-10065528</data>
+      <data key="v_arrival_time">10:31:00</data>
+      <data key="v_station_name">MOLTENO</data>
+      <data key="v_departure_time">10:31:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n30">
+      <data key="v_name">1930-10065528</data>
+      <data key="v_arrival_time">10:36:00</data>
+      <data key="v_station_name">OGGIONO</data>
+      <data key="v_departure_time">10:36:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n31">
+      <data key="v_name">2612-10065528</data>
+      <data key="v_arrival_time">10:41:00</data>
+      <data key="v_station_name">SALA AL BARRO-GALBIATE</data>
+      <data key="v_departure_time">10:41:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n32">
+      <data key="v_name">1119-10065528</data>
+      <data key="v_arrival_time">10:44:00</data>
+      <data key="v_station_name">CIVATE</data>
+      <data key="v_departure_time">10:44:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n33">
+      <data key="v_name">2982-10065528</data>
+      <data key="v_arrival_time">10:47:00</data>
+      <data key="v_station_name">VALMADRERA</data>
+      <data key="v_departure_time">10:47:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n34">
+      <data key="v_name">1550-10065528</data>
+      <data key="v_arrival_time">10:53:00</data>
+      <data key="v_station_name">LECCO</data>
+      <data key="v_departure_time">None</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n35">
+      <data key="v_name">1841-10065228</data>
+      <data key="v_arrival_time">None</data>
+      <data key="v_station_name">MONZA</data>
+      <data key="v_departure_time">10:32:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n36">
+      <data key="v_name">1550-10065228</data>
+      <data key="v_arrival_time">11:02:00</data>
+      <data key="v_station_name">LECCO</data>
+      <data key="v_departure_time">None</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n37">
+      <data key="v_name">2716-10061201</data>
+      <data key="v_arrival_time">09:38:00</data>
+      <data key="v_station_name">SESTO S.GIOVANNI</data>
+      <data key="v_departure_time">09:38:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n38">
+      <data key="v_name">2716-10065911</data>
+      <data key="v_arrival_time">10:03:00</data>
+      <data key="v_station_name">SESTO S.GIOVANNI</data>
+      <data key="v_departure_time">10:03:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n39">
+      <data key="v_name">1841-10065911</data>
+      <data key="v_arrival_time">10:09:00</data>
+      <data key="v_station_name">MONZA</data>
+      <data key="v_departure_time">10:09:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n40">
+      <data key="v_name">453-10065911</data>
+      <data key="v_arrival_time">10:15:00</data>
+      <data key="v_station_name">ARCORE</data>
+      <data key="v_departure_time">10:15:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n41">
+      <data key="v_name">905-10065911</data>
+      <data key="v_arrival_time">10:20:00</data>
+      <data key="v_station_name">CARNATE USMATE</data>
+      <data key="v_departure_time">10:20:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n42">
+      <data key="v_name">1964-10065911</data>
+      <data key="v_arrival_time">10:24:00</data>
+      <data key="v_station_name">OSNAGO</data>
+      <data key="v_departure_time">10:24:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n43">
+      <data key="v_name">1066-10065911</data>
+      <data key="v_arrival_time">10:28:00</data>
+      <data key="v_station_name">CERNUSCO-MERATE</data>
+      <data key="v_departure_time">10:28:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n44">
+      <data key="v_name">1937-10065911</data>
+      <data key="v_arrival_time">10:32:00</data>
+      <data key="v_station_name">OLGIATE-CALCO-BRIVIO</data>
+      <data key="v_departure_time">10:32:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n45">
+      <data key="v_name">388-10065911</data>
+      <data key="v_arrival_time">10:36:00</data>
+      <data key="v_station_name">AIRUNO</data>
+      <data key="v_departure_time">10:36:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n46">
+      <data key="v_name">807-10065911</data>
+      <data key="v_arrival_time">10:42:00</data>
+      <data key="v_station_name">CALOLZIOCORTE OLGINATE</data>
+      <data key="v_departure_time">10:42:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n47">
+      <data key="v_name">1551-10065911</data>
+      <data key="v_arrival_time">10:48:00</data>
+      <data key="v_station_name">LECCO MAGGIANICO</data>
+      <data key="v_departure_time">10:48:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n48">
+      <data key="v_name">1550-10065911</data>
+      <data key="v_arrival_time">10:53:00</data>
+      <data key="v_station_name">LECCO</data>
+      <data key="v_departure_time">None</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n49">
+      <data key="v_name">2716-10065175</data>
+      <data key="v_arrival_time">10:27:00</data>
+      <data key="v_station_name">SESTO S.GIOVANNI</data>
+      <data key="v_departure_time">10:27:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n50">
+      <data key="v_name">1841-10065175</data>
+      <data key="v_arrival_time">10:33:00</data>
+      <data key="v_station_name">MONZA</data>
+      <data key="v_departure_time">10:33:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n51">
+      <data key="v_name">1842-10065175</data>
+      <data key="v_arrival_time">10:37:00</data>
+      <data key="v_station_name">MONZA SOBBORGHI</data>
+      <data key="v_departure_time">10:37:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n52">
+      <data key="v_name">3101-10065175</data>
+      <data key="v_arrival_time">10:43:00</data>
+      <data key="v_station_name">VILLASANTA</data>
+      <data key="v_departure_time">10:43:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n53">
+      <data key="v_name">768-10065175</data>
+      <data key="v_arrival_time">10:48:00</data>
+      <data key="v_station_name">BUTTAFAVA</data>
+      <data key="v_departure_time">10:48:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n54">
+      <data key="v_name">642-10065175</data>
+      <data key="v_arrival_time">10:51:00</data>
+      <data key="v_station_name">BIASSONO-LESMO PARCO</data>
+      <data key="v_departure_time">10:51:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n55">
+      <data key="v_name">1604-10065175</data>
+      <data key="v_arrival_time">10:54:00</data>
+      <data key="v_station_name">MACHERIO-CANONICA</data>
+      <data key="v_departure_time">10:54:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n56">
+      <data key="v_name">2930-10065175</data>
+      <data key="v_arrival_time">11:02:00</data>
+      <data key="v_station_name">TRIUGGIO-PONTE ALBIATE</data>
+      <data key="v_departure_time">11:02:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n57">
+      <data key="v_name">891-10065175</data>
+      <data key="v_arrival_time">11:06:00</data>
+      <data key="v_station_name">CARATE-CALO&apos;</data>
+      <data key="v_departure_time">11:06:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n58">
+      <data key="v_name">3074-10065175</data>
+      <data key="v_arrival_time">11:10:00</data>
+      <data key="v_station_name">VILLA RAVERIO</data>
+      <data key="v_departure_time">11:10:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n59">
+      <data key="v_name">634-10065175</data>
+      <data key="v_arrival_time">11:14:00</data>
+      <data key="v_station_name">BESANA</data>
+      <data key="v_departure_time">11:14:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n60">
+      <data key="v_name">2337-10065175</data>
+      <data key="v_arrival_time">11:18:00</data>
+      <data key="v_station_name">RENATE-VEDUGGIO</data>
+      <data key="v_departure_time">11:18:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n61">
+      <data key="v_name">950-10065175</data>
+      <data key="v_arrival_time">11:21:00</data>
+      <data key="v_station_name">CASSAGO-NIBIONNO-BULCIAGO</data>
+      <data key="v_departure_time">11:21:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n62">
+      <data key="v_name">1193-10065175</data>
+      <data key="v_arrival_time">11:25:00</data>
+      <data key="v_station_name">COSTA MASNAGA</data>
+      <data key="v_departure_time">11:25:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n63">
+      <data key="v_name">1761-10065175</data>
+      <data key="v_arrival_time">11:31:00</data>
+      <data key="v_station_name">MOLTENO</data>
+      <data key="v_departure_time">11:31:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n64">
+      <data key="v_name">1930-10065175</data>
+      <data key="v_arrival_time">11:36:00</data>
+      <data key="v_station_name">OGGIONO</data>
+      <data key="v_departure_time">11:36:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n65">
+      <data key="v_name">2612-10065175</data>
+      <data key="v_arrival_time">11:41:00</data>
+      <data key="v_station_name">SALA AL BARRO-GALBIATE</data>
+      <data key="v_departure_time">11:41:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n66">
+      <data key="v_name">1119-10065175</data>
+      <data key="v_arrival_time">11:44:00</data>
+      <data key="v_station_name">CIVATE</data>
+      <data key="v_departure_time">11:44:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n67">
+      <data key="v_name">2982-10065175</data>
+      <data key="v_arrival_time">11:47:00</data>
+      <data key="v_station_name">VALMADRERA</data>
+      <data key="v_departure_time">11:47:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n68">
+      <data key="v_name">1550-10065175</data>
+      <data key="v_arrival_time">11:53:00</data>
+      <data key="v_station_name">LECCO</data>
+      <data key="v_departure_time">None</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n69">
+      <data key="v_name">1711-10061201</data>
+      <data key="v_arrival_time">09:44:00</data>
+      <data key="v_station_name">MILANO GRECO PIRELLI</data>
+      <data key="v_departure_time">09:44:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n70">
+      <data key="v_name">1711-10065911</data>
+      <data key="v_arrival_time">09:59:00</data>
+      <data key="v_station_name">MILANO GRECO PIRELLI</data>
+      <data key="v_departure_time">09:59:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n71">
+      <data key="v_name">1711-10065175</data>
+      <data key="v_arrival_time">10:22:00</data>
+      <data key="v_station_name">MILANO GRECO PIRELLI</data>
+      <data key="v_departure_time">10:22:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n72">
+      <data key="v_name">1715-10061201</data>
+      <data key="v_arrival_time">09:53:00</data>
+      <data key="v_station_name">MILANO PORTA GARIBALDI</data>
+      <data key="v_departure_time">09:53:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n73">
+      <data key="v_name">1715-10065911</data>
+      <data key="v_arrival_time">None</data>
+      <data key="v_station_name">MILANO PORTA GARIBALDI</data>
+      <data key="v_departure_time">09:52:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n74">
+      <data key="v_name">1715-10065175</data>
+      <data key="v_arrival_time">None</data>
+      <data key="v_station_name">MILANO PORTA GARIBALDI</data>
+      <data key="v_departure_time">10:14:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n75">
+      <data key="v_name">1715-10060960</data>
+      <data key="v_arrival_time">None</data>
+      <data key="v_station_name">MILANO PORTA GARIBALDI</data>
+      <data key="v_departure_time">16:22:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n76">
+      <data key="v_name">3099-10060960</data>
+      <data key="v_arrival_time">16:29:00</data>
+      <data key="v_station_name">MILANO VILLAPIZZONE</data>
+      <data key="v_departure_time">16:29:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n77">
+      <data key="v_name">1712-10060960</data>
+      <data key="v_arrival_time">16:43:00</data>
+      <data key="v_station_name">MILANO LAMBRATE</data>
+      <data key="v_departure_time">16:43:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n78">
+      <data key="v_name">2147-10060960</data>
+      <data key="v_arrival_time">16:50:00</data>
+      <data key="v_station_name">PIOLTELLO LIMITO</data>
+      <data key="v_departure_time">16:50:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n79">
+      <data key="v_name">2920-10060960</data>
+      <data key="v_arrival_time">17:06:00</data>
+      <data key="v_station_name">TREVIGLIO OVEST</data>
+      <data key="v_departure_time">17:06:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n80">
+      <data key="v_name">3016-10060960</data>
+      <data key="v_arrival_time">17:14:00</data>
+      <data key="v_station_name">VERDELLO DALMINE</data>
+      <data key="v_departure_time">17:14:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n81">
+      <data key="v_name">632-10060960</data>
+      <data key="v_arrival_time">17:25:00</data>
+      <data key="v_station_name">BERGAMO</data>
+      <data key="v_departure_time">None</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n82">
+      <data key="v_name">632-10066041</data>
+      <data key="v_arrival_time">None</data>
+      <data key="v_station_name">BERGAMO</data>
+      <data key="v_departure_time">18:08:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n83">
+      <data key="v_name">2223-10066041</data>
+      <data key="v_arrival_time">18:15:00</data>
+      <data key="v_station_name">PONTE S.PIETRO</data>
+      <data key="v_departure_time">18:15:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n84">
+      <data key="v_name">424-10066041</data>
+      <data key="v_arrival_time">18:20:00</data>
+      <data key="v_station_name">AMBIVERE MAPELLO</data>
+      <data key="v_departure_time">18:20:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n85">
+      <data key="v_name">2235-10066041</data>
+      <data key="v_arrival_time">18:24:00</data>
+      <data key="v_station_name">PONTIDA</data>
+      <data key="v_departure_time">18:24:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n86">
+      <data key="v_name">1111-10066041</data>
+      <data key="v_arrival_time">18:31:00</data>
+      <data key="v_station_name">CISANO CAPRINO BERGAMASCO</data>
+      <data key="v_departure_time">18:31:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n87">
+      <data key="v_name">807-10066041</data>
+      <data key="v_arrival_time">18:38:00</data>
+      <data key="v_station_name">CALOLZIOCORTE OLGINATE</data>
+      <data key="v_departure_time">18:38:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n88">
+      <data key="v_name">3015-10066041</data>
+      <data key="v_arrival_time">18:41:00</data>
+      <data key="v_station_name">VERCURAGO S.GIROLAMO</data>
+      <data key="v_departure_time">18:41:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n89">
+      <data key="v_name">3099-10061201</data>
+      <data key="v_arrival_time">10:00:00</data>
+      <data key="v_station_name">MILANO VILLAPIZZONE</data>
+      <data key="v_departure_time">None</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n90">
+      <data key="v_name">1581-10064022</data>
+      <data key="v_arrival_time">09:00:00</data>
+      <data key="v_station_name">LISSONE-MUGGIO&apos;</data>
+      <data key="v_departure_time">09:12:00</data>
+      <data key="v_min_path">1</data>
+      <data key="v_show_name">LISSONE-MUGGIO&apos;</data>
+    </node>
+    <node id="n91">
+      <data key="v_name">1841-10064022</data>
+      <data key="v_arrival_time">09:17:00</data>
+      <data key="v_station_name">MONZA</data>
+      <data key="v_departure_time">09:17:00</data>
+      <data key="v_min_path">1</data>
+      <data key="v_show_name">MONZA</data>
+    </node>
+    <node id="n92">
+      <data key="v_name">2716-10064022</data>
+      <data key="v_arrival_time">09:23:00</data>
+      <data key="v_station_name">SESTO S.GIOVANNI</data>
+      <data key="v_departure_time">09:23:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n93">
+      <data key="v_name">2716-10062577</data>
+      <data key="v_arrival_time">09:33:00</data>
+      <data key="v_station_name">SESTO S.GIOVANNI</data>
+      <data key="v_departure_time">09:33:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n94">
+      <data key="v_name">2716-10065528</data>
+      <data key="v_arrival_time">None</data>
+      <data key="v_station_name">SESTO S.GIOVANNI</data>
+      <data key="v_departure_time">09:27:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n95">
+      <data key="v_name">1711-10064022</data>
+      <data key="v_arrival_time">09:28:00</data>
+      <data key="v_station_name">MILANO GRECO PIRELLI</data>
+      <data key="v_departure_time">09:28:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n96">
+      <data key="v_name">1711-10062577</data>
+      <data key="v_arrival_time">None</data>
+      <data key="v_station_name">MILANO GRECO PIRELLI</data>
+      <data key="v_departure_time">09:29:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n97">
+      <data key="v_name">1712-10064022</data>
+      <data key="v_arrival_time">09:35:00</data>
+      <data key="v_station_name">MILANO LAMBRATE</data>
+      <data key="v_departure_time">None</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n98">
+      <data key="v_name">1712-10059833</data>
+      <data key="v_arrival_time">None</data>
+      <data key="v_station_name">MILANO LAMBRATE</data>
+      <data key="v_departure_time">10:13:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n99">
+      <data key="v_name">2147-10059833</data>
+      <data key="v_arrival_time">10:20:00</data>
+      <data key="v_station_name">PIOLTELLO LIMITO</data>
+      <data key="v_departure_time">10:20:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n100">
+      <data key="v_name">2920-10059833</data>
+      <data key="v_arrival_time">10:36:00</data>
+      <data key="v_station_name">TREVIGLIO OVEST</data>
+      <data key="v_departure_time">10:36:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n101">
+      <data key="v_name">3016-10059833</data>
+      <data key="v_arrival_time">10:44:00</data>
+      <data key="v_station_name">VERDELLO DALMINE</data>
+      <data key="v_departure_time">10:44:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n102">
+      <data key="v_name">632-10059833</data>
+      <data key="v_arrival_time">10:55:00</data>
+      <data key="v_station_name">BERGAMO</data>
+      <data key="v_departure_time">None</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n103">
+      <data key="v_name">632-10066038</data>
+      <data key="v_arrival_time">None</data>
+      <data key="v_station_name">BERGAMO</data>
+      <data key="v_departure_time">13:08:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n104">
+      <data key="v_name">2223-10066038</data>
+      <data key="v_arrival_time">13:15:00</data>
+      <data key="v_station_name">PONTE S.PIETRO</data>
+      <data key="v_departure_time">13:15:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n105">
+      <data key="v_name">424-10066038</data>
+      <data key="v_arrival_time">13:20:00</data>
+      <data key="v_station_name">AMBIVERE MAPELLO</data>
+      <data key="v_departure_time">13:20:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n106">
+      <data key="v_name">2235-10066038</data>
+      <data key="v_arrival_time">13:24:00</data>
+      <data key="v_station_name">PONTIDA</data>
+      <data key="v_departure_time">13:24:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n107">
+      <data key="v_name">1111-10066038</data>
+      <data key="v_arrival_time">13:31:00</data>
+      <data key="v_station_name">CISANO CAPRINO BERGAMASCO</data>
+      <data key="v_departure_time">13:31:00</data>
+      <data key="v_min_path">0</data>
+      <data key="v_show_name"></data>
+    </node>
+    <node id="n108">
+      <data key="v_name">START</data>
+      <data key="v_arrival_time">None</data>
+      <data key="v_station_name">START</data>
+      <data key="v_departure_time">09:00:00</data>
+      <data key="v_min_path">1</data>
+      <data key="v_show_name">START</data>
+    </node>
+    <node id="n109">
+      <data key="v_name">FINISH</data>
+      <data key="v_arrival_time">18:41:00</data>
+      <data key="v_station_name">FINISH</data>
+      <data key="v_departure_time">None</data>
+      <data key="v_min_path">1</data>
+      <data key="v_show_name">FINISH</data>
+    </node>
+    <edge source="n0" target="n1">
+      <data key="e_route">S11</data>
+      <data key="e_departure_time">09:27:00</data>
+      <data key="e_arrival_time">09:32:00</data>
+      <data key="e_trip">10061201</data>
+      <data key="e_weight">5</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n2" target="n3">
+      <data key="e_route">S8</data>
+      <data key="e_departure_time">09:39:00</data>
+      <data key="e_arrival_time">09:45:00</data>
+      <data key="e_trip">10062577</data>
+      <data key="e_weight">6</data>
+      <data key="e_min_path">1</data>
+      <data key="e_show_weight">6</data>
+    </edge>
+    <edge source="n3" target="n4">
+      <data key="e_route">S8</data>
+      <data key="e_departure_time">09:45:00</data>
+      <data key="e_arrival_time">09:50:00</data>
+      <data key="e_trip">10062577</data>
+      <data key="e_weight">5</data>
+      <data key="e_min_path">1</data>
+      <data key="e_show_weight">5</data>
+    </edge>
+    <edge source="n4" target="n5">
+      <data key="e_route">S8</data>
+      <data key="e_departure_time">09:50:00</data>
+      <data key="e_arrival_time">09:54:00</data>
+      <data key="e_trip">10062577</data>
+      <data key="e_weight">4</data>
+      <data key="e_min_path">1</data>
+      <data key="e_show_weight">4</data>
+    </edge>
+    <edge source="n5" target="n6">
+      <data key="e_route">S8</data>
+      <data key="e_departure_time">09:54:00</data>
+      <data key="e_arrival_time">09:58:00</data>
+      <data key="e_trip">10062577</data>
+      <data key="e_weight">4</data>
+      <data key="e_min_path">1</data>
+      <data key="e_show_weight">4</data>
+    </edge>
+    <edge source="n6" target="n7">
+      <data key="e_route">S8</data>
+      <data key="e_departure_time">09:58:00</data>
+      <data key="e_arrival_time">10:02:00</data>
+      <data key="e_trip">10062577</data>
+      <data key="e_weight">4</data>
+      <data key="e_min_path">1</data>
+      <data key="e_show_weight">4</data>
+    </edge>
+    <edge source="n7" target="n8">
+      <data key="e_route">S8</data>
+      <data key="e_departure_time">10:02:00</data>
+      <data key="e_arrival_time">10:06:00</data>
+      <data key="e_trip">10062577</data>
+      <data key="e_weight">4</data>
+      <data key="e_min_path">1</data>
+      <data key="e_show_weight">4</data>
+    </edge>
+    <edge source="n8" target="n9">
+      <data key="e_route">S8</data>
+      <data key="e_departure_time">10:06:00</data>
+      <data key="e_arrival_time">10:12:00</data>
+      <data key="e_trip">10062577</data>
+      <data key="e_weight">6</data>
+      <data key="e_min_path">1</data>
+      <data key="e_show_weight">6</data>
+    </edge>
+    <edge source="n10" target="n11">
+      <data key="e_route">R7</data>
+      <data key="e_departure_time">13:38:00</data>
+      <data key="e_arrival_time">13:41:00</data>
+      <data key="e_trip">10066038</data>
+      <data key="e_weight">3</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n9" target="n12">
+      <data key="e_route">S8</data>
+      <data key="e_departure_time">10:12:00</data>
+      <data key="e_arrival_time">10:18:00</data>
+      <data key="e_trip">10062577</data>
+      <data key="e_weight">6</data>
+      <data key="e_min_path">1</data>
+      <data key="e_show_weight">6</data>
+    </edge>
+    <edge source="n12" target="n13">
+      <data key="e_route">S8</data>
+      <data key="e_departure_time">10:18:00</data>
+      <data key="e_arrival_time">10:23:00</data>
+      <data key="e_trip">10062577</data>
+      <data key="e_weight">5</data>
+      <data key="e_min_path">1</data>
+      <data key="e_show_weight">5</data>
+    </edge>
+    <edge source="n14" target="n15">
+      <data key="e_route">R7</data>
+      <data key="e_departure_time">12:12:00</data>
+      <data key="e_arrival_time">12:19:00</data>
+      <data key="e_trip">10065760</data>
+      <data key="e_weight">7</data>
+      <data key="e_min_path">1</data>
+      <data key="e_show_weight">7</data>
+    </edge>
+    <edge source="n16" target="n17">
+      <data key="e_route">S7</data>
+      <data key="e_departure_time">09:33:00</data>
+      <data key="e_arrival_time">09:37:00</data>
+      <data key="e_trip">10065528</data>
+      <data key="e_weight">4</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n17" target="n18">
+      <data key="e_route">S7</data>
+      <data key="e_departure_time">09:37:00</data>
+      <data key="e_arrival_time">09:43:00</data>
+      <data key="e_trip">10065528</data>
+      <data key="e_weight">6</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n18" target="n19">
+      <data key="e_route">S7</data>
+      <data key="e_departure_time">09:43:00</data>
+      <data key="e_arrival_time">09:48:00</data>
+      <data key="e_trip">10065528</data>
+      <data key="e_weight">5</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n19" target="n20">
+      <data key="e_route">S7</data>
+      <data key="e_departure_time">09:48:00</data>
+      <data key="e_arrival_time">09:51:00</data>
+      <data key="e_trip">10065528</data>
+      <data key="e_weight">3</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n20" target="n21">
+      <data key="e_route">S7</data>
+      <data key="e_departure_time">09:51:00</data>
+      <data key="e_arrival_time">09:54:00</data>
+      <data key="e_trip">10065528</data>
+      <data key="e_weight">3</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n21" target="n22">
+      <data key="e_route">S7</data>
+      <data key="e_departure_time">09:54:00</data>
+      <data key="e_arrival_time">10:02:00</data>
+      <data key="e_trip">10065528</data>
+      <data key="e_weight">8</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n22" target="n23">
+      <data key="e_route">S7</data>
+      <data key="e_departure_time">10:02:00</data>
+      <data key="e_arrival_time">10:06:00</data>
+      <data key="e_trip">10065528</data>
+      <data key="e_weight">4</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n23" target="n24">
+      <data key="e_route">S7</data>
+      <data key="e_departure_time">10:06:00</data>
+      <data key="e_arrival_time">10:10:00</data>
+      <data key="e_trip">10065528</data>
+      <data key="e_weight">4</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n24" target="n25">
+      <data key="e_route">S7</data>
+      <data key="e_departure_time">10:10:00</data>
+      <data key="e_arrival_time">10:14:00</data>
+      <data key="e_trip">10065528</data>
+      <data key="e_weight">4</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n25" target="n26">
+      <data key="e_route">S7</data>
+      <data key="e_departure_time">10:14:00</data>
+      <data key="e_arrival_time">10:18:00</data>
+      <data key="e_trip">10065528</data>
+      <data key="e_weight">4</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n26" target="n27">
+      <data key="e_route">S7</data>
+      <data key="e_departure_time">10:18:00</data>
+      <data key="e_arrival_time">10:21:00</data>
+      <data key="e_trip">10065528</data>
+      <data key="e_weight">3</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n27" target="n28">
+      <data key="e_route">S7</data>
+      <data key="e_departure_time">10:21:00</data>
+      <data key="e_arrival_time">10:25:00</data>
+      <data key="e_trip">10065528</data>
+      <data key="e_weight">4</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n28" target="n29">
+      <data key="e_route">S7</data>
+      <data key="e_departure_time">10:25:00</data>
+      <data key="e_arrival_time">10:31:00</data>
+      <data key="e_trip">10065528</data>
+      <data key="e_weight">6</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n29" target="n30">
+      <data key="e_route">S7</data>
+      <data key="e_departure_time">10:31:00</data>
+      <data key="e_arrival_time">10:36:00</data>
+      <data key="e_trip">10065528</data>
+      <data key="e_weight">5</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n30" target="n31">
+      <data key="e_route">S7</data>
+      <data key="e_departure_time">10:36:00</data>
+      <data key="e_arrival_time">10:41:00</data>
+      <data key="e_trip">10065528</data>
+      <data key="e_weight">5</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n31" target="n32">
+      <data key="e_route">S7</data>
+      <data key="e_departure_time">10:41:00</data>
+      <data key="e_arrival_time">10:44:00</data>
+      <data key="e_trip">10065528</data>
+      <data key="e_weight">3</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n32" target="n33">
+      <data key="e_route">S7</data>
+      <data key="e_departure_time">10:44:00</data>
+      <data key="e_arrival_time">10:47:00</data>
+      <data key="e_trip">10065528</data>
+      <data key="e_weight">3</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n33" target="n34">
+      <data key="e_route">S7</data>
+      <data key="e_departure_time">10:47:00</data>
+      <data key="e_arrival_time">10:53:00</data>
+      <data key="e_trip">10065528</data>
+      <data key="e_weight">6</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n35" target="n36">
+      <data key="e_route">RE_8</data>
+      <data key="e_departure_time">10:32:00</data>
+      <data key="e_arrival_time">11:02:00</data>
+      <data key="e_trip">10065228</data>
+      <data key="e_weight">30</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n1" target="n37">
+      <data key="e_route">S11</data>
+      <data key="e_departure_time">09:32:00</data>
+      <data key="e_arrival_time">09:38:00</data>
+      <data key="e_trip">10061201</data>
+      <data key="e_weight">6</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n38" target="n39">
+      <data key="e_route">S8</data>
+      <data key="e_departure_time">10:03:00</data>
+      <data key="e_arrival_time">10:09:00</data>
+      <data key="e_trip">10065911</data>
+      <data key="e_weight">6</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n39" target="n40">
+      <data key="e_route">S8</data>
+      <data key="e_departure_time">10:09:00</data>
+      <data key="e_arrival_time">10:15:00</data>
+      <data key="e_trip">10065911</data>
+      <data key="e_weight">6</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n40" target="n41">
+      <data key="e_route">S8</data>
+      <data key="e_departure_time">10:15:00</data>
+      <data key="e_arrival_time">10:20:00</data>
+      <data key="e_trip">10065911</data>
+      <data key="e_weight">5</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n41" target="n42">
+      <data key="e_route">S8</data>
+      <data key="e_departure_time">10:20:00</data>
+      <data key="e_arrival_time">10:24:00</data>
+      <data key="e_trip">10065911</data>
+      <data key="e_weight">4</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n42" target="n43">
+      <data key="e_route">S8</data>
+      <data key="e_departure_time">10:24:00</data>
+      <data key="e_arrival_time">10:28:00</data>
+      <data key="e_trip">10065911</data>
+      <data key="e_weight">4</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n43" target="n44">
+      <data key="e_route">S8</data>
+      <data key="e_departure_time">10:28:00</data>
+      <data key="e_arrival_time">10:32:00</data>
+      <data key="e_trip">10065911</data>
+      <data key="e_weight">4</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n44" target="n45">
+      <data key="e_route">S8</data>
+      <data key="e_departure_time">10:32:00</data>
+      <data key="e_arrival_time">10:36:00</data>
+      <data key="e_trip">10065911</data>
+      <data key="e_weight">4</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n45" target="n46">
+      <data key="e_route">S8</data>
+      <data key="e_departure_time">10:36:00</data>
+      <data key="e_arrival_time">10:42:00</data>
+      <data key="e_trip">10065911</data>
+      <data key="e_weight">6</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n46" target="n47">
+      <data key="e_route">S8</data>
+      <data key="e_departure_time">10:42:00</data>
+      <data key="e_arrival_time">10:48:00</data>
+      <data key="e_trip">10065911</data>
+      <data key="e_weight">6</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n47" target="n48">
+      <data key="e_route">S8</data>
+      <data key="e_departure_time">10:48:00</data>
+      <data key="e_arrival_time">10:53:00</data>
+      <data key="e_trip">10065911</data>
+      <data key="e_weight">5</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n49" target="n50">
+      <data key="e_route">S7</data>
+      <data key="e_departure_time">10:27:00</data>
+      <data key="e_arrival_time">10:33:00</data>
+      <data key="e_trip">10065175</data>
+      <data key="e_weight">6</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n50" target="n51">
+      <data key="e_route">S7</data>
+      <data key="e_departure_time">10:33:00</data>
+      <data key="e_arrival_time">10:37:00</data>
+      <data key="e_trip">10065175</data>
+      <data key="e_weight">4</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n51" target="n52">
+      <data key="e_route">S7</data>
+      <data key="e_departure_time">10:37:00</data>
+      <data key="e_arrival_time">10:43:00</data>
+      <data key="e_trip">10065175</data>
+      <data key="e_weight">6</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n52" target="n53">
+      <data key="e_route">S7</data>
+      <data key="e_departure_time">10:43:00</data>
+      <data key="e_arrival_time">10:48:00</data>
+      <data key="e_trip">10065175</data>
+      <data key="e_weight">5</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n53" target="n54">
+      <data key="e_route">S7</data>
+      <data key="e_departure_time">10:48:00</data>
+      <data key="e_arrival_time">10:51:00</data>
+      <data key="e_trip">10065175</data>
+      <data key="e_weight">3</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n54" target="n55">
+      <data key="e_route">S7</data>
+      <data key="e_departure_time">10:51:00</data>
+      <data key="e_arrival_time">10:54:00</data>
+      <data key="e_trip">10065175</data>
+      <data key="e_weight">3</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n55" target="n56">
+      <data key="e_route">S7</data>
+      <data key="e_departure_time">10:54:00</data>
+      <data key="e_arrival_time">11:02:00</data>
+      <data key="e_trip">10065175</data>
+      <data key="e_weight">8</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n56" target="n57">
+      <data key="e_route">S7</data>
+      <data key="e_departure_time">11:02:00</data>
+      <data key="e_arrival_time">11:06:00</data>
+      <data key="e_trip">10065175</data>
+      <data key="e_weight">4</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n57" target="n58">
+      <data key="e_route">S7</data>
+      <data key="e_departure_time">11:06:00</data>
+      <data key="e_arrival_time">11:10:00</data>
+      <data key="e_trip">10065175</data>
+      <data key="e_weight">4</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n58" target="n59">
+      <data key="e_route">S7</data>
+      <data key="e_departure_time">11:10:00</data>
+      <data key="e_arrival_time">11:14:00</data>
+      <data key="e_trip">10065175</data>
+      <data key="e_weight">4</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n59" target="n60">
+      <data key="e_route">S7</data>
+      <data key="e_departure_time">11:14:00</data>
+      <data key="e_arrival_time">11:18:00</data>
+      <data key="e_trip">10065175</data>
+      <data key="e_weight">4</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n60" target="n61">
+      <data key="e_route">S7</data>
+      <data key="e_departure_time">11:18:00</data>
+      <data key="e_arrival_time">11:21:00</data>
+      <data key="e_trip">10065175</data>
+      <data key="e_weight">3</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n61" target="n62">
+      <data key="e_route">S7</data>
+      <data key="e_departure_time">11:21:00</data>
+      <data key="e_arrival_time">11:25:00</data>
+      <data key="e_trip">10065175</data>
+      <data key="e_weight">4</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n62" target="n63">
+      <data key="e_route">S7</data>
+      <data key="e_departure_time">11:25:00</data>
+      <data key="e_arrival_time">11:31:00</data>
+      <data key="e_trip">10065175</data>
+      <data key="e_weight">6</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n63" target="n64">
+      <data key="e_route">S7</data>
+      <data key="e_departure_time">11:31:00</data>
+      <data key="e_arrival_time">11:36:00</data>
+      <data key="e_trip">10065175</data>
+      <data key="e_weight">5</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n64" target="n65">
+      <data key="e_route">S7</data>
+      <data key="e_departure_time">11:36:00</data>
+      <data key="e_arrival_time">11:41:00</data>
+      <data key="e_trip">10065175</data>
+      <data key="e_weight">5</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n65" target="n66">
+      <data key="e_route">S7</data>
+      <data key="e_departure_time">11:41:00</data>
+      <data key="e_arrival_time">11:44:00</data>
+      <data key="e_trip">10065175</data>
+      <data key="e_weight">3</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n66" target="n67">
+      <data key="e_route">S7</data>
+      <data key="e_departure_time">11:44:00</data>
+      <data key="e_arrival_time">11:47:00</data>
+      <data key="e_trip">10065175</data>
+      <data key="e_weight">3</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n67" target="n68">
+      <data key="e_route">S7</data>
+      <data key="e_departure_time">11:47:00</data>
+      <data key="e_arrival_time">11:53:00</data>
+      <data key="e_trip">10065175</data>
+      <data key="e_weight">6</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n37" target="n69">
+      <data key="e_route">S11</data>
+      <data key="e_departure_time">09:38:00</data>
+      <data key="e_arrival_time">09:44:00</data>
+      <data key="e_trip">10061201</data>
+      <data key="e_weight">6</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n70" target="n38">
+      <data key="e_route">S8</data>
+      <data key="e_departure_time">09:59:00</data>
+      <data key="e_arrival_time">10:03:00</data>
+      <data key="e_trip">10065911</data>
+      <data key="e_weight">4</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n71" target="n49">
+      <data key="e_route">S7</data>
+      <data key="e_departure_time">10:22:00</data>
+      <data key="e_arrival_time">10:27:00</data>
+      <data key="e_trip">10065175</data>
+      <data key="e_weight">5</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n69" target="n72">
+      <data key="e_route">S11</data>
+      <data key="e_departure_time">09:44:00</data>
+      <data key="e_arrival_time">09:53:00</data>
+      <data key="e_trip">10061201</data>
+      <data key="e_weight">9</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n73" target="n70">
+      <data key="e_route">S8</data>
+      <data key="e_departure_time">09:52:00</data>
+      <data key="e_arrival_time">09:59:00</data>
+      <data key="e_trip">10065911</data>
+      <data key="e_weight">7</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n74" target="n71">
+      <data key="e_route">S7</data>
+      <data key="e_departure_time">10:14:00</data>
+      <data key="e_arrival_time">10:22:00</data>
+      <data key="e_trip">10065175</data>
+      <data key="e_weight">8</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n75" target="n76">
+      <data key="e_route">RE_2</data>
+      <data key="e_departure_time">16:22:00</data>
+      <data key="e_arrival_time">16:29:00</data>
+      <data key="e_trip">10060960</data>
+      <data key="e_weight">7</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n76" target="n77">
+      <data key="e_route">RE_2</data>
+      <data key="e_departure_time">16:29:00</data>
+      <data key="e_arrival_time">16:43:00</data>
+      <data key="e_trip">10060960</data>
+      <data key="e_weight">14</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n77" target="n78">
+      <data key="e_route">RE_2</data>
+      <data key="e_departure_time">16:43:00</data>
+      <data key="e_arrival_time">16:50:00</data>
+      <data key="e_trip">10060960</data>
+      <data key="e_weight">7</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n78" target="n79">
+      <data key="e_route">RE_2</data>
+      <data key="e_departure_time">16:50:00</data>
+      <data key="e_arrival_time">17:06:00</data>
+      <data key="e_trip">10060960</data>
+      <data key="e_weight">16</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n79" target="n80">
+      <data key="e_route">RE_2</data>
+      <data key="e_departure_time">17:06:00</data>
+      <data key="e_arrival_time">17:14:00</data>
+      <data key="e_trip">10060960</data>
+      <data key="e_weight">8</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n80" target="n81">
+      <data key="e_route">RE_2</data>
+      <data key="e_departure_time">17:14:00</data>
+      <data key="e_arrival_time">17:25:00</data>
+      <data key="e_trip">10060960</data>
+      <data key="e_weight">11</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n82" target="n83">
+      <data key="e_route">R7</data>
+      <data key="e_departure_time">18:08:00</data>
+      <data key="e_arrival_time">18:15:00</data>
+      <data key="e_trip">10066041</data>
+      <data key="e_weight">7</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n83" target="n84">
+      <data key="e_route">R7</data>
+      <data key="e_departure_time">18:15:00</data>
+      <data key="e_arrival_time">18:20:00</data>
+      <data key="e_trip">10066041</data>
+      <data key="e_weight">5</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n84" target="n85">
+      <data key="e_route">R7</data>
+      <data key="e_departure_time">18:20:00</data>
+      <data key="e_arrival_time">18:24:00</data>
+      <data key="e_trip">10066041</data>
+      <data key="e_weight">4</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n85" target="n86">
+      <data key="e_route">R7</data>
+      <data key="e_departure_time">18:24:00</data>
+      <data key="e_arrival_time">18:31:00</data>
+      <data key="e_trip">10066041</data>
+      <data key="e_weight">7</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n86" target="n87">
+      <data key="e_route">R7</data>
+      <data key="e_departure_time">18:31:00</data>
+      <data key="e_arrival_time">18:38:00</data>
+      <data key="e_trip">10066041</data>
+      <data key="e_weight">7</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n87" target="n88">
+      <data key="e_route">R7</data>
+      <data key="e_departure_time">18:38:00</data>
+      <data key="e_arrival_time">18:41:00</data>
+      <data key="e_trip">10066041</data>
+      <data key="e_weight">3</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n72" target="n89">
+      <data key="e_route">S11</data>
+      <data key="e_departure_time">09:53:00</data>
+      <data key="e_arrival_time">10:00:00</data>
+      <data key="e_trip">10061201</data>
+      <data key="e_weight">7</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n90" target="n91">
+      <data key="e_route">S9</data>
+      <data key="e_departure_time">09:12:00</data>
+      <data key="e_arrival_time">09:17:00</data>
+      <data key="e_trip">10064022</data>
+      <data key="e_weight">5</data>
+      <data key="e_min_path">1</data>
+      <data key="e_show_weight">5</data>
+    </edge>
+    <edge source="n91" target="n92">
+      <data key="e_route">S9</data>
+      <data key="e_departure_time">09:17:00</data>
+      <data key="e_arrival_time">09:23:00</data>
+      <data key="e_trip">10064022</data>
+      <data key="e_weight">6</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n93" target="n2">
+      <data key="e_route">S8</data>
+      <data key="e_departure_time">09:33:00</data>
+      <data key="e_arrival_time">09:39:00</data>
+      <data key="e_trip">10062577</data>
+      <data key="e_weight">6</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n94" target="n16">
+      <data key="e_route">S7</data>
+      <data key="e_departure_time">09:27:00</data>
+      <data key="e_arrival_time">09:33:00</data>
+      <data key="e_trip">10065528</data>
+      <data key="e_weight">6</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n92" target="n95">
+      <data key="e_route">S9</data>
+      <data key="e_departure_time">09:23:00</data>
+      <data key="e_arrival_time">09:28:00</data>
+      <data key="e_trip">10064022</data>
+      <data key="e_weight">5</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n96" target="n93">
+      <data key="e_route">S8</data>
+      <data key="e_departure_time">09:29:00</data>
+      <data key="e_arrival_time">09:33:00</data>
+      <data key="e_trip">10062577</data>
+      <data key="e_weight">4</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n95" target="n97">
+      <data key="e_route">S9</data>
+      <data key="e_departure_time">09:28:00</data>
+      <data key="e_arrival_time">09:35:00</data>
+      <data key="e_trip">10064022</data>
+      <data key="e_weight">7</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n98" target="n99">
+      <data key="e_route">RE_2</data>
+      <data key="e_departure_time">10:13:00</data>
+      <data key="e_arrival_time">10:20:00</data>
+      <data key="e_trip">10059833</data>
+      <data key="e_weight">7</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n99" target="n100">
+      <data key="e_route">RE_2</data>
+      <data key="e_departure_time">10:20:00</data>
+      <data key="e_arrival_time">10:36:00</data>
+      <data key="e_trip">10059833</data>
+      <data key="e_weight">16</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n100" target="n101">
+      <data key="e_route">RE_2</data>
+      <data key="e_departure_time">10:36:00</data>
+      <data key="e_arrival_time">10:44:00</data>
+      <data key="e_trip">10059833</data>
+      <data key="e_weight">8</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n101" target="n102">
+      <data key="e_route">RE_2</data>
+      <data key="e_departure_time">10:44:00</data>
+      <data key="e_arrival_time">10:55:00</data>
+      <data key="e_trip">10059833</data>
+      <data key="e_weight">11</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n103" target="n104">
+      <data key="e_route">R7</data>
+      <data key="e_departure_time">13:08:00</data>
+      <data key="e_arrival_time">13:15:00</data>
+      <data key="e_trip">10066038</data>
+      <data key="e_weight">7</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n104" target="n105">
+      <data key="e_route">R7</data>
+      <data key="e_departure_time">13:15:00</data>
+      <data key="e_arrival_time">13:20:00</data>
+      <data key="e_trip">10066038</data>
+      <data key="e_weight">5</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n105" target="n106">
+      <data key="e_route">R7</data>
+      <data key="e_departure_time">13:20:00</data>
+      <data key="e_arrival_time">13:24:00</data>
+      <data key="e_trip">10066038</data>
+      <data key="e_weight">4</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n106" target="n107">
+      <data key="e_route">R7</data>
+      <data key="e_departure_time">13:24:00</data>
+      <data key="e_arrival_time">13:31:00</data>
+      <data key="e_trip">10066038</data>
+      <data key="e_weight">7</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n107" target="n10">
+      <data key="e_route">R7</data>
+      <data key="e_departure_time">13:31:00</data>
+      <data key="e_arrival_time">13:38:00</data>
+      <data key="e_trip">10066038</data>
+      <data key="e_weight">7</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n108" target="n0">
+      <data key="e_route">-</data>
+      <data key="e_departure_time">09:00:00</data>
+      <data key="e_arrival_time">09:27:00</data>
+      <data key="e_trip">10061201</data>
+      <data key="e_weight">27</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n11" target="n109">
+      <data key="e_route">-</data>
+      <data key="e_departure_time">13:41:00</data>
+      <data key="e_arrival_time">13:41:00</data>
+      <data key="e_trip">10066038</data>
+      <data key="e_weight">0</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n15" target="n109">
+      <data key="e_route">-</data>
+      <data key="e_departure_time">12:19:00</data>
+      <data key="e_arrival_time">12:19:00</data>
+      <data key="e_trip">10065760</data>
+      <data key="e_weight">0</data>
+      <data key="e_min_path">1</data>
+      <data key="e_show_weight">0</data>
+    </edge>
+    <edge source="n88" target="n109">
+      <data key="e_route">-</data>
+      <data key="e_departure_time">18:41:00</data>
+      <data key="e_arrival_time">18:41:00</data>
+      <data key="e_trip">10066041</data>
+      <data key="e_weight">0</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n108" target="n90">
+      <data key="e_route">-</data>
+      <data key="e_departure_time">09:00:00</data>
+      <data key="e_arrival_time">09:12:00</data>
+      <data key="e_trip">10064022</data>
+      <data key="e_weight">12</data>
+      <data key="e_min_path">1</data>
+      <data key="e_show_weight">12</data>
+    </edge>
+    <edge source="n1" target="n2">
+      <data key="e_route">switch</data>
+      <data key="e_departure_time">09:32:00</data>
+      <data key="e_arrival_time">09:39:00</data>
+      <data key="e_trip">None</data>
+      <data key="e_weight">7</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n1" target="n16">
+      <data key="e_route">switch</data>
+      <data key="e_departure_time">09:32:00</data>
+      <data key="e_arrival_time">09:33:00</data>
+      <data key="e_trip">None</data>
+      <data key="e_weight">1</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n1" target="n35">
+      <data key="e_route">switch</data>
+      <data key="e_departure_time">09:32:00</data>
+      <data key="e_arrival_time">10:32:00</data>
+      <data key="e_trip">None</data>
+      <data key="e_weight">60</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n1" target="n39">
+      <data key="e_route">switch</data>
+      <data key="e_departure_time">09:32:00</data>
+      <data key="e_arrival_time">10:09:00</data>
+      <data key="e_trip">None</data>
+      <data key="e_weight">37</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n1" target="n50">
+      <data key="e_route">switch</data>
+      <data key="e_departure_time">09:32:00</data>
+      <data key="e_arrival_time">10:33:00</data>
+      <data key="e_trip">None</data>
+      <data key="e_weight">61</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n37" target="n38">
+      <data key="e_route">switch</data>
+      <data key="e_departure_time">09:38:00</data>
+      <data key="e_arrival_time">10:03:00</data>
+      <data key="e_trip">None</data>
+      <data key="e_weight">25</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n37" target="n49">
+      <data key="e_route">switch</data>
+      <data key="e_departure_time">09:38:00</data>
+      <data key="e_arrival_time">10:27:00</data>
+      <data key="e_trip">None</data>
+      <data key="e_weight">49</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n69" target="n70">
+      <data key="e_route">switch</data>
+      <data key="e_departure_time">09:44:00</data>
+      <data key="e_arrival_time">09:59:00</data>
+      <data key="e_trip">None</data>
+      <data key="e_weight">15</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n69" target="n71">
+      <data key="e_route">switch</data>
+      <data key="e_departure_time">09:44:00</data>
+      <data key="e_arrival_time">10:22:00</data>
+      <data key="e_trip">None</data>
+      <data key="e_weight">38</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n72" target="n74">
+      <data key="e_route">switch</data>
+      <data key="e_departure_time">09:53:00</data>
+      <data key="e_arrival_time">10:14:00</data>
+      <data key="e_trip">None</data>
+      <data key="e_weight">21</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n72" target="n75">
+      <data key="e_route">switch</data>
+      <data key="e_departure_time">09:53:00</data>
+      <data key="e_arrival_time">16:22:00</data>
+      <data key="e_trip">None</data>
+      <data key="e_weight">389</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n89" target="n76">
+      <data key="e_route">switch</data>
+      <data key="e_departure_time">10:00:00</data>
+      <data key="e_arrival_time">16:29:00</data>
+      <data key="e_trip">None</data>
+      <data key="e_weight">389</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n91" target="n2">
+      <data key="e_route">switch</data>
+      <data key="e_departure_time">09:17:00</data>
+      <data key="e_arrival_time">09:39:00</data>
+      <data key="e_trip">None</data>
+      <data key="e_weight">22</data>
+      <data key="e_min_path">1</data>
+      <data key="e_show_weight">22</data>
+    </edge>
+    <edge source="n91" target="n16">
+      <data key="e_route">switch</data>
+      <data key="e_departure_time">09:17:00</data>
+      <data key="e_arrival_time">09:33:00</data>
+      <data key="e_trip">None</data>
+      <data key="e_weight">16</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n91" target="n35">
+      <data key="e_route">switch</data>
+      <data key="e_departure_time">09:17:00</data>
+      <data key="e_arrival_time">10:32:00</data>
+      <data key="e_trip">None</data>
+      <data key="e_weight">75</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n91" target="n39">
+      <data key="e_route">switch</data>
+      <data key="e_departure_time">09:17:00</data>
+      <data key="e_arrival_time">10:09:00</data>
+      <data key="e_trip">None</data>
+      <data key="e_weight">52</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n91" target="n50">
+      <data key="e_route">switch</data>
+      <data key="e_departure_time">09:17:00</data>
+      <data key="e_arrival_time">10:33:00</data>
+      <data key="e_trip">None</data>
+      <data key="e_weight">76</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n92" target="n93">
+      <data key="e_route">switch</data>
+      <data key="e_departure_time">09:23:00</data>
+      <data key="e_arrival_time">09:33:00</data>
+      <data key="e_trip">None</data>
+      <data key="e_weight">10</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n92" target="n94">
+      <data key="e_route">switch</data>
+      <data key="e_departure_time">09:23:00</data>
+      <data key="e_arrival_time">09:27:00</data>
+      <data key="e_trip">None</data>
+      <data key="e_weight">4</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n92" target="n38">
+      <data key="e_route">switch</data>
+      <data key="e_departure_time">09:23:00</data>
+      <data key="e_arrival_time">10:03:00</data>
+      <data key="e_trip">None</data>
+      <data key="e_weight">40</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n92" target="n49">
+      <data key="e_route">switch</data>
+      <data key="e_departure_time">09:23:00</data>
+      <data key="e_arrival_time">10:27:00</data>
+      <data key="e_trip">None</data>
+      <data key="e_weight">64</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n95" target="n96">
+      <data key="e_route">switch</data>
+      <data key="e_departure_time">09:28:00</data>
+      <data key="e_arrival_time">09:29:00</data>
+      <data key="e_trip">None</data>
+      <data key="e_weight">1</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n95" target="n70">
+      <data key="e_route">switch</data>
+      <data key="e_departure_time">09:28:00</data>
+      <data key="e_arrival_time">09:59:00</data>
+      <data key="e_trip">None</data>
+      <data key="e_weight">31</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n95" target="n71">
+      <data key="e_route">switch</data>
+      <data key="e_departure_time">09:28:00</data>
+      <data key="e_arrival_time">10:22:00</data>
+      <data key="e_trip">None</data>
+      <data key="e_weight">54</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n97" target="n77">
+      <data key="e_route">switch</data>
+      <data key="e_departure_time">09:35:00</data>
+      <data key="e_arrival_time">16:43:00</data>
+      <data key="e_trip">None</data>
+      <data key="e_weight">428</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n97" target="n98">
+      <data key="e_route">switch</data>
+      <data key="e_departure_time">09:35:00</data>
+      <data key="e_arrival_time">10:13:00</data>
+      <data key="e_trip">None</data>
+      <data key="e_weight">38</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n36" target="n14">
+      <data key="e_route">switch</data>
+      <data key="e_departure_time">11:02:00</data>
+      <data key="e_arrival_time">12:12:00</data>
+      <data key="e_trip">None</data>
+      <data key="e_weight">70</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n68" target="n14">
+      <data key="e_route">switch</data>
+      <data key="e_departure_time">11:53:00</data>
+      <data key="e_arrival_time">12:12:00</data>
+      <data key="e_trip">None</data>
+      <data key="e_weight">19</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n34" target="n14">
+      <data key="e_route">switch</data>
+      <data key="e_departure_time">10:53:00</data>
+      <data key="e_arrival_time">12:12:00</data>
+      <data key="e_trip">None</data>
+      <data key="e_weight">79</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n9" target="n10">
+      <data key="e_route">switch</data>
+      <data key="e_departure_time">10:12:00</data>
+      <data key="e_arrival_time">13:38:00</data>
+      <data key="e_trip">None</data>
+      <data key="e_weight">206</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n9" target="n87">
+      <data key="e_route">switch</data>
+      <data key="e_departure_time">10:12:00</data>
+      <data key="e_arrival_time">18:38:00</data>
+      <data key="e_trip">None</data>
+      <data key="e_weight">506</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n13" target="n14">
+      <data key="e_route">switch</data>
+      <data key="e_departure_time">10:23:00</data>
+      <data key="e_arrival_time">12:12:00</data>
+      <data key="e_trip">None</data>
+      <data key="e_weight">109</data>
+      <data key="e_min_path">1</data>
+      <data key="e_show_weight">109</data>
+    </edge>
+    <edge source="n102" target="n103">
+      <data key="e_route">switch</data>
+      <data key="e_departure_time">10:55:00</data>
+      <data key="e_arrival_time">13:08:00</data>
+      <data key="e_trip">None</data>
+      <data key="e_weight">133</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n102" target="n82">
+      <data key="e_route">switch</data>
+      <data key="e_departure_time">10:55:00</data>
+      <data key="e_arrival_time">18:08:00</data>
+      <data key="e_trip">None</data>
+      <data key="e_weight">433</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n46" target="n10">
+      <data key="e_route">switch</data>
+      <data key="e_departure_time">10:42:00</data>
+      <data key="e_arrival_time">13:38:00</data>
+      <data key="e_trip">None</data>
+      <data key="e_weight">176</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n46" target="n87">
+      <data key="e_route">switch</data>
+      <data key="e_departure_time">10:42:00</data>
+      <data key="e_arrival_time">18:38:00</data>
+      <data key="e_trip">None</data>
+      <data key="e_weight">476</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n48" target="n14">
+      <data key="e_route">switch</data>
+      <data key="e_departure_time">10:53:00</data>
+      <data key="e_arrival_time">12:12:00</data>
+      <data key="e_trip">None</data>
+      <data key="e_weight">79</data>
+      <data key="e_min_path">0</data>
+    </edge>
+    <edge source="n81" target="n82">
+      <data key="e_route">switch</data>
+      <data key="e_departure_time">17:25:00</data>
+      <data key="e_arrival_time">18:08:00</data>
+      <data key="e_trip">None</data>
+      <data key="e_weight">43</data>
+      <data key="e_min_path">0</data>
+    </edge>
+  </graph>
+</graphml>

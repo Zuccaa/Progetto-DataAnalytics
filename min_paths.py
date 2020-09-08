@@ -127,24 +127,25 @@ def min_path_from_station(trips_init, stations_routes_dict, station_source, stat
             # che passa nell'altro. Per entrambi, calcolo i possibili percorsi
             # a partire dalle stazioni successive del trip
             first_trip_available = trips_in_stations_source.iloc[0]
-            edge_list = compute_switched_trip_path(first_trip_available, trips, prec_edges, route,
+            edge_list = compute_switched_trip_path(first_trip_available, trips, route,
                                                    stations_routes_dict, station_target,
                                                    recursion_times, edge_list)
             opposite_trip_dataframe = trips_in_stations_source[trips_in_stations_source['direction'] !=
                                                                first_trip_available['direction']]
             if opposite_trip_dataframe.shape[0] > 0:
                 opposite_trip_available = opposite_trip_dataframe.iloc[0]
-                edge_list = compute_switched_trip_path(opposite_trip_available, trips, prec_edges, route,
+                edge_list = compute_switched_trip_path(opposite_trip_available, trips, route,
                                                        stations_routes_dict, station_target,
                                                        recursion_times, edge_list)
 
     return edge_list
 
 
-def compute_switched_trip_path(trip_available, trips, prec_edges, route, stations_routes_dict,
+def compute_switched_trip_path(trip_available, trips, route, stations_routes_dict,
                                station_target, recursion_times, edge_list):
 
     edge_list_tmp = []
+    prec_edges = []
     # Seleziono tutte le fermate del primo trip disponibile
     switch_trip_selected = trips.loc[trips['trip_id'] == int(trip_available['trip_id'])]
     switch_trip_selected = switch_trip_selected.loc[trip_available.name:]
@@ -152,7 +153,7 @@ def compute_switched_trip_path(trip_available, trips, prec_edges, route, station
         if index != switch_trip_selected.index[-1]:
             next_row = switch_trip_selected.loc[index + 1]
             # Inserisco l'arco che collega due stazioni consecutive nella lista
-            # degli archi precedente
+            # degli archi precedenti al cambio
             if prec_edges:
                 prec_edges.append([row['stop_id'], next_row['stop_id'], route, row['departure_time'],
                                    next_row['departure_time'], row['trip_id']])
