@@ -51,6 +51,14 @@ def remove_nodes_analysis(graph, graph_no_multiple_edges, metrics):
     plot_metric_results(static_S)
     plot_metric_results(dynamic_S)
 
+def compute_E_metric(graph, number_of_nodes):
+
+    sp = (1.0 / np.array(graph.shortest_paths_dijkstra()))
+    np.fill_diagonal(sp,0)
+    n_eff= (1.0/(number_of_nodes-1)) * np.apply_along_axis(sum,0,sp)
+
+    return np.mean(n_eff)
+
 
 def compute_S_metric(graph, number_of_nodes):
 
@@ -86,6 +94,7 @@ def compute_static_remove(metric, number_of_nodes, graph):
 
     nodes_to_remove = []
     S = None
+    E = None
 
     if metric == 'betweenness':
         nodes_betweenness = np.asarray(graph.betweenness(directed=False)) / \
@@ -93,43 +102,54 @@ def compute_static_remove(metric, number_of_nodes, graph):
         nodes_betweenness, nodes_to_remove = get_sorted_metric_results(nodes_betweenness, graph)
 
         S = [compute_S_metric(graph, number_of_nodes)]
+        E = [compute_E_metric(graph, number_of_nodes)]
 
         for node in nodes_to_remove:
             graph.delete_vertices([graph.vs.find(name=node)])
             S.append(compute_S_metric(graph, number_of_nodes))
+            E.append(compute_E_metric(graph, number_of_nodes))
+
 
     if metric == 'degree':
         nodes_degree = graph.degree(np.arange(number_of_nodes))
         nodes_degree, nodes_to_remove = get_sorted_metric_results(nodes_degree, graph)
 
         S = [compute_S_metric(graph, number_of_nodes)]
+        E = [compute_E_metric(graph, number_of_nodes)]
 
         for node in nodes_to_remove:
             graph.delete_vertices([graph.vs.find(name=node)])
             S.append(compute_S_metric(graph, number_of_nodes))
+            E.append(compute_E_metric(graph, number_of_nodes))
 
     if metric == 'closeness':
         nodes_closeness = graph.closeness()
         nodes_closeness, nodes_to_remove = get_sorted_metric_results(nodes_closeness, graph)
 
         S = [compute_S_metric(graph, number_of_nodes)]
+        E = [compute_E_metric(graph, number_of_nodes)]
 
         for node in nodes_to_remove:
             graph.delete_vertices([graph.vs.find(name=node)])
             S.append(compute_S_metric(graph, number_of_nodes))
+            E.append(compute_E_metric(graph, number_of_nodes))
 
     if metric == 'random':
         S = np.zeros(int(number_of_nodes / 2) + 1)
+        E = np.zeros(int(number_of_nodes / 2) + 1)
         number_of_iterations = 100
         for i in range(number_of_iterations):
             graph_random = graph.copy()
             S[0] += compute_S_metric(graph_random, number_of_nodes)
+            E[0] += compute_E_metric(graph_random, number_of_nodes)
             for j in range(1, int(number_of_nodes / 2) + 1):
                 node_to_remove = graph_random.vs[random.randint(0, graph_random.vcount() - 1)]
                 graph_random.delete_vertices(node_to_remove)
                 S[j] += compute_S_metric(graph_random, number_of_nodes)
+                E[j] += compute_E_metric(graph_random, number_of_nodes)
 
         S /= number_of_iterations
+        E /= number_of_iterations
 
     return S, nodes_to_remove, graph
 
