@@ -45,11 +45,10 @@ def do_load_analysis(station, day, exceptions_service, stops, trips_with_stop_ti
         print('FATTO!')
         print('-----------------------------------------------------------')'''
 
-    week = 34
+    week = 10
     year = 2019
     # compute_loads_with_exceptions(trips_with_stop_times, exceptions_service_dict, year, week)
     file_with_exceptions = 'Loads//loads_complete_with_exceptions_' + str(year) + str(week) + '.json'
-    #title = 'Carico giornaliero (' + day + ') di ' + stops.loc[stops['stop_id'] == station]['stop_name']
 
     # Illustro su un plot i risultati
     plot_bars_of_loads(file_with_exceptions, day, station, '')
@@ -59,14 +58,14 @@ def do_load_analysis(station, day, exceptions_service, stops, trips_with_stop_ti
 
 
 def do_min_path_analysis(station_source, station_target, hour, day, number_of_switches,
-                         trips_with_stop_times, stops, stop_times, trips):
+                         trips_with_stop_times, stops, stop_times, trips, graph):
 
     # Creo un dizionario con chiave la stazione e con valori le linee
     # che passano in quella stazione
     stations_routes_dict = dict_as_group_by(trips_with_stop_times, 'stop_id', 'route_id', repetition=False)
 
     # Calcolo il percorso minimo tra due stazioni e creo il grafo relativo
-    #compute_min_path(trips_with_stop_times.copy(), stations_routes_dict, station_source, station_target,
+    # compute_min_path(trips_with_stop_times.copy(), stations_routes_dict, station_source, station_target,
     #                 hour, day, number_of_switches, stops)
 
     # Creo un dizionario con chiave la linea e con valori le fermate
@@ -83,13 +82,13 @@ def do_min_path_analysis(station_source, station_target, hour, day, number_of_sw
     switches_from_station_dict = compute_switches_from_station('3071', routes_adjacency_dict,
                                                                stations_routes_dict,
                                                                routes_stations_dict)
-    create_graph_with_switches(switches_from_station_dict, stops, stop_times, trips)
+    create_graph_with_switches(graph, switches_from_station_dict)
 
 
 def do_attack_handling_analysis(graph, graph_no_multiple_edges):
 
     # Analizzo i casi in cui vengono rimossi nodi in base alla metrica scelta
-    metrics = ['betweenness', 'degree', 'closeness']
+    metrics = ['betweenness', 'degree', 'closeness', 'random']
     remove_nodes_analysis(graph, graph_no_multiple_edges, metrics)
 
 
@@ -104,10 +103,10 @@ def main():
 
     # Svolgo le varie fasi dell'analisi
     # do_pre_analysis(graph_with_routes)
-    # do_load_analysis('1841', 'monday', exceptions_service, stops, trips_with_stop_times)#
-    do_min_path_analysis('1581', '734', '09:00:00', 'monday', 2, trips_with_stop_times, stops, stop_times,
-                        trips)
-    # do_attack_handling_analysis(graph_with_routes, graph_no_multiple_edges)
+    # do_load_analysis('1841', 'saturday', exceptions_service, stops, trips_with_stop_times)
+    # do_min_path_analysis('1581', '3015', '10:00:00', 'monday', 2, trips_with_stop_times, stops, stop_times,
+    #                      trips, graph_no_multiple_edges)
+    do_attack_handling_analysis(graph_with_routes, graph_no_multiple_edges)
 
 
 if __name__ == "__main__":

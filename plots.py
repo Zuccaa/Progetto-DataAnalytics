@@ -54,6 +54,7 @@ def plot_metric_results(metric_results):
     betweenness_results = metric_results[0]
     degree_results = metric_results[1]
     closeness_results = metric_results[2]
+    random_results = metric_results[3]
 
     plt.plot(np.arange(0, 0.5, 0.5 / len(betweenness_results)), betweenness_results, 'ro', markersize=1.5,
              linestyle='solid', linewidth=0.5)
@@ -61,10 +62,12 @@ def plot_metric_results(metric_results):
              linestyle='solid', linewidth=0.5)
     plt.plot(np.arange(0, 0.5, 0.5 / len(closeness_results)), closeness_results, 'go', markersize=1.5,
              linestyle='solid', linewidth=0.5)
+    plt.plot(np.arange(0, 0.5, 0.5 / len(random_results)), random_results, 'yo', markersize=1.5,
+             linestyle='solid', linewidth=0.5)
 
     plt.xlabel("Percentuale di nodi rimossi")
     plt.ylabel("Valore di S")
-    plt.legend(('Betweenness', 'Degree', 'Closeness'))
+    plt.legend(('Betweenness', 'Degree', 'Closeness', 'Random (100)'))
 
     plt.show()
 
@@ -74,6 +77,5 @@ def plot_assortativity_matrix(degree_correlation_matrix):
     # Rappresento la degree correlation matrix con matshow
 
     plt.matshow(degree_correlation_matrix, cmap='hot')
-    plt.title('Degree correlation matrix')
 
     plt.show()

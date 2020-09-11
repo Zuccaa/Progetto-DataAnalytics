@@ -13,106 +13,19 @@ import random
 import datetime
 
 
-def create_graph_with_switches(switches_from_station_dict, stops, stop_times, trips):
+def create_graph_with_switches(graph, switches_from_station_dict):
 
-    # Creo un grafo con un solo link tra nodi connessi da almeno una route
-    graph = create_standard_graph(stops, trips, stop_times, single_edge=True,
-                                  station_source=str(list(switches_from_station_dict.keys())[0]),
-                                  switches_from_station_dict=switches_from_station_dict)
-    graph.write_graphml(str(list(switches_from_station_dict.keys())[0]) + "_graph.graphml")
+    # Importo il grafo con al più un arco per ogni coppia di nodi
+    # e assegno ad ogni stazione il relativo numero di cambi necessari
+    # per arrivarci dalla stazione di partenza
+    for vertex in graph.vs:
+        vertex['switch'] = switches_from_station_dict[int(vertex.attributes()['name'])]
+        vertex['show_name'] = ''
 
+    station_source = str(list(switches_from_station_dict.keys())[0])
+    graph.vs.find(name=station_source)['show_name'] = station_source
 
-def create_standard_graph(stops, trips, stop_times, single_edge=False, station_source=None,
-                          switches_from_station_dict=None):
-
-    colors_used = set()
-    # Creo due grafi in cui metto come nodi le stazioni
-    graph_definitive = ig.Graph(directed=False)
-    graph_tmp = ig.Graph(directed=False)
-    if single_edge:
-        for index, row in stops.iterrows():
-            graph_definitive.add_vertex(name=str(row['stop_id']), long_name=row['stop_name'],
-                                        lat=row['stop_lat'] * -4200, lon=row['stop_lon'] * 4200,
-                                        switch=switches_from_station_dict[row['stop_id']], show_name='')
-            graph_tmp.add_vertex(name=str(row['stop_id']), long_name=row['stop_name'],
-                                 lat=row['stop_lat'] * -4200, lon=row['stop_lon'] * 4200,
-                                 switch=switches_from_station_dict[row['stop_id']], show_name='')
-    else:
-        for index, row in stops.iterrows():
-            graph_definitive.add_vertex(name=str(row['stop_id']), long_name=row['stop_name'],
-                                        lat=row['stop_lat'] * -4200, lon=row['stop_lon'] * 4200)
-            graph_tmp.add_vertex(name=str(row['stop_id']), long_name=row['stop_name'],
-                                 lat=row['stop_lat'] * -4200, lon=row['stop_lon'] * 4200)
-
-    # Creo un dizionario con chiave la linea e come valori i trip di quella linea
-    trips_per_route = dict_as_group_by(trips, 'route_id', 'trip_id')
-
-    def take_second(elem):
-        return elem[1]
-
-    # Per ogni linea, collego fra loro le fermate dello stesso trip con numeri di
-    # stop_sequence consecutivi. Se non hanno lo stop_sequence consecutivo,
-    # vengono inserite in una lista apposita
-    for route in trips_per_route:
-        linked_stops_not_consecutive = []
-        for index, row in stop_times.iterrows():
-            if row['trip_id'] in trips_per_route[route]:
-                if index != stop_times.index[-1]:
-                    next_row = stop_times.loc[index + 1]
-                    if next_row['stop_sequence'] == row['stop_sequence'] + 1 and \
-                        graph_tmp.get_eid(str(row['stop_id']), str(next_row['stop_id']),
-                                          directed=False, error=False) == -1:
-                        graph_tmp.add_edge(str(row['stop_id']), str(next_row['stop_id']))
-                    elif next_row['stop_sequence'] > row['stop_sequence'] + 1 and (
-                            not linked_stops_not_consecutive or
-                            {str(row['stop_id']), str(next_row['stop_id'])}
-                            not in list(list(zip(*linked_stops_not_consecutive))[0])):
-                        linked_stops_not_consecutive.append([
-                            {str(row['stop_id']), str(next_row['stop_id'])},
-                            next_row['stop_sequence'] - row['stop_sequence']])
-                stop_times = stop_times.drop(index)
-        stop_times = stop_times.reset_index(drop=True)
-
-        linked_stops_not_consecutive.sort(key=take_second)
-
-        # Ordino i nodi con numero di stop_sequence non consecutivo e aggiungo
-        # un arco tra i due nodi se non esiste un percorso che li collega
-        for linked_stop in linked_stops_not_consecutive:
-            node1 = linked_stop[0].pop()
-            node2 = linked_stop[0].pop()
-            if graph_tmp.shortest_paths_dijkstra(node1, node2)[0][0] == float('inf'):
-                graph_tmp.add_edge(node1, node2)
-
-        # Creo un colore a caso per rappresentare la linea
-        while True:
-            color = "#" + ''.join([random.choice('0123456789ABCDEF') for j in range(6)])
-            if color not in colors_used:
-                colors_used.add(color)
-                break
-
-        # Se devo creare un grafo con archi multipli, "trasferisco" gli archi dal grafo
-        # temporaneo a quello definitivo e aggiungo l'informazione della linea e del colore.
-        # Altrimenti, "trasferisco" un solo arco dal grafo temporaneo a quello definitivo
-        if not single_edge:
-            for edge in graph_tmp.es:
-                graph_definitive.add_edge(edge.tuple[0], edge.tuple[1], route=route, color=color)
-        else:
-            for edge in graph_tmp.es:
-                index = graph_definitive.get_eid(edge.tuple[0], edge.tuple[1],
-                                                 directed=False, error=False)
-                if index == -1:
-                    graph_definitive.add_edge(edge.tuple[0], edge.tuple[1])
-
-        # Prima di cambiare linea, elimino tutti gli archi dal grafo temporaneo
-        graph_tmp.delete_edges(graph_tmp.es)
-        print(route, " fatta, lunghezza di stop_times ora è ", len(stop_times.index))
-
-    # Se devo creare un grafo senza archi multipli, aggiungo un attributo
-    # per migliore illustrazione
-    if single_edge:
-        graph_definitive.vs.find(name=station_source)['show_name'] = station_source
-
-    return graph_definitive
+    return graph
 
 
 def create_graph_min_path(edge_list, station_source, station_target, start_time, recursion_times, stops):
@@ -341,7 +254,7 @@ def create_graph_for_loads(loads_dataframe, stops):
     graph.write_graphml('Loads_Trenord.graphml')
 
 
-def create_graph_for_attack_handling(graph_no_multiple_edges, nodes_to_remove, graphs):
+def create_graph_for_attack_handling(graph_no_multiple_edges, nodes_to_remove, graphs, static=True):
 
     # Per ogni metrica, aggiungo una colonna sui nodi con i seguenti valori:
     #      1 -> il nodo è stato rimosso considerando quella metrica
@@ -357,7 +270,10 @@ def create_graph_for_attack_handling(graph_no_multiple_edges, nodes_to_remove, g
         for vertex in graphs[index].components().giant().vs:
             graph_no_multiple_edges.vs.find(name=vertex.attributes()['name'])[attribute] = '2'
 
-    graph_no_multiple_edges.write_graphml('AttackHandling_Trenord.graphml')
+    if static:
+        graph_no_multiple_edges.write_graphml('AttackHandling_Trenord_Static.graphml')
+    else:
+        graph_no_multiple_edges.write_graphml('AttackHandling_Trenord_Dynamic.graphml')
 
 
 # --------------------------------------------------------
@@ -373,3 +289,74 @@ def create_graph_with_multiple_routes(stops, stop_times, trips):
 
     graph = create_standard_graph(stops, trips, stop_times)
     graph.write_graphml("Complete_TrenordNetwork.graphml")
+
+
+def create_standard_graph(stops, trips, stop_times):
+
+    colors_used = set()
+    # Creo due grafi in cui metto come nodi le stazioni
+    graph_definitive = ig.Graph(directed=False)
+    graph_tmp = ig.Graph(directed=False)
+    for index, row in stops.iterrows():
+        graph_definitive.add_vertex(name=str(row['stop_id']), long_name=row['stop_name'],
+                                    lat=row['stop_lat'] * -4200, lon=row['stop_lon'] * 4200)
+        graph_tmp.add_vertex(name=str(row['stop_id']), long_name=row['stop_name'],
+                             lat=row['stop_lat'] * -4200, lon=row['stop_lon'] * 4200)
+
+    # Creo un dizionario con chiave la linea e come valori i trip di quella linea
+    trips_per_route = dict_as_group_by(trips, 'route_id', 'trip_id')
+
+    def take_second(elem):
+        return elem[1]
+
+    # Per ogni linea, collego fra loro le fermate dello stesso trip con numeri di
+    # stop_sequence consecutivi. Se non hanno lo stop_sequence consecutivo,
+    # vengono inserite in una lista apposita
+    for route in trips_per_route:
+        linked_stops_not_consecutive = []
+        for index, row in stop_times.iterrows():
+            if row['trip_id'] in trips_per_route[route]:
+                if index != stop_times.index[-1]:
+                    next_row = stop_times.loc[index + 1]
+                    if next_row['stop_sequence'] == row['stop_sequence'] + 1 and \
+                        graph_tmp.get_eid(str(row['stop_id']), str(next_row['stop_id']),
+                                          directed=False, error=False) == -1:
+                        graph_tmp.add_edge(str(row['stop_id']), str(next_row['stop_id']))
+                    elif next_row['stop_sequence'] > row['stop_sequence'] + 1 and (
+                            not linked_stops_not_consecutive or
+                            {str(row['stop_id']), str(next_row['stop_id'])}
+                            not in list(list(zip(*linked_stops_not_consecutive))[0])):
+                        linked_stops_not_consecutive.append([
+                            {str(row['stop_id']), str(next_row['stop_id'])},
+                            next_row['stop_sequence'] - row['stop_sequence']])
+                stop_times = stop_times.drop(index)
+        stop_times = stop_times.reset_index(drop=True)
+
+        linked_stops_not_consecutive.sort(key=take_second)
+
+        # Ordino i nodi con numero di stop_sequence non consecutivo e aggiungo
+        # un arco tra i due nodi se non esiste un percorso che li collega
+        for linked_stop in linked_stops_not_consecutive:
+            node1 = linked_stop[0].pop()
+            node2 = linked_stop[0].pop()
+            if graph_tmp.shortest_paths_dijkstra(node1, node2)[0][0] == float('inf'):
+                graph_tmp.add_edge(node1, node2)
+
+        # Creo un colore a caso per rappresentare la linea
+        while True:
+            color = "#" + ''.join([random.choice('0123456789ABCDEF') for j in range(6)])
+            if color not in colors_used:
+                colors_used.add(color)
+                break
+
+        # Se devo creare un grafo con archi multipli, "trasferisco" gli archi dal grafo
+        # temporaneo a quello definitivo e aggiungo l'informazione della linea e del colore.
+        # Altrimenti, "trasferisco" un solo arco dal grafo temporaneo a quello definitivo
+        for edge in graph_tmp.es:
+            graph_definitive.add_edge(edge.tuple[0], edge.tuple[1], route=route, color=color)
+
+        # Prima di cambiare linea, elimino tutti gli archi dal grafo temporaneo
+        graph_tmp.delete_edges(graph_tmp.es)
+        print(route, " fatta, lunghezza di stop_times ora è ", len(stop_times.index))
+
+    return graph_definitive
