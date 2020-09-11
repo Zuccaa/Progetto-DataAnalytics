@@ -46,7 +46,7 @@ def plot_bars_of_loads(file, day, station, title):
     plt.show()
 
 
-def plot_metric_results(metric_results):
+def plot_metric_results(metric_results, s=True):
 
     # Per ogni metrica, illustro i risultati di S in relazione alla
     # percentuale di nodi rimossi nel grafo
@@ -66,8 +66,11 @@ def plot_metric_results(metric_results):
              linestyle='solid', linewidth=0.5)
 
     plt.xlabel("Percentuale di nodi rimossi")
-    plt.ylabel("Valore di S")
-    plt.legend(('Betweenness', 'Degree', 'Closeness', 'Random (100)'))
+    if s:
+        plt.ylabel("Valore di S")
+    else:
+        plt.ylabel("Valore di E")
+    plt.legend(('Betweenness', 'Degree', 'Closeness', 'Random (25)'))
 
     plt.show()
 

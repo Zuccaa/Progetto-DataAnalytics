@@ -254,7 +254,13 @@ def create_graph_for_loads(loads_dataframe, stops):
     graph.write_graphml('Loads_Trenord.graphml')
 
 
-def create_graph_for_attack_handling(graph_no_multiple_edges, nodes_to_remove, graphs, static=True):
+def create_graph_for_attack_handling(graph_no_multiple_edges, data):
+
+    metrics = ['betweenness', 'degree', 'closeness']
+    static_nodes_to_remove = data[0]
+    dynamic_nodes_to_remove = data[1]
+    static_graphs = data[2]
+    dynamic_graphs = data[3]
 
     # Per ogni metrica, aggiungo una colonna sui nodi con i seguenti valori:
     #      1 -> il nodo è stato rimosso considerando quella metrica
@@ -262,18 +268,20 @@ def create_graph_for_attack_handling(graph_no_multiple_edges, nodes_to_remove, g
     #           dopo la rimozione dei nodi
     #      Niente -> il nodo non è stato nè rimosso nè fa parte della
     #                principale componente connessa
-    metrics = ['betweenness', 'degree', 'closeness']
+
     for index, metric in enumerate(metrics):
         attribute = metric + '_results'
-        for vertex in nodes_to_remove[index]:
-            graph_no_multiple_edges.vs.find(name=vertex)[attribute] = '1'
-        for vertex in graphs[index].components().giant().vs:
-            graph_no_multiple_edges.vs.find(name=vertex.attributes()['name'])[attribute] = '2'
+        for vertex in static_nodes_to_remove[index]:
+            graph_no_multiple_edges.vs.find(name=vertex)['static' + '-' + attribute] = '1'
+        for vertex in dynamic_nodes_to_remove[index]:
+            graph_no_multiple_edges.vs.find(name=vertex)['dynamic' + '-' + attribute] = '1'
 
-    if static:
-        graph_no_multiple_edges.write_graphml('AttackHandling_Trenord_Static.graphml')
-    else:
-        graph_no_multiple_edges.write_graphml('AttackHandling_Trenord_Dynamic.graphml')
+        for vertex in static_graphs[index].components().giant().vs:
+            graph_no_multiple_edges.vs.find(name=vertex.attributes()['name'])['static' + '-' + attribute] = '2'
+        for vertex in dynamic_graphs[index].components().giant().vs:
+            graph_no_multiple_edges.vs.find(name=vertex.attributes()['name'])['dynamic' + '-' + attribute] = '2'
+
+    graph_no_multiple_edges.write_graphml('AttackHandling_Trenord.graphml')
 
 
 # --------------------------------------------------------
