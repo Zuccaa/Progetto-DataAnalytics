@@ -34,7 +34,7 @@ def plot_bars_of_loads(file, day, station, title):
                                              '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00',
                                              '18:00', '19:00', '20:00', '21:00', '22:00', '23:00', '00:00',
                                              '01:00', '02:00'], rotation='vertical')
-    #plt.title(title)
+    plt.title(title)
     plt.xlabel("Orario")
     plt.ylabel("Numero di treni")
     counter = 0
@@ -46,7 +46,7 @@ def plot_bars_of_loads(file, day, station, title):
     plt.show()
 
 
-def plot_metric_results(metric_results, s=True):
+def plot_metric_results(metric_results, title, s=True):
 
     # Per ogni metrica, illustro i risultati di S in relazione alla
     # percentuale di nodi rimossi nel grafo
@@ -60,8 +60,9 @@ def plot_metric_results(metric_results, s=True):
              linestyle='solid', linewidth=0.5)
     plt.plot(np.arange(0, 0.5, 0.5 / len(degree_results)), degree_results, 'bo', markersize=1.5,
              linestyle='solid', linewidth=0.5)
-    plt.plot(np.arange(0, 0.5, 0.5 / len(closeness_results)), closeness_results, 'go', markersize=1.5,
-             linestyle='solid', linewidth=0.5)
+    if closeness_results:
+        plt.plot(np.arange(0, 0.5, 0.5 / len(closeness_results)), closeness_results, 'go', markersize=1.5,
+                 linestyle='solid', linewidth=0.5)
     plt.plot(np.arange(0, 0.5, 0.5 / len(random_results)), random_results, 'yo', markersize=1.5,
              linestyle='solid', linewidth=0.5)
 
@@ -70,8 +71,12 @@ def plot_metric_results(metric_results, s=True):
         plt.ylabel("Valore di S")
     else:
         plt.ylabel("Valore di E")
-    plt.legend(('Betweenness', 'Degree', 'Closeness', 'Random (25)'))
+    if closeness_results:
+        plt.legend(('Betweenness', 'Degree', 'Closeness', 'Random (5)'))
+    else:
+        plt.legend(('Betweenness', 'Degree', 'Random (5)'))
 
+    plt.title(title)
     plt.show()
 
 
@@ -80,5 +85,6 @@ def plot_assortativity_matrix(degree_correlation_matrix):
     # Rappresento la degree correlation matrix con matshow
 
     plt.matshow(degree_correlation_matrix, cmap='hot')
+    plt.title('Matrice di correlazione')
 
     plt.show()

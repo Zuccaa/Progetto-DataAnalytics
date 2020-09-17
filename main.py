@@ -33,7 +33,8 @@ def do_load_analysis(station, day, exceptions_service, stops, trips_with_stop_ti
     for element in exceptions_service_dict:
         exceptions_service_dict[element] = str(exceptions_service_dict[element])'''
 
-    # Codice eseguito per avere dei file già pronti
+    # Codice eseguito per avere dei file già pronti, visto che ci vogliono
+    # diversi minuti per creare un singolo file
     '''week = [52, 2, 6, 10, 14, 18, 22, 26, 30, 34, 38, 42, 46, 49]
     for w in week:
         if w == 52:
@@ -47,11 +48,13 @@ def do_load_analysis(station, day, exceptions_service, stops, trips_with_stop_ti
 
     week = 10
     year = 2019
+    # Riga commentata in quanto i file sono già disponibili
     # compute_loads_with_exceptions(trips_with_stop_times, exceptions_service_dict, year, week)
-    file_with_exceptions = 'Loads//loads_complete_with_exceptions_' + str(year) + str(week) + '.json'
+
+    file_with_exceptions = 'Carichi//loads_complete_with_exceptions_' + str(year) + str(week) + '.json'
 
     # Illustro su un plot i risultati
-    plot_bars_of_loads(file_with_exceptions, day, station, '')
+    plot_bars_of_loads(file_with_exceptions, day, station, 'Carico di Monza (' + day + ')')
 
     # Creo un grafo contenente tutti i trip con i relativi percorsi
     # create_graph_for_loads(trips_with_stop_times, stops)
@@ -64,9 +67,9 @@ def do_min_path_analysis(station_source, station_target, hour, day, number_of_sw
     # che passano in quella stazione
     stations_routes_dict = dict_as_group_by(trips_with_stop_times, 'stop_id', 'route_id', repetition=False)
 
-    # Calcolo il percorso minimo tra due stazioni e creo il grafo relativo
-    # compute_min_path(trips_with_stop_times.copy(), stations_routes_dict, station_source, station_target,
-    #                 hour, day, number_of_switches, stops)
+    # Calcolo il cammino minimo tra due stazioni e creo il grafo relativo
+    compute_min_path(trips_with_stop_times.copy(), stations_routes_dict, station_source, station_target,
+                     hour, day, number_of_switches, stops)
 
     # Creo un dizionario con chiave la linea e con valori le fermate
     # in cui passa quella linea
@@ -79,7 +82,7 @@ def do_min_path_analysis(station_source, station_target, hour, day, number_of_sw
     # Creo un dizionario in cui per ogni stazione viene associato il numero
     # minimo di cambi da dover fare per raggiungerla a partire da una
     # particolare stazione
-    switches_from_station_dict = compute_switches_from_station('3071', routes_adjacency_dict,
+    switches_from_station_dict = compute_switches_from_station('1728', routes_adjacency_dict,
                                                                stations_routes_dict,
                                                                routes_stations_dict)
     create_graph_with_switches(graph, switches_from_station_dict)
@@ -98,15 +101,20 @@ def main():
     stop_times, trips, routes, exceptions_service, calendar, stops, trips_with_stop_times = import_data()
     stop_times_load = stop_times.copy().drop(['stop_sequence'], axis=1)
 
-    graph_with_routes, graph_no_multiple_edges = import_graphs('Complete_TrenordNetwork.xml',
-                                                   'CompleteGraph_NoMultipleEdges.xml')
+    graph_with_routes, graph_no_multiple_edges = import_graphs('XML files//Complete_TrenordNetwork.xml',
+                                                               'XML files//CompleteGraph_NoMultipleEdges.xml')
 
     # Svolgo le varie fasi dell'analisi
-    # do_pre_analysis(graph_with_routes)
-    # do_load_analysis('1841', 'saturday', exceptions_service, stops, trips_with_stop_times)
-    # do_min_path_analysis('1581', '3015', '10:00:00', 'monday', 2, trips_with_stop_times, stops, stop_times,
-    #                      trips, graph_no_multiple_edges)
+    print('Pre analisi in corso')
+    do_pre_analysis(graph_with_routes)
+    print('Studio dei carichi in corso')
+    do_load_analysis('1841', 'monday', exceptions_service, stops, trips_with_stop_times)
+    print('Studio dei percorsi minimi in corso')
+    do_min_path_analysis('1581', '1711', '09:00:00', 'monday', 0, trips_with_stop_times, stops, stop_times,
+                         trips, graph_no_multiple_edges)
+    print('Studio della gestione degli attacchi in corso')
     do_attack_handling_analysis(graph_with_routes, graph_no_multiple_edges)
+    print('Fine!')
 
 
 if __name__ == "__main__":

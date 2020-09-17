@@ -54,7 +54,7 @@ def remove_nodes_analysis(graph, graph_no_multiple_edges, metrics):
         else:
             S = np.zeros(int(number_of_nodes / 2) + 1)
             E = np.zeros(int(number_of_nodes / 2) + 1)
-            number_of_iterations = 25
+            number_of_iterations = 5
             for i in range(number_of_iterations):
                 graph_random = graph.copy()
                 S[0] += compute_S_metric(graph_random, number_of_nodes)
@@ -64,6 +64,7 @@ def remove_nodes_analysis(graph, graph_no_multiple_edges, metrics):
                     graph_random.delete_vertices(node_to_remove)
                     S[j] += compute_S_metric(graph_random, number_of_nodes)
                     E[j] += compute_E_metric(graph_random, number_of_nodes)
+                print(metric + ' ' + str(i) + '-esima iterazione calcolata!')
             S /= number_of_iterations
             E /= number_of_iterations
             static_S.append(S)
@@ -71,7 +72,7 @@ def remove_nodes_analysis(graph, graph_no_multiple_edges, metrics):
             static_E.append(E)
             dynamic_E.append(E)
 
-        print(metric + ' done!')
+        print(metric + ' calcolata!')
 
     # Creo un grafo che contiene l'informazione dei nodi tolti e dei nodi
     # che fanno parte della principale componente connessa
@@ -80,11 +81,11 @@ def remove_nodes_analysis(graph, graph_no_multiple_edges, metrics):
     create_graph_for_attack_handling(graph_no_multiple_edges, data)
 
     # Creo un plot che illustra il rapporto tra nodi rimossi e S ed E
-    plot_metric_results(static_S)
-    plot_metric_results(dynamic_S)
+    plot_metric_results(static_S, title='Approccio statico (S)')
+    plot_metric_results(dynamic_S, title='Approccio dinamico (S)')
 
-    plot_metric_results(static_E, s=False)
-    plot_metric_results(dynamic_E, s=False)
+    plot_metric_results(static_E, title='Approccio statico (E)', s=False )
+    plot_metric_results(dynamic_E, title='Approccio dinamico (E)', s=False)
 
 
 def compute_E_metric(graph, number_of_nodes):
@@ -93,6 +94,7 @@ def compute_E_metric(graph, number_of_nodes):
     np.fill_diagonal(sp, 0)
     n_eff = (1.0/(number_of_nodes * (number_of_nodes-1))) * np.apply_along_axis(sum, 0, sp)
 
+    # Calcolo la metrica relativa ad E
     return np.mean(n_eff)
 
 
@@ -128,6 +130,8 @@ def get_sorted_metric_results(metric_results, graph):
 
 def compute_static_remove(metric, number_of_nodes, graph):
 
+    # Rimuovo i nodi con l'approccio statico, ossia la selezione
+    # viene fatta a priori
     nodes_to_remove = []
     S = None
     E = None
@@ -144,8 +148,6 @@ def compute_static_remove(metric, number_of_nodes, graph):
             graph.delete_vertices([graph.vs.find(name=node)])
             S.append(compute_S_metric(graph, number_of_nodes))
             E.append(compute_E_metric(graph, number_of_nodes))
-
-        print(E)
 
     if metric == 'degree':
         nodes_degree = graph.degree(np.arange(number_of_nodes))
@@ -176,6 +178,8 @@ def compute_static_remove(metric, number_of_nodes, graph):
 
 def compute_dynamic_remove(metric, number_of_nodes, graph):
 
+    # Rimuovo i nodi con l'approccio statico, ossia la selezione
+    # viene fatta ad ogni iterazione
     nodes_removed = []
     S = None
     E = None
@@ -204,16 +208,5 @@ def compute_dynamic_remove(metric, number_of_nodes, graph):
             graph.delete_vertices([graph.vs.find(name=nodes_to_remove[0])])
             S.append(compute_S_metric(graph, number_of_nodes))
             E.append(compute_E_metric(graph, number_of_nodes))
-
-    if metric == 'closeness':
-        S = [compute_S_metric(graph, number_of_nodes)]
-        E = [compute_E_metric(graph, number_of_nodes)]
-        '''for i in range(1, int(number_of_nodes / 2) + 1):
-            nodes_closeness = graph.closeness()
-            nodes_closeness, nodes_to_remove = get_sorted_metric_results(nodes_closeness, graph)
-
-            nodes_removed.append(nodes_to_remove[0])
-            graph.delete_vertices([graph.vs.find(name=nodes_to_remove[0])])
-            S.append(compute_S_metric(graph, number_of_nodes))'''
 
     return S, E, nodes_removed, graph

@@ -63,7 +63,7 @@ def compute_loads_with_exceptions(loads_dataframe, exceptions_service_dict, year
         week_string = str(week)
 
     # Salvo il file come oggetto JSON
-    with open('loads_complete_with_exceptions_' + str(year) + week_string + '.json', 'w') as fp:
+    with open('Carichi//loads_complete_with_exceptions_' + str(year) + week_string + '.json', 'w') as fp:
         json.dump(frequencies_dict, fp)
 
 

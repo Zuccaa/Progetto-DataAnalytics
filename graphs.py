@@ -251,7 +251,7 @@ def create_graph_for_loads(loads_dataframe, stops):
                                friday=int(row['friday']), saturday=int(row['saturday']),
                                sunday=int(row['sunday']))
 
-    graph.write_graphml('Loads_Trenord.graphml')
+    graph.write_graphml('Grafi//Loads_Trenord.graphml')
 
 
 def create_graph_for_attack_handling(graph_no_multiple_edges, data):
@@ -281,7 +281,7 @@ def create_graph_for_attack_handling(graph_no_multiple_edges, data):
         for vertex in dynamic_graphs[index].components().giant().vs:
             graph_no_multiple_edges.vs.find(name=vertex.attributes()['name'])['dynamic' + '-' + attribute] = '2'
 
-    graph_no_multiple_edges.write_graphml('AttackHandling_Trenord.graphml')
+    graph_no_multiple_edges.write_graphml('Grafi//AttackHandling_Trenord.graphml')
 
 
 # --------------------------------------------------------
@@ -296,7 +296,7 @@ def create_graph_with_multiple_routes(stops, stop_times, trips):
     # che collega due stazioni diverse
 
     graph = create_standard_graph(stops, trips, stop_times)
-    graph.write_graphml("Complete_TrenordNetwork.graphml")
+    graph.write_graphml("Grafi//Complete_TrenordNetwork.graphml")
 
 
 def create_standard_graph(stops, trips, stop_times):

@@ -55,11 +55,12 @@ def compute_min_path(trips, stations_routes_dict, station_source,
         else:
             vertex['show_name'] = ''
 
-    graph.write_graphml('MinPaths//minPath_from' + station_source + 'to' + station_target + '_at' +
+    graph.write_graphml('Cammini minimi//minPath_from' + station_source + 'to' + station_target + '_at' +
                         start_time.replace(':', '-') + '_on' + day + '_with' + str(recursion_times) +
                         'switches.graphml')
 
-    print(travel_time)
+    print('La durata del cammino minimo tra ' + station_source + ' e ' + station_target + ' è di ' +
+          str(travel_time) + ' minuti')
 
 
 def min_path_from_station(trips_init, stations_routes_dict, station_source, station_target,
